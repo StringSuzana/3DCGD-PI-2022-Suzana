@@ -5,10 +5,11 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     public float lifeTime;
-    private float maxLifeTime = 20;
+    private float maxLifeTime = 3;
 
     public Rigidbody bulletRigidBody;
     public GameObject particleEffect;
+
 
     void Start()
     {
@@ -18,22 +19,21 @@ public class BulletController : MonoBehaviour
     void Update()
     {
         maxLifeTime -= Time.deltaTime;
-        Debug.Log("lifeTime " + lifeTime);
-
+      
         if (maxLifeTime <= 0)
         {
+            Instantiate(particleEffect, transform.position, transform.rotation);
             Destroy(gameObject);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag != "Player")
+  
+        if(other.tag != "Player")//don't want to collide with shooting point on player
         {
-            Debug.Log("======================================================= ");
-            var go = Instantiate(particleEffect, transform.position, transform.rotation);
-            Debug.Log("Collider other: " + other.name);
-            Debug.Log("Particles " + go.name);
-            Destroy(gameObject);
+            Instantiate(particleEffect, transform.position, transform.rotation);
+           // Destroy(gameObject);
         }
+
     }
 }

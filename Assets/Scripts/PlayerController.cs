@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPlayer
 {
     [SerializeField]
     private new Camera camera;
@@ -143,8 +143,21 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, 100f))
         {
             Debug.Log("Did hit: " + hit.transform.name);
+            var enemy = hit.transform.GetComponent<IEnemy>();
+            if (enemy != null)
+            {
+                Debug.Log("ENEMY Health: " + enemy.GetHealth());
+                if (selectedWeapon is HeartGun)
+                {
+                    AttackEnemy(enemy, AttackType.stun, 3);
+                }
+                else if (selectedWeapon is HandGun)
+                {
+                    AttackEnemy(enemy, AttackType.shoot, 10);
+                }
+            }
+
             selectedWeapon.Shoot();
-            // Destroy(hit.transform.gameObject);
         }
     }
 
@@ -161,4 +174,35 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawSphere(groundDetector.position, 0.3f);
     }
+
+    public void AttackEnemy(IEnemy enemy, AttackType attackType, float damageAmount)
+    {
+        switch (attackType)
+        {
+            case AttackType.stun:
+                enemy.StopMovingForSeconds(damageAmount);
+                break;
+            case AttackType.shoot:
+                enemy.TakeDamage(damageAmount);
+                break;
+            default:
+                break;
+        }
+       
+    }
+
+    public void TakeDamage(float damageAmount)
+    {
+        throw new System.NotImplementedException();
+    }
+}
+public interface IPlayer
+{
+    void AttackEnemy(IEnemy enemy, AttackType attackType, float damageAmount);
+    void TakeDamage(float damageAmount);
+
+}
+public enum AttackType
+{
+    stun, shoot
 }
