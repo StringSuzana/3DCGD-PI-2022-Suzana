@@ -17,10 +17,10 @@ public class PlayerController : MonoBehaviour, IPlayer
     private Animator animator;
 
     [SerializeField]
-    private float sensitivity = 100f;
+    private float sensitivity;
 
     [SerializeField]
-    private float speed = 10f;
+    private float speed;
 
     [SerializeField]
     private float jumpHeight;
@@ -96,9 +96,9 @@ public class PlayerController : MonoBehaviour, IPlayer
         characterController.Move(moveVector + velocity);
 
         //animate walk and run
-        if (characterController.velocity.x > 0 || characterController.velocity.y > 0)
+        if ((moveVector + velocity).x > 0 || (moveVector + velocity).z > 0)
         {
-            animator.SetFloat("speed", 1);
+            animator.SetFloat("speed", speed);
         }
         else
         {
@@ -107,12 +107,12 @@ public class PlayerController : MonoBehaviour, IPlayer
         if (Input.GetButtonDown(InputName.Run))
         {
             animator.SetBool("run", true);
-            speed = 2;
+            speed += 5;
             Debug.Log("run");
         }
         if (Input.GetButtonUp(InputName.Run))
         {
-            speed = 1;
+            speed -= 5;
             animator.SetBool("run", false);
         }
 
