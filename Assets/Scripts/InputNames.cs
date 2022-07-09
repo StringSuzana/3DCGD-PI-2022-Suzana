@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct InputName
+public struct InputNames
 {
     public static string Horizontal = "Horizontal";
     public static string Vertical = "Vertical";

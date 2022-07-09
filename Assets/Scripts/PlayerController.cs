@@ -65,8 +65,8 @@ namespace MyGame
         void Update()
         {
             //Rotation of a player
-            float x = Input.GetAxis(InputName.MouseX) * sensitivity * Time.deltaTime;
-            float y = Input.GetAxis(InputName.MouseY) * sensitivity * Time.deltaTime;
+            float x = Input.GetAxis(InputNames.MouseX) * sensitivity * Time.deltaTime;
+            float y = Input.GetAxis(InputNames.MouseY) * sensitivity * Time.deltaTime;
 
             characterController.transform.Rotate(Vector3.up * x);
 
@@ -78,8 +78,8 @@ namespace MyGame
             shootFromPoint.localRotation = Quaternion.Euler(rotation, 0f, 0f);
 
             //Movement
-            float moveX = Input.GetAxis(InputName.Horizontal);
-            float moveZ = Input.GetAxis(InputName.Vertical);
+            float moveX = Input.GetAxis(InputNames.Horizontal);
+            float moveZ = Input.GetAxis(InputNames.Vertical);
 
             Vector3 moveVector = characterController.transform.forward * moveZ;
             moveVector += characterController.transform.right * moveX;
@@ -95,7 +95,7 @@ namespace MyGame
             }
 
             //jump
-            if (Input.GetButtonDown(InputName.JumpButton) && IsGrounded())
+            if (Input.GetButtonDown(InputNames.JumpButton) && IsGrounded())
             {
                 StartCoroutine(Jump());
             }
@@ -112,13 +112,13 @@ namespace MyGame
             {
                 animator.SetFloat("speed", 0);
             }
-            if (Input.GetButtonDown(InputName.Run))
+            if (Input.GetButtonDown(InputNames.Run))
             {
                 animator.SetBool("run", true);
                 speed += 5;
                 Debug.Log("run");
             }
-            if (Input.GetButtonUp(InputName.Run))
+            if (Input.GetButtonUp(InputNames.Run))
             {
                 speed -= 5;
                 animator.SetBool("run", false);
@@ -126,7 +126,7 @@ namespace MyGame
 
 
             //shooting
-            if (Input.GetButtonDown(InputName.ShootButton))
+            if (Input.GetButtonDown(InputNames.ShootButton))
             {
                 Shoot();
             }
