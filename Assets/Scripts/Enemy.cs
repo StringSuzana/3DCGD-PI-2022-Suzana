@@ -2,80 +2,177 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-
-public class Enemy : MonoBehaviour, IEnemy
+namespace MyGame
 {
-    public float health = 50;
-    public int lives = 3;
-    public GameObject target;
-    private float stunForSeconds;
-    public GameObject particleDieEffect;
+    public class Enemy : MonoBehaviour, IEnemy
+    {
 
-    public void StopMovingForSeconds(float damageAmount)
-    {
-        this.stunForSeconds = damageAmount;
-        Debug.Log("StopMovingForSeconds: " + damageAmount);
-        var anim = GetComponent<Animator>();
-        anim.enabled = false;
-    }
-    private void Unstun()
-    {
-        var anim = GetComponent<Animator>();
-        anim.enabled = true;
-    }
-    void Update()
-    {
-        stunForSeconds -= Time.deltaTime;
-        if (stunForSeconds <= 0)
+        private float stunForSeconds;
+        private IPlayer iPlayer;
+
+        public float health = 50;
+        public float dealthDamage = 15;
+        public int lives = 3;
+        public GameObject attackTarget;
+        public GameObject particleDieEffect;
+
+        public Animator anim;
+
+        public NavMeshAgent agent;
+
+        public Transform player;
+
+        public LayerMask groundLayer, playerLayer;
+
+        //Patroling
+        public Vector3 walkPoint;
+        bool walkPointSet;
+        public float walkPointRange;
+
+        //Attacking
+        public float timeBetweenAttacks;
+        bool alreadyAttacked;
+        //public GameObject projectile;
+
+        //States
+        public float sightRange, attackRange;
+        public bool playerInSightRange, playerInAttackRange;
+
+        private void Awake()
         {
-            Unstun();
+            anim = GetComponent<Animator>();
+            agent = GetComponent<NavMeshAgent>();
+
+            iPlayer = player.parent.GetComponent<IPlayer>();
         }
-    }
-    void IEnemy.AttackTarget(PlayerController player)
-    {
-        Debug.Log("AttackTarget ");
-    }
 
-
-
-    void IEnemy.FollowTarget(Transform targetTransform)
-    {
-        Debug.Log("FollowTarget ");
-
-    }
-
-    float IEnemy.GetHealth()
-    {
-        Debug.Log("GetHealth " + health);
-        return health;
-    }
-
-
-    void IEnemy.TakeDamage(float damageAmount)
-    {
-        Debug.Log("Take damage " + damageAmount);
-        health -= damageAmount;
-        if (health <= 0)
+        private void Update()
         {
-            StartCoroutine(Die());
+
+            stunForSeconds -= Time.deltaTime;
+            if (stunForSeconds <= 0)
+            {
+                Unstun();
+            }
+
+            //Check for sight and attack range
+            playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+            playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+
+            if (!playerInSightRange && !playerInAttackRange) Patroling();
+            if (playerInSightRange && !playerInAttackRange) FollowTarget();
+            if (playerInAttackRange && playerInSightRange) AttackTarget();
         }
+        private void Patroling()
+        {
+            if (!walkPointSet) SearchWalkPoint();
+
+            if (walkPointSet)
+                agent.SetDestination(walkPoint);
+
+            Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+            //Walkpoint reached
+            if (distanceToWalkPoint.magnitude < 1f)
+                walkPointSet = false;
+        }
+        private void SearchWalkPoint()
+        {
+            //Calculate random point in range
+            float randomZ = Random.Range(-walkPointRange, walkPointRange);
+            float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+            walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+            if (Physics.Raycast(walkPoint, -transform.up, 2f, groundLayer))
+                walkPointSet = true;
+        }
+
+        public void AttackTarget()
+        {
+            transform.LookAt(attackTarget.transform.position);
+            //Stop Enemy from moving
+            agent.SetDestination(transform.position);
+
+            if (!alreadyAttacked)
+            {
+           
+                Debug.Log("AttackTarget with 15 damage.");
+                StartCoroutine(iPlayer.TakeDamage(dealthDamage));
+                anim.SetTrigger("attack");
+                ///End of attack
+
+                alreadyAttacked = true;
+                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }
+        }
+     
+        private void ResetAttack()
+        {
+            alreadyAttacked = false;
+        }
+
+
+        public void StopMovingForSeconds(float damageAmount)
+        {
+            this.stunForSeconds = damageAmount;
+            Debug.Log("StopMovingForSeconds: " + damageAmount);
+
+            anim.enabled = false;
+            agent.SetDestination(transform.position);
+            agent.isStopped= true;
+        }
+        private void Unstun()
+        {
+            anim.enabled = true;
+            agent.isStopped = false;
+        }
+
+
+
+        public void FollowTarget()
+        {
+            Debug.Log("FollowTarget ");
+            agent.SetDestination(attackTarget.transform.position);
+            
+        }
+
+        public float GetHealth()
+        {
+            Debug.Log("GetHealth " + health);
+            return health;
+        }
+
+        public void TakeDamage(float damageAmount)
+        {
+            Debug.Log("Take damage " + damageAmount);
+            health -= damageAmount;
+            if (health <= 0)
+            {
+                StartCoroutine(Die());
+            }
+        }
+
+        private IEnumerator Die()
+        {
+            Debug.Log("Enemy dead.");
+            anim.SetTrigger("dead");
+
+            yield return new WaitForSecondsRealtime(2f);
+
+            var pe = Instantiate(particleDieEffect, transform.position, transform.rotation);
+            Destroy(gameObject);
+
+
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, sightRange);
+        }
+
     }
-
-    private IEnumerator Die()
-    {
-        Debug.Log("Enemy dead.");
-
-        var anim = GetComponent<Animator>();
-        anim.SetTrigger("dead");
-
-        yield return new WaitForSecondsRealtime(2f);
-
-        var pe = Instantiate(particleDieEffect, transform.position, transform.rotation);
-        Destroy(gameObject);
-
-   
-    }
-
-
 }
