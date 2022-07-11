@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 namespace MyGame
 {
-
     public class PlayerController : MonoBehaviour, IPlayer
     {
+        [Tooltip("Camera")]
         [SerializeField]
         private new Camera camera;
-
+        
+        [Tooltip("Shooting")]
         [SerializeField]
         private Transform shootFromPoint;
-
+        
+        [Tooltip("Motion")]
         [SerializeField]
         private CharacterController characterController;
 
@@ -31,7 +33,8 @@ namespace MyGame
 
         [SerializeField]
         private Vector3 velocity = Vector3.zero;
-
+        
+        [Tooltip("Ground")]
         [SerializeField]
         private Transform groundDetector;
 
@@ -39,8 +42,19 @@ namespace MyGame
         private LayerMask groundLayer;
 
 
+        [Tooltip("Damage intake")]
         [SerializeField]
         private GameObject scratchView;
+
+        [Tooltip("Audio source for walk, run..")]
+        [SerializeField]
+        private AudioSource audioSource;
+        [SerializeField]
+        private AudioClip walkAudioClip;
+        [SerializeField]
+        private AudioClip jumpAudioClip;
+        [SerializeField]
+        private AudioClip hurtAudioClip;
 
         private Vector3 moveInput;
         private float rotation = 0f;
@@ -107,15 +121,24 @@ namespace MyGame
             if ((moveVector + velocity).x > 0 || (moveVector + velocity).z > 0)
             {
                 animator.SetFloat("speed", speed);
+                if (!audioSource.isPlaying)
+                {
+                    audioSource.pitch = 0.5f;
+                    audioSource.PlayOneShot(walkAudioClip);
+                }
             }
             else
             {
                 animator.SetFloat("speed", 0);
+                audioSource.Stop();
             }
             if (Input.GetButtonDown(InputNames.Run))
             {
                 animator.SetBool("run", true);
                 speed += 5;
+
+                audioSource.pitch = 1f;
+                audioSource.PlayOneShot(walkAudioClip);
                 Debug.Log("run");
             }
             if (Input.GetButtonUp(InputNames.Run))
