@@ -8,7 +8,7 @@ public interface IEnemy
     float GetHealth();
     void FollowTarget();
     void AttackTarget ();
-    void StopMovingForSeconds(float damageAmount);
+    void Stun(float damageAmount);
 }
 
 }

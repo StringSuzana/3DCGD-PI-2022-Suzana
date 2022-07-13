@@ -73,7 +73,7 @@ namespace MyGame
             SelectWeapon();
 
             Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
+            Cursor.visible = true;
         }
 
         void Update()
@@ -173,20 +173,20 @@ namespace MyGame
             RaycastHit hit;
             if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, 100f))
             {
-                Debug.Log("Did hit: " + hit.transform.name);
+       
                 var enemy = hit.transform.GetComponent<IEnemy>();
-                if (enemy != null)
-                {
-                    Debug.Log("ENEMY Health: " + enemy.GetHealth());
-                    if (selectedWeapon is HeartGun)
-                    {
-                        AttackEnemy(enemy, AttackType.stun, 3);
-                    }
-                    else if (selectedWeapon is HandGun)
-                    {
-                        AttackEnemy(enemy, AttackType.shoot, 10);
-                    }
-                }
+                //if (enemy != null)
+                //{
+                //    Debug.Log("ENEMY Health: " + enemy.GetHealth());
+                //    if (selectedWeapon is HeartGun)
+                //    {
+                //        AttackEnemy(enemy, AttackType.stun, 3);
+                //    }
+                //    else if (selectedWeapon is HandGun)
+                //    {
+                //        AttackEnemy(enemy, AttackType.shoot, 10);
+                //    }
+                //}
 
                 selectedWeapon.Shoot();
             }
@@ -206,8 +206,8 @@ namespace MyGame
             Gizmos.DrawSphere(groundDetector.position, 0.3f);
         }
 
-        public void AttackEnemy(IEnemy enemy, AttackType attackType, float damageAmount)
-        {
+       public void AttackEnemy(IEnemy enemy, AttackType attackType, float damageAmount)
+        { /*
             switch (attackType)
             {
                 case AttackType.stun:
@@ -219,7 +219,7 @@ namespace MyGame
                 default:
                     break;
             }
-
+*/
         }
 
         public IEnumerator TakeDamage(float damageAmount)

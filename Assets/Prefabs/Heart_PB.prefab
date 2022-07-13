@@ -14,7 +14,9 @@ GameObject:
   - component: {fileID: 8290080232035789203}
   - component: {fileID: -9037103570489607468}
   - component: {fileID: -7377642511747596438}
-  - component: {fileID: -6818484521403318407}
+  - component: {fileID: 2053556186964068274}
+  - component: {fileID: 2060124294489749785}
+  - component: {fileID: 3104231105290915888}
   m_Layer: 0
   m_Name: Heart_PB
   m_TagString: Untagged
@@ -2578,7 +2580,29 @@ MonoBehaviour:
   lifeTime: 5
   bulletRigidBody: {fileID: -9037103570489607468}
   particleEffect: {fileID: 417543461715254319, guid: 1fe09df7545989d4b8b0ff5f8e34ec12, type: 3}
---- !u!65 &-6818484521403318407
+--- !u!33 &2053556186964068274
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7732822901899014347}
+  m_Mesh: {fileID: 0}
+--- !u!114 &2060124294489749785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7732822901899014347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1c104dae1227134d88d2ffd96ee09fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileType: 2
+  damage: 3
+--- !u!65 &3104231105290915888
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2589,5 +2613,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.233848, y: 1.0855762, z: 1.014328}
+  m_Center: {x: 0.33573553, y: 0.53595644, z: 0.49685985}

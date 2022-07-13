@@ -1,41 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public interface IWeaponService
+namespace MyGame
 {
-    List<Weapon> GetWeapons(Transform shootFromPoint);
-}
-
-public class WeaponService : IWeaponService
-{
-    public List<Weapon> GetWeapons(Transform shootFromPoint)
+    public interface IWeaponService
     {
-        Weapon pushGun = ForceGun.PushGun(shootFromPoint);
-        Weapon createTool = new CatnipPlanter(shootFromPoint);
-        Weapon pullGun = ForceGun.PullGun(shootFromPoint);
-        List<Weapon> weapons = new List<Weapon>();
-        //weapons.Add(pushGun);
-        //weapons.Add(createTool);
-        //weapons.Add(pullGun);
-        weapons.Add(new HeartGun(shootFromPoint));
-        weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.smallBullet)));
-
-        return weapons;
+        List<Weapon> GetWeapons(Transform shootFromPoint);
     }
-}
 
-public class MockWeapoenService : IWeaponService
-{
-    public List<Weapon> GetWeapons(Transform shootFromPoint)
+    public class WeaponService : IWeaponService
     {
-        Weapon pushGun = ForceGun.PushGun(shootFromPoint);
-        Weapon pullGun = ForceGun.PullGun(shootFromPoint);
-        List<Weapon> weapons = new List<Weapon>();
-        weapons.Add(pullGun);
-        weapons.Add(pushGun);
+        public List<Weapon> GetWeapons(Transform shootFromPoint)
+        {
+            Weapon createTool = new CatnipPlanter(shootFromPoint);
+            List<Weapon> weapons = new List<Weapon>();
+            weapons.Add(new HeartGun(shootFromPoint));
+            weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.smallBullet)));
 
-        return weapons;
+            return weapons;
+        }
     }
-}
 
+    public class AnotherWeapoenService : IWeaponService
+    {
+        public List<Weapon> GetWeapons(Transform shootFromPoint)
+        {
+            Weapon createTool = new CatnipPlanter(shootFromPoint);
+            List<Weapon> weapons = new List<Weapon>();
+            weapons.Add(new HeartGun(shootFromPoint));
+            weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.smallBullet)));
+            weapons.Add(new CatnipPlanter(shootFromPoint));
+
+            return weapons;
+        }
+    }
+
+}

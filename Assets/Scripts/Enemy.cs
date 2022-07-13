@@ -45,10 +45,30 @@ namespace MyGame
 
             iPlayer = player.parent.GetComponent<IPlayer>();
         }
-
+        public void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.GetComponent<Projectile>() != null)
+            {
+                Debug.Log("PROJECTILE");
+                var projectile = collision.gameObject.GetComponent<Projectile>();
+                switch (projectile.projectileType)
+                {
+                    case ProjectileType.attract:
+                        //go to target
+                        break;
+                    case ProjectileType.damage:
+                        Debug.Log("Enemy takes damage");
+                        TakeDamage(projectile.damage);
+                        break;
+                    case ProjectileType.stun:
+                        Debug.Log("Enemy is stunned");
+                        Stun(projectile.damage);
+                        break;
+                }
+            }
+        }
         private void Update()
         {
-
             stunForSeconds -= Time.deltaTime;
             if (stunForSeconds <= 0)
             {
@@ -96,7 +116,7 @@ namespace MyGame
 
             if (!alreadyAttacked)
             {
-           
+
                 Debug.Log("AttackTarget with 15 damage.");
                 StartCoroutine(iPlayer.TakeDamage(dealthDamage));
                 anim.SetTrigger("attack");
@@ -106,21 +126,21 @@ namespace MyGame
                 Invoke(nameof(ResetAttack), timeBetweenAttacks);
             }
         }
-     
+
         private void ResetAttack()
         {
             alreadyAttacked = false;
         }
 
 
-        public void StopMovingForSeconds(float damageAmount)
+        public void Stun(float damageAmount)
         {
             this.stunForSeconds = damageAmount;
             Debug.Log("StopMovingForSeconds: " + damageAmount);
 
             anim.enabled = false;
             agent.SetDestination(transform.position);
-            agent.isStopped= true;
+            agent.isStopped = true;
         }
         private void Unstun()
         {
@@ -134,7 +154,6 @@ namespace MyGame
         {
             Debug.Log("FollowTarget ");
             agent.SetDestination(attackTarget.transform.position);
-            
         }
 
         public float GetHealth()

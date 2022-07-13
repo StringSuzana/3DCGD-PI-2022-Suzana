@@ -32,7 +32,7 @@ public class BulletController : MonoBehaviour
         if(other.tag != "Player")//don't want to collide with shooting point on player
         {
             Instantiate(particleEffect, transform.position, transform.rotation);
-           // Destroy(gameObject);
+           
         }
 
     }
