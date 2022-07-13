@@ -32,7 +32,6 @@ namespace MyGame
         //Attacking
         public float timeBetweenAttacks;
         bool alreadyAttacked;
-        //public GameObject projectile;
 
         //States
         public float sightRange, attackRange;

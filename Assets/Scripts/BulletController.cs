@@ -11,11 +11,6 @@ public class BulletController : MonoBehaviour
     public GameObject particleEffect;
 
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         maxLifeTime -= Time.deltaTime;

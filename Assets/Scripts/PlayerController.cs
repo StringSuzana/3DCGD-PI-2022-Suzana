@@ -10,11 +10,11 @@ namespace MyGame
         [Tooltip("Camera")]
         [SerializeField]
         private new Camera camera;
-        
+
         [Tooltip("Shooting")]
         [SerializeField]
         private Transform shootFromPoint;
-        
+
         [Tooltip("Motion")]
         [SerializeField]
         private CharacterController characterController;
@@ -33,7 +33,7 @@ namespace MyGame
 
         [SerializeField]
         private Vector3 velocity = Vector3.zero;
-        
+
         [Tooltip("Ground")]
         [SerializeField]
         private Transform groundDetector;
@@ -170,26 +170,7 @@ namespace MyGame
         }
         private void Shoot()
         {
-            RaycastHit hit;
-            if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, 100f))
-            {
-       
-                var enemy = hit.transform.GetComponent<IEnemy>();
-                //if (enemy != null)
-                //{
-                //    Debug.Log("ENEMY Health: " + enemy.GetHealth());
-                //    if (selectedWeapon is HeartGun)
-                //    {
-                //        AttackEnemy(enemy, AttackType.stun, 3);
-                //    }
-                //    else if (selectedWeapon is HandGun)
-                //    {
-                //        AttackEnemy(enemy, AttackType.shoot, 10);
-                //    }
-                //}
-
-                selectedWeapon.Shoot();
-            }
+            selectedWeapon.Shoot();
         }
 
         private bool IsGrounded()
@@ -206,21 +187,6 @@ namespace MyGame
             Gizmos.DrawSphere(groundDetector.position, 0.3f);
         }
 
-       public void AttackEnemy(IEnemy enemy, AttackType attackType, float damageAmount)
-        { /*
-            switch (attackType)
-            {
-                case AttackType.stun:
-                    enemy.StopMovingForSeconds(damageAmount);
-                    break;
-                case AttackType.shoot:
-                    enemy.TakeDamage(damageAmount);
-                    break;
-                default:
-                    break;
-            }
-*/
-        }
 
         public IEnumerator TakeDamage(float damageAmount)
         {
@@ -239,12 +205,9 @@ namespace MyGame
     }
     public interface IPlayer
     {
-        void AttackEnemy(IEnemy enemy, AttackType attackType, float damageAmount);
+
         IEnumerator TakeDamage(float damageAmount);
 
     }
-    public enum AttackType
-    {
-        stun, shoot
-    }
+
 }
