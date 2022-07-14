@@ -7,54 +7,39 @@ namespace MyGame
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
+        public GameObject charactersContainer;
         [Tooltip("Camera")]
-        [SerializeField]
-        private new Camera camera;
+        public new Camera camera;
 
         [Tooltip("Shooting")]
-        [SerializeField]
-        private Transform shootFromPoint;
+        public Transform shootFromPoint;
 
         [Tooltip("Motion")]
-        [SerializeField]
-        private CharacterController characterController;
+        public CharacterController characterController;
 
-        [SerializeField]
-        private Animator animator;
+        public Animator animator;
 
-        [SerializeField]
-        private float sensitivity;
+        public float sensitivity;
 
-        [SerializeField]
-        private float speed;
+        public float speed;
 
-        [SerializeField]
-        private float jumpHeight;
+        public float jumpHeight;
 
-        [SerializeField]
-        private Vector3 velocity = Vector3.zero;
+        public Vector3 velocity = Vector3.zero;
 
         [Tooltip("Ground")]
-        [SerializeField]
-        private Transform groundDetector;
-
-        [SerializeField]
-        private LayerMask groundLayer;
+        public Transform groundDetector;
+        public LayerMask groundLayer;
 
 
         [Tooltip("Damage intake")]
-        [SerializeField]
-        private GameObject scratchView;
+        public GameObject scratchView;
 
         [Tooltip("Audio source for walk, run..")]
-        [SerializeField]
-        private AudioSource audioSource;
-        [SerializeField]
-        private AudioClip walkAudioClip;
-        [SerializeField]
-        private AudioClip jumpAudioClip;
-        [SerializeField]
-        private AudioClip hurtAudioClip;
+        public AudioSource audioSource;
+        public AudioClip walkAudioClip;
+        public AudioClip jumpAudioClip;
+        public AudioClip hurtAudioClip;
 
         private Vector3 moveInput;
         private float rotation = 0f;
@@ -72,8 +57,8 @@ namespace MyGame
             weapons = weaponService.GetWeapons(shootFromPoint);
             SelectWeapon();
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = true;
+           // Cursor.lockState = CursorLockMode.Locked;
+           Cursor.visible = true;
         }
 
         void Update()
@@ -159,6 +144,11 @@ namespace MyGame
                 currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Count;
                 SelectWeapon();
             }
+
+            if (IsVictory())
+            {
+                Debug.Log("VICTORY");
+            }
         }
         private IEnumerator Jump()
         {
@@ -196,18 +186,29 @@ namespace MyGame
             yield return new WaitForSecondsRealtime(0.4f);
             image.enabled = false;
 
-            yield return new WaitForSecondsRealtime(0.6f);
+            yield return new WaitForSecondsRealtime(0.2f);
             image.enabled = true;
 
-            yield return new WaitForSecondsRealtime(0.8f);
+            yield return new WaitForSecondsRealtime(0.2f);
             scratchView.SetActive(false);
         }
+        public bool IsVictory()
+        {
+            var characters = charactersContainer.GetComponentsInChildren<Transform>();
+            foreach (var item in characters)
+            {
+                if(item.gameObject.tag == "Enemy")
+                {
+                    return false;
+                }
+            }
+            return true;
+    }
     }
     public interface IPlayer
     {
-
         IEnumerator TakeDamage(float damageAmount);
-
     }
+
 
 }

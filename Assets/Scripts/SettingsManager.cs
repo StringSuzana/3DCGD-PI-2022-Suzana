@@ -39,12 +39,6 @@ namespace MyGame
                 Cursor.visible = true;
                 Time.timeScale = 0;
             }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = true;
-                Time.timeScale = 1;
-            }
         }
         public void SetMusicVolume()
         {
@@ -58,6 +52,9 @@ namespace MyGame
         }
         public void CloseMenu()
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = true;
+            Time.timeScale = 1;
             settingsMenu.gameObject.SetActive(false);
         }
         public void OpenMenu()

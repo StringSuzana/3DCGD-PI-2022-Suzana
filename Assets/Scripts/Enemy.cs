@@ -87,13 +87,17 @@ namespace MyGame
             if (!walkPointSet) SearchWalkPoint();
 
             if (walkPointSet)
-                agent.SetDestination(walkPoint);
+                if (agent.SetDestination(walkPoint))
+                    anim.SetFloat("speed", 1);
 
             Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
             //Walkpoint reached
             if (distanceToWalkPoint.magnitude < 1f)
+            {
                 walkPointSet = false;
+                anim.SetFloat("speed", 0);
+            }
         }
         private void SearchWalkPoint()
         {
@@ -153,6 +157,7 @@ namespace MyGame
         {
             Debug.Log("FollowTarget ");
             agent.SetDestination(attackTarget.transform.position);
+            anim.SetFloat("speed", 1);
         }
 
         public float GetHealth()
