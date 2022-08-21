@@ -60,6 +60,7 @@ namespace MyGame
                     MusicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
                     SoundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume)
                 });
+
             }
             InitializePlayerInfoProperty(username);
         }
@@ -67,6 +68,9 @@ namespace MyGame
         private void InitializePlayerInfoProperty(String username)
         {
             PlayerInfo = SaveSystem.LoadPlayerInfoFromJson(username);
+            PlayerPrefs.SetFloat(PlayerPrefNames.Health, PlayerInfo.HealthPoints);
+            PlayerPrefs.SetString(PlayerPrefNames.Username, PlayerInfo.PlayerName);
+
         }
 
         private IEnumerator LoadGameForPlayer(String username)

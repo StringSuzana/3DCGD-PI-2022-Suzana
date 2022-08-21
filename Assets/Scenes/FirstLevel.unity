@@ -434,7 +434,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh43810
+  m_Name: pb_Mesh97828
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3303,6 +3303,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 256279493}
+  - component: {fileID: 256279494}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -3332,6 +3333,19 @@ RectTransform:
   m_AnchoredPosition: {x: 1013.2361, y: 604.63574}
   m_SizeDelta: {x: -2026.4727, y: -1209.2716}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &256279494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256279492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b24b6ab043134434287cda5a46012ee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Slider: {fileID: 552309399}
 --- !u!1 &261154392
 GameObject:
   m_ObjectHideFlags: 0
@@ -4812,7 +4826,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh43912
+  m_Name: pb_Mesh97938
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6254,7 +6268,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh43764
+  m_Name: pb_Mesh97772
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6884,7 +6898,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh43654
+  m_Name: pb_Mesh97662
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20056,6 +20070,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4128480863105933835, guid: c6412b9cb6bd3bd42bdda5db2c452ab1, type: 3}
+      propertyPath: HealthBar
+      value: 
+      objectReference: {fileID: 256279494}
     - target: {fileID: 4128480863105933835, guid: c6412b9cb6bd3bd42bdda5db2c452ab1, type: 3}
       propertyPath: AudioSource
       value: 

@@ -7,6 +7,10 @@ namespace MyGame
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
+        [SerializeField]
+        private HealthBar HealthBar;
+        private float currentHealth;
+
         public GameObject charactersContainer;
         [Tooltip("Camera")]
         public new Camera camera;
@@ -54,11 +58,12 @@ namespace MyGame
 
         void Start()
         {
+            currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
             weapons = weaponService.GetWeapons(shootFromPoint);
             SelectWeapon();
 
-           // Cursor.lockState = CursorLockMode.Locked;
-           Cursor.visible = true;
+            // Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = true;
         }
 
         void Update()
@@ -180,6 +185,13 @@ namespace MyGame
 
         public IEnumerator TakeDamage(float damageAmount)
         {
+            currentHealth -= damageAmount;
+            if (currentHealth <= 0)
+            {
+                //TODO
+                //game over!
+            }
+            HealthBar.SetHealth(currentHealth);
             scratchView.SetActive(true);
             var image = scratchView.GetComponentInChildren<Canvas>();
 
@@ -197,13 +209,13 @@ namespace MyGame
             var characters = charactersContainer.GetComponentsInChildren<Transform>();
             foreach (var item in characters)
             {
-                if(item.gameObject.tag == "Enemy")
+                if (item.gameObject.tag == "Enemy")
                 {
                     return false;
                 }
             }
             return true;
-    }
+        }
     }
     public interface IPlayer
     {
