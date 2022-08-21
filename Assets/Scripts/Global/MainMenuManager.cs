@@ -3,37 +3,85 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using TMPro;
+using Assets.Scripts.Constants;
 
 namespace MyGame
 {
     public class MainMenuManager : MonoBehaviour
     {
-    
+        [SerializeField]
+        private TMP_InputField PlayerName;
+        [SerializeField]
+        private TextMeshProUGUI Message;
+
+        private PlayerInfo PlayerInfo;
+
+        private void Start()
+        {
+            Message.text = "";
+        }
         public void OpenSettings()
         {
             SceneManager.LoadScene(LevelNames.Settings);
         }
+        public void ShowMessage(String message, Color color)
+        {
+            Message.text = $"!! {message} !!";
+            Message.color = color;
+        }
         public void StartGame()
         {
-            Debug.Log("Start Game Pressed");
-            StartCoroutine(PlaySoundStart());
+            if (String.IsNullOrWhiteSpace(PlayerName.text))
+            {
+                ShowMessage("Enter your name", Color.red);
+            }
+            else
+            {
+                ShowMessage("Welcome", Color.green);
+                SavePlayerInfo(PlayerName.text);
 
-            StartCoroutine(LoadGame());
+                StartCoroutine(PlaySoundStart(6));
+                StartCoroutine(LoadGameForPlayer(PlayerName.text));
+            }
         }
-        private IEnumerator LoadGame()
+
+        private void SavePlayerInfo(string username)
+        {
+            PlayerPrefs.SetString("username", username);
+            if (SaveSystem.LoadPlayerInfoFromJson(username) == null)
+            {
+                //Create NEW data
+                SaveSystem.SavePlayerInfoToJson(new PlayerInfo
+                {
+                    PlayerName = username,
+                    HealthPoints = GameData.MaxPlayerHealth,
+                    LevelName = LevelNames.FirstLevel,
+                    MusicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
+                    SoundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume)
+                });
+            }
+            InitializePlayerInfoProperty(username);
+        }
+
+        private void InitializePlayerInfoProperty(String username)
+        {
+            PlayerInfo = SaveSystem.LoadPlayerInfoFromJson(username);
+        }
+
+        private IEnumerator LoadGameForPlayer(String username)
         {
             yield return new WaitForSecondsRealtime(6);
-            SceneManager.LoadScene(LevelNames.FirstLevel);
 
+            SceneManager.LoadScene(PlayerInfo.LevelName);
         }
-        private IEnumerator PlaySoundStart()
+        private IEnumerator PlaySoundStart(int waitForSeconds)
         {
             AudioManager.Instance.PlaySoundOneTime(SoundNames.GameStart);
-            yield return new WaitForSecondsRealtime(6);
+            yield return new WaitForSecondsRealtime(waitForSeconds);
 
-            AudioManager.Instance.PlayMusic(SoundNames.FirstLevel);
-
-
+            LevelSongs.dict.TryGetValue(PlayerInfo.LevelName, out string levelSongName);
+            AudioManager.Instance.PlayMusic(levelSongName);
         }
     }
 }

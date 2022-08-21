@@ -18,10 +18,10 @@ namespace MyGame
         public string LevelName;
 
         [JsonProperty("soundVolume")]
-        public long SoundVolume;
+        public float SoundVolume;
 
         [JsonProperty("musicVolume")]
-        public long MusicVolume;
+        public float MusicVolume;
 
         public PlayerInfo() //Have to have default constructor because of Json deserialization
         {

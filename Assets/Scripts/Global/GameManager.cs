@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace MyGame
 {
-
     public class GameManager : MonoBehaviour
     {
 
-        void Start()
-        {
-
-        }
-
+     
        
     }
 }
