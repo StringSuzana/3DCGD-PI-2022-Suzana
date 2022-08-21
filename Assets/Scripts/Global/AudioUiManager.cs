@@ -13,6 +13,9 @@ namespace MyGame
         {
             AudioManager.Instance.PlaySoundOneTime(SoundNames.Click);
         }
-
+        public void PLayHealthBarSound()
+        {
+            AudioManager.Instance.PlaySoundOneTime(SoundNames.Click);
+        }
     }
 }

@@ -4810,7 +4810,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1583719831}
         m_TargetAssemblyTypeName: MyGame.AudioUiManager, Assembly-CSharp
-        m_MethodName: PLayHoverSound
+        m_MethodName: PLayHealthBarSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

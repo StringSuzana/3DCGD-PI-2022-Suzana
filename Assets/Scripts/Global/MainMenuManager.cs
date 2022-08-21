@@ -63,14 +63,18 @@ namespace MyGame
 
             }
             InitializePlayerInfoProperty(username);
+            SetPlayerPrefs();
+        }
+
+        private void SetPlayerPrefs()
+        {
+            PlayerPrefs.SetFloat(PlayerPrefNames.Health, PlayerInfo.HealthPoints);
+            PlayerPrefs.SetString(PlayerPrefNames.Username, PlayerInfo.PlayerName);
         }
 
         private void InitializePlayerInfoProperty(String username)
         {
             PlayerInfo = SaveSystem.LoadPlayerInfoFromJson(username);
-            PlayerPrefs.SetFloat(PlayerPrefNames.Health, PlayerInfo.HealthPoints);
-            PlayerPrefs.SetString(PlayerPrefNames.Username, PlayerInfo.PlayerName);
-
         }
 
         private IEnumerator LoadGameForPlayer(String username)
