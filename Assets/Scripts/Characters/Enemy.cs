@@ -18,6 +18,8 @@ namespace MyGame
 
         public Animator anim;
 
+        public AudioSource AttackAudioSource;
+
         public NavMeshAgent agent;
 
         public Transform player;
@@ -81,6 +83,7 @@ namespace MyGame
             if (!playerInSightRange && !playerInAttackRange) Patroling();
             if (playerInSightRange && !playerInAttackRange) FollowTarget();
             if (playerInAttackRange && playerInSightRange) AttackTarget();
+
         }
         private void Patroling()
         {
@@ -88,7 +91,9 @@ namespace MyGame
 
             if (walkPointSet)
                 if (agent.SetDestination(walkPoint))
-                    anim.SetFloat("speed", 1);
+                {
+                    anim.SetFloat("speed", 1);                    
+                }
 
             Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
@@ -98,6 +103,8 @@ namespace MyGame
                 walkPointSet = false;
                 anim.SetFloat("speed", 0);
             }
+
+            transform.LookAt(walkPoint);
         }
         private void SearchWalkPoint()
         {
@@ -121,6 +128,7 @@ namespace MyGame
             {
 
                 Debug.Log("AttackTarget with 15 damage.");
+                AttackAudioSource.Play();
                 StartCoroutine(iPlayer.TakeDamage(dealthDamage));
                 anim.SetTrigger("attack");
                 ///End of attack
