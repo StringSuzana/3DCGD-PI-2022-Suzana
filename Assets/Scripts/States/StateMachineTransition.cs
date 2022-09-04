@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Scripts.States
+namespace MyGame
 {
     public class StateMachineTransition
     {

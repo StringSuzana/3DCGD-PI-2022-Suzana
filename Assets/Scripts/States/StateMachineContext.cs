@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.States
+namespace MyGame
 {
     public interface IStateMachineState
     {
-        void SetParent(StateMachineContext parent);
+        void SetContext(StateMachineContext parent);
         List<StateMachineTransition> GetValidTransitions();
         void Update();
         void OnStateEnter();
@@ -59,12 +59,16 @@ namespace Assets.Scripts.States
             nextState.OnStateEnter();
             currentState = nextState;
         }
+
         public List<StateMachineTransition> GetValidTransitions()
         {
-            throw new System.NotImplementedException();
+            return transitions;
         }
-
-        public void SetParent(StateMachineContext parent)
+        public void AddTransition(StateMachineTransition transition)
+        {
+            transitions.Add(transition);
+        }
+        public void SetContext(StateMachineContext parent)
         {
             parentStateMachine = parent;
         }
@@ -84,15 +88,14 @@ namespace Assets.Scripts.States
         public void AddState(IStateMachineState state)
         {
             states[state.GetType()] = state;
-            state.SetParent(this);
+            state.SetContext(this);
             state.SetupTransitions();
         }
         public void AddNextState(IStateMachineState state)
         {
             nextState = state;
-            nextState.SetParent(this);
+            nextState.SetContext(this);
             nextState.SetupTransitions();
         }
-
     }
 }
