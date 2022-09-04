@@ -59,6 +59,14 @@ namespace MyGame
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""c94c97c6-3eae-4cd7-a7e3-90a12253dec2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -296,11 +304,22 @@ namespace MyGame
                 {
                     ""name"": """",
                     ""id"": ""efea4f77-b399-47ea-8e80-278479456267"",
-                    ""path"": ""<Keyboard>/leftAlt"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""WeaponChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e8e1b81-28ea-44fb-ac99-3cccb7b0c902"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -883,6 +902,7 @@ namespace MyGame
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_Perspective = m_Player.FindAction("Perspective", throwIfNotFound: true);
             m_Player_WeaponChange = m_Player.FindAction("WeaponChange", throwIfNotFound: true);
+            m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -949,6 +969,7 @@ namespace MyGame
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_Perspective;
         private readonly InputAction m_Player_WeaponChange;
+        private readonly InputAction m_Player_Run;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -958,6 +979,7 @@ namespace MyGame
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @Perspective => m_Wrapper.m_Player_Perspective;
             public InputAction @WeaponChange => m_Wrapper.m_Player_WeaponChange;
+            public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -982,6 +1004,9 @@ namespace MyGame
                     @WeaponChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponChange;
                     @WeaponChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponChange;
                     @WeaponChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponChange;
+                    @Run.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
+                    @Run.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
+                    @Run.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1001,6 +1026,9 @@ namespace MyGame
                     @WeaponChange.started += instance.OnWeaponChange;
                     @WeaponChange.performed += instance.OnWeaponChange;
                     @WeaponChange.canceled += instance.OnWeaponChange;
+                    @Run.started += instance.OnRun;
+                    @Run.performed += instance.OnRun;
+                    @Run.canceled += instance.OnRun;
                 }
             }
         }
@@ -1162,6 +1190,7 @@ namespace MyGame
             void OnFire(InputAction.CallbackContext context);
             void OnPerspective(InputAction.CallbackContext context);
             void OnWeaponChange(InputAction.CallbackContext context);
+            void OnRun(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
