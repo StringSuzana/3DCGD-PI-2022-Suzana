@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MyGame
 {
@@ -11,12 +12,13 @@ namespace MyGame
         public Queue<string> sentences;//FIFO
         public TextMeshProUGUI characterNameTextField;
         public TextMeshProUGUI dialogTextField;
-        private float letterTypingSpeed = 0.05f;
         public Canvas dialogCanvas;
         public bool isOpened = false;
 
         public static DialogManager Instance;
 
+        private float letterTypingSpeed = 0.05f;
+        private Keyboard keyboard;
 
         void Awake()
         {
@@ -28,6 +30,8 @@ namespace MyGame
                 return;
             }
             sentences = new Queue<string>();
+
+            keyboard = InputSystem.GetDevice<Keyboard>();
         }
 
         public void StartDialogue(Dialogue dialogue)

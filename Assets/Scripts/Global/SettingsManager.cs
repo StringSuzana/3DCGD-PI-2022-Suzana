@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 namespace MyGame
 {
-
     public class SettingsManager : MonoBehaviour
     {
         [SerializeField]

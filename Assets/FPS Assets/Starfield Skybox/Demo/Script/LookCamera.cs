@@ -8,9 +8,8 @@ namespace MyGame
     {
         [Header("Input Settings")]
         private PlayerInputActions playerInput;
-        private InputAction move;
+        private InputAction look;
         private InputAction uButton;
-
 
         public float speedNormal = 10.0f;
         public float speedFast = 50.0f;
@@ -27,21 +26,21 @@ namespace MyGame
         private void OnEnable()
         {
             Debug.Log("bla");
-            move = playerInput.Player.Move;
-            move.Enable();
-            move.performed += Move;
+            look = playerInput.Player.Look;
+            look.Enable();
+            look.performed += LookAt;
             
             uButton = playerInput.Player.Fire;
             uButton.Enable();
         }
         private void OnDisable()
         {
-            move.Enable();
+            look.Enable();
             uButton.Enable();
         }
-        private void Move(InputAction.CallbackContext ctx)
+        private void LookAt(InputAction.CallbackContext ctx)
         {
-            Debug.Log("moving camera "+ ctx.interaction);
+            Debug.Log("moving camera x "+ ctx.ReadValue<Vector2>().x + "moving camera y "+ ctx.ReadValue<Vector2>().y);
         }
         void Start()
         {
@@ -51,7 +50,7 @@ namespace MyGame
 
         void Update()
         {
-           /* if (Input.GetMouseButton(1))
+           if (Input.GetMouseButton(1))
             {
                 float rotX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivityX;
                 rotY += Input.GetAxis("Mouse Y") * mouseSensitivityY;
@@ -63,7 +62,7 @@ namespace MyGame
             {
                 gameObject.transform.localPosition = new Vector3(0.0f, 3500.0f, 0.0f);
             }
-           */
+           
 
         }
     }
