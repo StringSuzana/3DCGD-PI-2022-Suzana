@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,8 +16,10 @@ namespace MyGame
         private Slider musicSlider;
         [SerializeField]
         private Slider soundSlider;
+        private Keyboard keyboard;
         private void Start()
         {
+            keyboard = InputSystem.GetDevice<Keyboard>();
             //Get music and sound volume and return 1 if value does not exist
             var musicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume, 1);
             var soundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume, 1);
@@ -28,7 +31,7 @@ namespace MyGame
         }
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (keyboard.escapeKey.wasPressedThisFrame)
             {
                 Debug.Log("Settings or Quit");
                 settingsMenu.gameObject.SetActive(!settingsMenu.isActiveAndEnabled);
