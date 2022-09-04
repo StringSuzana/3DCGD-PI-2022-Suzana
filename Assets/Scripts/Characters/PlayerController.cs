@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace MyGame
@@ -45,27 +46,85 @@ namespace MyGame
         public AudioClip jumpAudioClip;
         public AudioClip hurtAudioClip;
 
-        private Vector3 moveInput;
+        [Header("Input Settings")]
+        private PlayerInputActions playerInput;
+        private InputAction look;
+        private InputAction fire;
+        private InputAction move;
+        private InputAction weaponChange;
+        private Mouse mouse;
+        private Keyboard keyboard;
+        private Vector3 lastMousePosition;
         private float rotation = 0f;
         private float gravity = -9.81f;
 
         //weapons
-        List<Weapon> weapons;
-        int currentWeaponIndex = 0;
-        Weapon selectedWeapon;
-        IWeaponService weaponService = ServiceProvider.WeaponService();
+        private List<Weapon> weapons;
+        private int currentWeaponIndex = 0;
+        private Weapon selectedWeapon;
+        private IWeaponService weaponService;
 
+        void Awake()
+        {
+            playerInput = new PlayerInputActions();
+            mouse = InputSystem.GetDevice<Mouse>();
+            keyboard = InputSystem.GetDevice<Keyboard>();
 
+        }
         void Start()
         {
             currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
+            weaponService = ServiceProvider.WeaponService();
             weapons = weaponService.GetWeapons(shootFromPoint);
             SelectWeapon();
 
-            // Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = true;
         }
+        private void OnEnable()
+        {
+            look = playerInput.Player.Look;
+            look.Enable();
+            // look.performed += LookAt;
 
+            fire = playerInput.Player.Fire;
+            fire.Enable();
+            fire.performed += Shoot;
+
+            weaponChange = playerInput.Player.WeaponChange;
+            weaponChange.Enable();
+            weaponChange.performed += ChangeWeapon;
+        }
+        private void OnDisable()
+        {
+            look.Disable();
+            fire.Disable();
+            move.Disable();
+            weaponChange.Disable();
+        }
+        private void HandleRotion()
+        {
+            //early return
+            if (lastMousePosition.Equals(Input.mousePosition))
+            {
+                return;
+            }
+
+            lastMousePosition = Input.mousePosition;
+
+            RaycastHit hit;
+            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
+            }
+            rotation -= lastMousePosition.y;
+            rotation = Mathf.Clamp(rotation, -60f, 50f);
+
+            camera.transform.localRotation = Quaternion.Euler(rotation, 0f, 0f);
+            //So player can shoot where she looks at
+            shootFromPoint.localRotation = Quaternion.Euler(rotation, 0f, 0f);
+        }
         void Update()
         {
             //Rotation of a player
@@ -138,18 +197,6 @@ namespace MyGame
             }
 
 
-            //shooting
-            if (Input.GetButtonDown(InputNames.ShootButton))
-            {
-                Shoot();
-            }
-            //change weapon
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Count;
-                SelectWeapon();
-            }
-
             if (IsVictory())
             {
                 Debug.Log("VICTORY");
@@ -163,9 +210,14 @@ namespace MyGame
 
             velocity.y = jumpHeight;
         }
-        private void Shoot()
+        private void Shoot(InputAction.CallbackContext ctx)
         {
             selectedWeapon.Shoot();
+        }
+        private void ChangeWeapon(InputAction.CallbackContext ctx)
+        {
+            currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Count;
+            SelectWeapon();
         }
 
         private bool IsGrounded()

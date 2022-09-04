@@ -51,6 +51,14 @@ namespace MyGame
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""WeaponChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""68117bb2-0d14-4483-a460-af95022ccba3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -282,6 +290,17 @@ namespace MyGame
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Perspective"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""efea4f77-b399-47ea-8e80-278479456267"",
+                    ""path"": ""<Keyboard>/leftAlt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""WeaponChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -863,6 +882,7 @@ namespace MyGame
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_Perspective = m_Player.FindAction("Perspective", throwIfNotFound: true);
+            m_Player_WeaponChange = m_Player.FindAction("WeaponChange", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -928,6 +948,7 @@ namespace MyGame
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_Perspective;
+        private readonly InputAction m_Player_WeaponChange;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -936,6 +957,7 @@ namespace MyGame
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @Perspective => m_Wrapper.m_Player_Perspective;
+            public InputAction @WeaponChange => m_Wrapper.m_Player_WeaponChange;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -957,6 +979,9 @@ namespace MyGame
                     @Perspective.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPerspective;
                     @Perspective.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPerspective;
                     @Perspective.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPerspective;
+                    @WeaponChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponChange;
+                    @WeaponChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponChange;
+                    @WeaponChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponChange;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -973,6 +998,9 @@ namespace MyGame
                     @Perspective.started += instance.OnPerspective;
                     @Perspective.performed += instance.OnPerspective;
                     @Perspective.canceled += instance.OnPerspective;
+                    @WeaponChange.started += instance.OnWeaponChange;
+                    @WeaponChange.performed += instance.OnWeaponChange;
+                    @WeaponChange.canceled += instance.OnWeaponChange;
                 }
             }
         }
@@ -1133,6 +1161,7 @@ namespace MyGame
             void OnLook(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);
             void OnPerspective(InputAction.CallbackContext context);
+            void OnWeaponChange(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

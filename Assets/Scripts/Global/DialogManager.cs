@@ -18,7 +18,6 @@ namespace MyGame
         public static DialogManager Instance;
 
         private float letterTypingSpeed = 0.05f;
-        private Keyboard keyboard;
 
         void Awake()
         {
@@ -31,7 +30,6 @@ namespace MyGame
             }
             sentences = new Queue<string>();
 
-            keyboard = InputSystem.GetDevice<Keyboard>();
         }
 
         public void StartDialogue(Dialogue dialogue)
