@@ -62,9 +62,9 @@ namespace MyGame
                 },
                 {
                     ""name"": ""Run"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""c94c97c6-3eae-4cd7-a7e3-90a12253dec2"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Key"",
                     ""processors"": """",
                     ""interactions"": """"
                 },

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -55,6 +56,7 @@ namespace MyGame
         private Keyboard _keyboard;
         private InputAction _look;
         private InputAction _jump;
+        private InputAction _run;
         private InputAction _weaponChange;
         private Mouse _mouse;
 
@@ -68,6 +70,9 @@ namespace MyGame
         private int _currentWeaponIndex;
         private List<Weapon> _weapons;
         private IWeaponService _weaponService;
+        private static readonly int Run = Animator.StringToHash("run");
+        private const string Speed = "speed";
+        private const string JumpTrigger = "jump";
 
 
         private void Awake()
@@ -93,55 +98,19 @@ namespace MyGame
             #if ENABLE_INPUT_SYSTEM
             HandleRotation();
             HandleMovement();
+            RunIfAltKeyIsPressed();
             #endif
 
             #if ENABLE_LEGACY_INPUT_MANAGER
             HandleRotation_OldInputSystem();
             HandleMovement_OldInputSystem();
-           
-
-            
-            
-
-            //move character
-            characterController.Move(moveVector + velocity);
-
-            //animate walk and run
-            if ((moveVector + velocity).x > 0 || (moveVector + velocity).z > 0)
-            {
-                animator.SetFloat("speed", speed);
-                if (!audioSource.isPlaying)
-                {
-                    audioSource.pitch = 0.5f;
-                    audioSource.PlayOneShot(walkAudioClip);
-                }
-            }
-            else
-            {
-                animator.SetFloat("speed", 0);
-                audioSource.Stop();
-            }
-            if (Input.GetButtonDown(InputNames.Run))
-            {
-                animator.SetBool("run", true);
-                speed += 5;
-
-                audioSource.pitch = 1f;
-                audioSource.PlayOneShot(walkAudioClip);
-                Debug.Log("run");
-            }
-            if (Input.GetButtonUp(InputNames.Run))
-            {
-                speed -= 5;
-                animator.SetBool("run", false);
-            }
-
+            RunIfAltKeyIsPressed();
+            #endif
 
             if (IsVictory())
             {
                 Debug.Log("VICTORY");
             }
-            #endif
         }
 
         private void OnEnable()
@@ -152,6 +121,7 @@ namespace MyGame
             _jump = _playerInput.Player.Jump;
             _jump.Enable();
             _jump.performed += JumpInput;
+
 
             _look = _playerInput.Player.Look;
             _look.Enable();
@@ -165,11 +135,32 @@ namespace MyGame
             _weaponChange.performed += ChangeWeapon;
         }
 
+        private void RunIfAltKeyIsPressed()
+        {
+            if (_keyboard.altKey.wasPressedThisFrame)
+            {
+                animator.SetBool(Run, true);
+                speed += 5;
+            }
+            else if (_keyboard.altKey.isPressed)
+            {
+                PlayRunSoundFx();
+            }
+
+            if (_keyboard.altKey.wasReleasedThisFrame)
+            {
+                speed -= 5;
+                animator.SetBool("run", false);
+            }
+        }
+
+
         private void OnDisable()
         {
             _look.Disable();
             _fire.Disable();
             _move.Disable();
+            _jump.Disable();
             _weaponChange.Disable();
         }
 
@@ -217,21 +208,6 @@ namespace MyGame
             shootFromPoint.localRotation = Quaternion.Euler(_rotation,   0f, 0f);
         }
 
-        private void HandleRotation_OldInputSystem()
-        {
-            float x = Input.GetAxis(InputNames.MouseX) * sensitivity * Time.deltaTime;
-            float y = Input.GetAxis(InputNames.MouseY) * sensitivity * Time.deltaTime;
-
-            characterController.transform.Rotate(Vector3.up * x);
-
-            _rotation -= y;
-            _rotation = Mathf.Clamp(_rotation, -70f, 60f);
-
-            camera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
-            shootFromPoint.localRotation = Quaternion.Euler(_rotation,   0f, 0f);
-        }
-
-
         private void HandleMovement()
         {
             float moveX = _move.ReadValue<Vector2>().x;
@@ -252,28 +228,58 @@ namespace MyGame
             }
 
             //Todo: minus velocity?
+            AnimateMovement(moveVector);
             characterController.Move(moveVector - velocity);
         }
 
-
-        private void HandleMovement_OldInputSystem()
+        private void AnimateMovement(Vector3 moveVector)
         {
-            //Movement
-            float moveX = Input.GetAxis(InputNames.Horizontal);
-            float moveZ = Input.GetAxis(InputNames.Vertical);
+            if (IsPlayerRunning()) return;
+            if ((moveVector).x > 0 || (moveVector).z > 0)
+            {
+                animator.SetFloat(Speed, speed);
+                PlayWalkSoundFx();
+            }
+            else
+            {
+                animator.SetFloat(Speed, 0);
+                StopCurrentSoundFx();
+            }
+        }
 
-            Vector3 moveVector = characterController.transform.forward * moveZ;
-            moveVector += characterController.transform.right * moveX;
+        private bool IsPlayerRunning() => _keyboard.altKey.isPressed;
 
-            moveVector *= speed * Time.deltaTime;
+        private void StopCurrentSoundFx()
+        {
+            audioSource.Stop();
+        }
+
+        private void PlayWalkSoundFx()
+        {
+            Debug.Log("Walk SFX");
+            if (audioSource.isPlaying)
+                return;
+
+            audioSource.pitch = 0.5f;
+            audioSource.PlayOneShot(walkAudioClip);
+        }
+
+        private void PlayRunSoundFx()
+        {
+            Debug.Log("Run SFX");
+
+            if (audioSource.isPlaying)
+                return;
+            audioSource.pitch = 1f;
+            audioSource.PlayOneShot(walkAudioClip);
         }
 
         private IEnumerator Jump()
         {
-            animator.SetTrigger("jump");
+            animator.SetTrigger(JumpTrigger);
 
             yield return new WaitForSeconds(0.5f);
-            Debug.Log($"velocity.y={velocity.y}");
+
             velocity.y = jumpHeight;
         }
 
@@ -286,14 +292,7 @@ namespace MyGame
         {
             if (IsGrounded())
             {
-                Debug.Log($"Grounded");
-
                 StartCoroutine(Jump());
-            }
-            else
-            {
-                Debug.Log($"NOT Grounded");
-
             }
         }
 
@@ -314,14 +313,45 @@ namespace MyGame
             UIManager.shared.SetWeaponName(_selectedWeapon.name);
         }
 
+        /**Victory is when there are no more enemies in character container*/
         public bool IsVictory()
         {
             var characters = charactersContainer.GetComponentsInChildren<Transform>();
-            foreach (var item in characters)
-                if (item.gameObject.tag == "Enemy")
-                    return false;
+            return characters.All(item => !item.gameObject.CompareTag("Enemy"));
+        }
 
-            return true;
+        private void HandleRotation_OldInputSystem()
+        {
+            float x = Input.GetAxis(InputNames.MouseX) * sensitivity * Time.deltaTime;
+            float y = Input.GetAxis(InputNames.MouseY) * sensitivity * Time.deltaTime;
+
+            characterController.transform.Rotate(Vector3.up * x);
+
+            _rotation -= y;
+            _rotation = Mathf.Clamp(_rotation, -70f, 60f);
+
+            camera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
+            shootFromPoint.localRotation = Quaternion.Euler(_rotation,   0f, 0f);
+        }
+
+        private void HandleMovement_OldInputSystem()
+        {
+            float moveX = Input.GetAxis(InputNames.Horizontal);
+            float moveZ = Input.GetAxis(InputNames.Vertical);
+
+            var transform1 = characterController.transform;
+            Vector3 moveVector = transform1.forward * moveZ;
+            moveVector += transform1.right * moveX;
+
+            moveVector *= speed * Time.deltaTime;
+            velocity.y += _gravity * Time.deltaTime * Time.deltaTime;
+
+            if (IsGrounded() && velocity.y < 0)
+            {
+                velocity.y = 0;
+            }
+
+            characterController.Move(moveVector + velocity);
         }
     }
 

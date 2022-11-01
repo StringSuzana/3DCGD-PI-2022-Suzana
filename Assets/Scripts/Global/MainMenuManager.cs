@@ -24,14 +24,14 @@ namespace MyGame
         {
             SceneManager.LoadScene(LevelNames.Settings);
         }
-        public void ShowMessage(String message, Color color)
+        public void ShowMessage(string message, Color color)
         {
             Message.text = $"!! {message} !!";
             Message.color = color;
         }
         public void StartGame()
         {
-            if (String.IsNullOrWhiteSpace(PlayerName.text))
+            if (string.IsNullOrWhiteSpace(PlayerName.text))
             {
                 ShowMessage("Enter your name", Color.red);
             }
