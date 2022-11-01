@@ -1,63 +1,74 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace MyGame
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
-        public HealthBar HealthBar;
+        [Tooltip("Hides default camera")] public new Camera camera;
 
-        public GameObject charactersContainer;
-        [Tooltip("Camera")] public new Camera camera;
+        [SerializeField] private HealthBar healthBar;
 
-        [Tooltip("Shooting")] public Transform shootFromPoint;
+        [SerializeField] private GameObject charactersContainer;
 
-        [Tooltip("Motion")] public CharacterController characterController;
+        [SerializeField] private Transform shootFromPoint;
 
-        public Animator animator;
+        [SerializeField] [Tooltip("Motion")] private CharacterController characterController;
 
-        public float sensitivity;
+        [SerializeField] private Animator animator;
 
-        public float speed;
+        [SerializeField] private float sensitivity;
 
-        public float jumpHeight;
+        [SerializeField] private float speed;
 
-        public Vector3 velocity = Vector3.zero;
+        [SerializeField] private float jumpHeight;
 
-        [Tooltip("Ground")] public Transform groundDetector;
-        public LayerMask groundLayer;
+        [SerializeField] private Vector3 velocity = Vector3.zero;
+
+        [Tooltip("Ground")] [SerializeField] private Transform groundDetector;
+
+        [SerializeField] private LayerMask groundLayer;
 
 
-        [Tooltip("Damage intake")] public GameObject scratchView;
+        [Tooltip("Damage intake")] [SerializeField]
+        private GameObject scratchView;
 
-        [Tooltip("Audio sources")] public AudioSource audioSource;
+        [Tooltip("Audio sources")] [SerializeField]
+        private AudioSource audioSource;
 
-        public AudioClip walkAudioClip;
-        public AudioClip jumpAudioClip;
-        public AudioClip hurtAudioClip;
-        private readonly InputAction _move;
+        [SerializeField] private AudioClip walkAudioClip;
+        [SerializeField] private AudioClip jumpAudioClip;
+        [SerializeField] private AudioClip hurtAudioClip;
+
+        /**Health**/
         private float _currentHealth;
-        private int _currentWeaponIndex;
+
+        /**Motion**/
+        private PlayerInputActions _playerInput;
+
+        private InputAction _move;
         private InputAction _fire;
         private Keyboard _keyboard;
         private InputAction _look;
+        private InputAction _jump;
+        private InputAction _weaponChange;
         private Mouse _mouse;
 
-        [Header("Input Settings")] private PlayerInputActions _playerInput;
-        private float _rotation;
-        private Weapon _selectedWeapon;
-        private InputAction _weaponChange;
 
-        //weapons
+        private float _rotation;
+        private float _gravity = 9.8f;
+
+        /**weapons**/
+        private Weapon _selectedWeapon;
+
+        private int _currentWeaponIndex;
         private List<Weapon> _weapons;
         private IWeaponService _weaponService;
 
-        public PlayerController(InputAction move)
-        {
-            _move = move;
-        }
 
         private void Awake()
         {
@@ -79,46 +90,18 @@ namespace MyGame
 
         private void Update()
         {
-#if ENABLE_INPUT_SYSTEM
+            #if ENABLE_INPUT_SYSTEM
             HandleRotation();
-#endif
+            HandleMovement();
+            #endif
 
-#if ENABLE_LEGACY_INPUT_MANAGER
-            //Rotation of a player
-            float x = Input.GetAxis(InputNames.MouseX) * sensitivity * Time.deltaTime;
-            float y = Input.GetAxis(InputNames.MouseY) * sensitivity * Time.deltaTime;
+            #if ENABLE_LEGACY_INPUT_MANAGER
+            HandleRotation_OldInputSystem();
+            HandleMovement_OldInputSystem();
+           
 
-            characterController.transform.Rotate(Vector3.up * x);
-
-            rotation -= y;
-            rotation = Mathf.Clamp(rotation, -70f, 60f);
-
-            camera.transform.localRotation = Quaternion.Euler(rotation, 0f, 0f);
-            //So player can shoot where she looks at
-            shootFromPoint.localRotation = Quaternion.Euler(rotation, 0f, 0f);
-
-            //Movement
-            float moveX = Input.GetAxis(InputNames.Horizontal);
-            float moveZ = Input.GetAxis(InputNames.Vertical);
-
-            Vector3 moveVector = characterController.transform.forward * moveZ;
-            moveVector += characterController.transform.right * moveX;
-
-            moveVector *= speed * Time.deltaTime;
-
-            //gravity
-            velocity.y += gravity * Time.deltaTime * Time.deltaTime;
-
-            if (IsGrounded() && velocity.y < 0)
-            {
-                velocity.y = 0;
-            }
-
-            //jump
-            if (Input.GetButtonDown(InputNames.JumpButton) && IsGrounded())
-            {
-                StartCoroutine(Jump());
-            }
+            
+            
 
             //move character
             characterController.Move(moveVector + velocity);
@@ -158,14 +141,20 @@ namespace MyGame
             {
                 Debug.Log("VICTORY");
             }
-#endif
+            #endif
         }
 
         private void OnEnable()
         {
+            _move = _playerInput.Player.Move;
+            _move.Enable();
+
+            _jump = _playerInput.Player.Jump;
+            _jump.Enable();
+            _jump.performed += JumpInput;
+
             _look = _playerInput.Player.Look;
             _look.Enable();
-            //look.performed += LookAt;
 
             _fire = _playerInput.Player.Fire;
             _fire.Enable();
@@ -199,7 +188,7 @@ namespace MyGame
                 //game over!
             }
 
-            HealthBar.SetHealth(_currentHealth);
+            healthBar.SetHealth(_currentHealth);
             scratchView.SetActive(true);
             var image = scratchView.GetComponentInChildren<Canvas>();
 
@@ -215,16 +204,9 @@ namespace MyGame
 
         private void HandleRotation()
         {
-            var pos = _mouse.delta.ReadValue();
-            Debug.Log($"Position: {pos}");
-            var x = pos.x * sensitivity * Time.deltaTime;
-            var y = pos.y * sensitivity * Time.deltaTime;
-            /* Ray ray = camera.ScreenPointToRay(pos);
- 
-             if (Physics.Raycast(ray, out var hit, 100))
-             {
-                 transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
-             }*/
+            var delta = _mouse.delta.ReadValue();
+            var x = delta.x * sensitivity * Time.deltaTime;
+            var y = delta.y * sensitivity * Time.deltaTime;
 
             characterController.transform.Rotate(Vector3.up * x);
 
@@ -232,8 +214,58 @@ namespace MyGame
             _rotation = Mathf.Clamp(_rotation, -70f, 60f);
 
             camera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
-            //So player can shoot where she looks at
-            shootFromPoint.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
+            shootFromPoint.localRotation = Quaternion.Euler(_rotation,   0f, 0f);
+        }
+
+        private void HandleRotation_OldInputSystem()
+        {
+            float x = Input.GetAxis(InputNames.MouseX) * sensitivity * Time.deltaTime;
+            float y = Input.GetAxis(InputNames.MouseY) * sensitivity * Time.deltaTime;
+
+            characterController.transform.Rotate(Vector3.up * x);
+
+            _rotation -= y;
+            _rotation = Mathf.Clamp(_rotation, -70f, 60f);
+
+            camera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
+            shootFromPoint.localRotation = Quaternion.Euler(_rotation,   0f, 0f);
+        }
+
+
+        private void HandleMovement()
+        {
+            float moveX = _move.ReadValue<Vector2>().x;
+            float moveZ = _move.ReadValue<Vector2>().y;
+
+            Transform t = characterController.transform;
+
+            Vector3 moveVector = t.forward * moveZ;
+            moveVector += t.right * moveX;
+            moveVector *= speed * Time.deltaTime;
+
+            /*gravity*/
+            velocity.y += _gravity * Time.deltaTime * Time.deltaTime;
+
+            if (IsGrounded() && velocity.y < 0)
+            {
+                velocity.y = 0;
+            }
+
+            //Todo: minus velocity?
+            characterController.Move(moveVector - velocity);
+        }
+
+
+        private void HandleMovement_OldInputSystem()
+        {
+            //Movement
+            float moveX = Input.GetAxis(InputNames.Horizontal);
+            float moveZ = Input.GetAxis(InputNames.Vertical);
+
+            Vector3 moveVector = characterController.transform.forward * moveZ;
+            moveVector += characterController.transform.right * moveX;
+
+            moveVector *= speed * Time.deltaTime;
         }
 
         private IEnumerator Jump()
@@ -241,13 +273,28 @@ namespace MyGame
             animator.SetTrigger("jump");
 
             yield return new WaitForSeconds(0.5f);
-
+            Debug.Log($"velocity.y={velocity.y}");
             velocity.y = jumpHeight;
         }
 
         private void Shoot(InputAction.CallbackContext ctx)
         {
             _selectedWeapon.Shoot();
+        }
+
+        private void JumpInput(InputAction.CallbackContext ctx)
+        {
+            if (IsGrounded())
+            {
+                Debug.Log($"Grounded");
+
+                StartCoroutine(Jump());
+            }
+            else
+            {
+                Debug.Log($"NOT Grounded");
+
+            }
         }
 
         private void ChangeWeapon(InputAction.CallbackContext ctx)
