@@ -8,19 +8,15 @@ namespace MyGame
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
-        [SerializeField]
-        private HealthBar HealthBar;
+        [SerializeField] private HealthBar HealthBar;
         private float currentHealth;
 
         public GameObject charactersContainer;
-        [Tooltip("Camera")]
-        public new Camera camera;
+        [Tooltip("Camera")] public new Camera camera;
 
-        [Tooltip("Shooting")]
-        public Transform shootFromPoint;
+        [Tooltip("Shooting")] public Transform shootFromPoint;
 
-        [Tooltip("Motion")]
-        public CharacterController characterController;
+        [Tooltip("Motion")] public CharacterController characterController;
 
         public Animator animator;
 
@@ -32,29 +28,25 @@ namespace MyGame
 
         public Vector3 velocity = Vector3.zero;
 
-        [Tooltip("Ground")]
-        public Transform groundDetector;
+        [Tooltip("Ground")] public Transform groundDetector;
         public LayerMask groundLayer;
 
 
-        [Tooltip("Damage intake")]
-        public GameObject scratchView;
+        [Tooltip("Damage intake")] public GameObject scratchView;
 
-        [Tooltip("Audio source for walk, run..")]
-        public AudioSource audioSource;
+        [Tooltip("Audio sources")] public AudioSource audioSource;
+
         public AudioClip walkAudioClip;
         public AudioClip jumpAudioClip;
         public AudioClip hurtAudioClip;
 
-        [Header("Input Settings")]
-        private PlayerInputActions playerInput;
+        [Header("Input Settings")] private PlayerInputActions playerInput;
         private InputAction look;
         private InputAction fire;
         private InputAction move;
         private InputAction weaponChange;
         private Mouse mouse;
         private Keyboard keyboard;
-        private Vector3 lastMousePosition;
         private float rotation = 0f;
         private float gravity = -9.81f;
 
@@ -69,8 +61,8 @@ namespace MyGame
             playerInput = new PlayerInputActions();
             mouse = InputSystem.GetDevice<Mouse>();
             keyboard = InputSystem.GetDevice<Keyboard>();
-
         }
+
         void Start()
         {
             currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
@@ -79,12 +71,14 @@ namespace MyGame
             SelectWeapon();
 
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
         }
+
         private void OnEnable()
         {
             look = playerInput.Player.Look;
             look.Enable();
-            // look.performed += LookAt;
+            //look.performed += LookAt;
 
             fire = playerInput.Player.Fire;
             fire.Enable();
@@ -94,6 +88,7 @@ namespace MyGame
             weaponChange.Enable();
             weaponChange.performed += ChangeWeapon;
         }
+
         private void OnDisable()
         {
             look.Disable();
@@ -101,32 +96,37 @@ namespace MyGame
             move.Disable();
             weaponChange.Disable();
         }
-        private void HandleRotion()
+
+        private void HandleRotation()
         {
-            //early return
-            if (lastMousePosition.Equals(Input.mousePosition))
-            {
-                return;
-            }
+            var pos = mouse.delta.ReadValue();
+            Debug.Log($"Position: {pos}");
+            float x = pos.x * sensitivity * Time.deltaTime;
+            float y = pos.y * sensitivity * Time.deltaTime;
+            /* Ray ray = camera.ScreenPointToRay(pos);
+ 
+             if (Physics.Raycast(ray, out var hit, 100))
+             {
+                 transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
+             }*/
 
-            lastMousePosition = Input.mousePosition;
+            characterController.transform.Rotate(Vector3.up * x);
 
-            RaycastHit hit;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, 100))
-            {
-                transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
-            }
-            rotation -= lastMousePosition.y;
-            rotation = Mathf.Clamp(rotation, -60f, 50f);
+            rotation -= y;
+            rotation = Mathf.Clamp(rotation, -70f, 60f);
 
             camera.transform.localRotation = Quaternion.Euler(rotation, 0f, 0f);
             //So player can shoot where she looks at
             shootFromPoint.localRotation = Quaternion.Euler(rotation, 0f, 0f);
         }
+
         void Update()
         {
+            #if ENABLE_INPUT_SYSTEM
+            HandleRotation();
+            #endif
+
+            #if ENABLE_LEGACY_INPUT_MANAGER
             //Rotation of a player
             float x = Input.GetAxis(InputNames.MouseX) * sensitivity * Time.deltaTime;
             float y = Input.GetAxis(InputNames.MouseY) * sensitivity * Time.deltaTime;
@@ -201,7 +201,9 @@ namespace MyGame
             {
                 Debug.Log("VICTORY");
             }
+            #endif
         }
+
         private IEnumerator Jump()
         {
             animator.SetTrigger("jump");
@@ -210,10 +212,12 @@ namespace MyGame
 
             velocity.y = jumpHeight;
         }
+
         private void Shoot(InputAction.CallbackContext ctx)
         {
             selectedWeapon.Shoot();
         }
+
         private void ChangeWeapon(InputAction.CallbackContext ctx)
         {
             currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Count;
@@ -224,11 +228,13 @@ namespace MyGame
         {
             return Physics.CheckSphere(groundDetector.position, 0.3f, groundLayer);
         }
+
         private void SelectWeapon()
         {
             selectedWeapon = weapons[currentWeaponIndex];
             UIManager.shared.SetWeaponName(selectedWeapon.name);
         }
+
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(groundDetector.position, 0.3f);
@@ -243,6 +249,7 @@ namespace MyGame
                 //TODO
                 //game over!
             }
+
             HealthBar.SetHealth(currentHealth);
             scratchView.SetActive(true);
             var image = scratchView.GetComponentInChildren<Canvas>();
@@ -256,6 +263,7 @@ namespace MyGame
             yield return new WaitForSecondsRealtime(0.2f);
             scratchView.SetActive(false);
         }
+
         public bool IsVictory()
         {
             var characters = charactersContainer.GetComponentsInChildren<Transform>();
@@ -266,13 +274,13 @@ namespace MyGame
                     return false;
                 }
             }
+
             return true;
         }
     }
+
     public interface IPlayer
     {
         IEnumerator TakeDamage(float damageAmount);
     }
-
-
 }

@@ -32,7 +32,6 @@ namespace MyGame
         {
             if (keyboard.escapeKey.wasPressedThisFrame)
             {
-                Debug.Log("Settings or Quit");
                 settingsMenu.gameObject.SetActive(!settingsMenu.isActiveAndEnabled);
             }
             if (settingsMenu.isActiveAndEnabled)
@@ -54,7 +53,7 @@ namespace MyGame
         }
         public void CloseMenu()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = true;
             Time.timeScale = 1;
             settingsMenu.gameObject.SetActive(false);

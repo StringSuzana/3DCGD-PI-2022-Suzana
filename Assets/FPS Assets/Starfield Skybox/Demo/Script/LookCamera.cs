@@ -46,7 +46,7 @@ namespace MyGame
         }
         private void LookAt(InputAction.CallbackContext ctx)
         {
-        //    Debug.Log("moving camera x "+ ctx.ReadValue<Vector2>().x + "moving camera y "+ ctx.ReadValue<Vector2>().y);
+            Debug.Log("moving camera x "+ ctx.ReadValue<Vector2>().x + "moving camera y "+ ctx.ReadValue<Vector2>().y);
         }
         void Start()
         {
