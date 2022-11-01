@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace MyGame
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
-        [SerializeField] private HealthBar HealthBar;
-        private float currentHealth;
+        public HealthBar HealthBar;
 
         public GameObject charactersContainer;
         [Tooltip("Camera")] public new Camera camera;
@@ -39,94 +37,53 @@ namespace MyGame
         public AudioClip walkAudioClip;
         public AudioClip jumpAudioClip;
         public AudioClip hurtAudioClip;
+        private readonly InputAction _move;
+        private float _currentHealth;
+        private int _currentWeaponIndex;
+        private InputAction _fire;
+        private Keyboard _keyboard;
+        private InputAction _look;
+        private Mouse _mouse;
 
-        [Header("Input Settings")] private PlayerInputActions playerInput;
-        private InputAction look;
-        private InputAction fire;
-        private InputAction move;
-        private InputAction weaponChange;
-        private Mouse mouse;
-        private Keyboard keyboard;
-        private float rotation = 0f;
-        private float gravity = -9.81f;
+        [Header("Input Settings")] private PlayerInputActions _playerInput;
+        private float _rotation;
+        private Weapon _selectedWeapon;
+        private InputAction _weaponChange;
 
         //weapons
-        private List<Weapon> weapons;
-        private int currentWeaponIndex = 0;
-        private Weapon selectedWeapon;
-        private IWeaponService weaponService;
+        private List<Weapon> _weapons;
+        private IWeaponService _weaponService;
 
-        void Awake()
+        public PlayerController(InputAction move)
         {
-            playerInput = new PlayerInputActions();
-            mouse = InputSystem.GetDevice<Mouse>();
-            keyboard = InputSystem.GetDevice<Keyboard>();
+            _move = move;
         }
 
-        void Start()
+        private void Awake()
         {
-            currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
-            weaponService = ServiceProvider.WeaponService();
-            weapons = weaponService.GetWeapons(shootFromPoint);
+            _playerInput = new PlayerInputActions();
+            _mouse = InputSystem.GetDevice<Mouse>();
+            _keyboard = InputSystem.GetDevice<Keyboard>();
+        }
+
+        private void Start()
+        {
+            _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
+            _weaponService = ServiceProvider.WeaponService();
+            _weapons = _weaponService.GetWeapons(shootFromPoint);
             SelectWeapon();
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
 
-        private void OnEnable()
+        private void Update()
         {
-            look = playerInput.Player.Look;
-            look.Enable();
-            //look.performed += LookAt;
-
-            fire = playerInput.Player.Fire;
-            fire.Enable();
-            fire.performed += Shoot;
-
-            weaponChange = playerInput.Player.WeaponChange;
-            weaponChange.Enable();
-            weaponChange.performed += ChangeWeapon;
-        }
-
-        private void OnDisable()
-        {
-            look.Disable();
-            fire.Disable();
-            move.Disable();
-            weaponChange.Disable();
-        }
-
-        private void HandleRotation()
-        {
-            var pos = mouse.delta.ReadValue();
-            Debug.Log($"Position: {pos}");
-            float x = pos.x * sensitivity * Time.deltaTime;
-            float y = pos.y * sensitivity * Time.deltaTime;
-            /* Ray ray = camera.ScreenPointToRay(pos);
- 
-             if (Physics.Raycast(ray, out var hit, 100))
-             {
-                 transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
-             }*/
-
-            characterController.transform.Rotate(Vector3.up * x);
-
-            rotation -= y;
-            rotation = Mathf.Clamp(rotation, -70f, 60f);
-
-            camera.transform.localRotation = Quaternion.Euler(rotation, 0f, 0f);
-            //So player can shoot where she looks at
-            shootFromPoint.localRotation = Quaternion.Euler(rotation, 0f, 0f);
-        }
-
-        void Update()
-        {
-            #if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM
             HandleRotation();
-            #endif
+#endif
 
-            #if ENABLE_LEGACY_INPUT_MANAGER
+#if ENABLE_LEGACY_INPUT_MANAGER
             //Rotation of a player
             float x = Input.GetAxis(InputNames.MouseX) * sensitivity * Time.deltaTime;
             float y = Input.GetAxis(InputNames.MouseY) * sensitivity * Time.deltaTime;
@@ -201,38 +158,30 @@ namespace MyGame
             {
                 Debug.Log("VICTORY");
             }
-            #endif
+#endif
         }
 
-        private IEnumerator Jump()
+        private void OnEnable()
         {
-            animator.SetTrigger("jump");
+            _look = _playerInput.Player.Look;
+            _look.Enable();
+            //look.performed += LookAt;
 
-            yield return new WaitForSeconds(0.5f);
+            _fire = _playerInput.Player.Fire;
+            _fire.Enable();
+            _fire.performed += Shoot;
 
-            velocity.y = jumpHeight;
+            _weaponChange = _playerInput.Player.WeaponChange;
+            _weaponChange.Enable();
+            _weaponChange.performed += ChangeWeapon;
         }
 
-        private void Shoot(InputAction.CallbackContext ctx)
+        private void OnDisable()
         {
-            selectedWeapon.Shoot();
-        }
-
-        private void ChangeWeapon(InputAction.CallbackContext ctx)
-        {
-            currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Count;
-            SelectWeapon();
-        }
-
-        private bool IsGrounded()
-        {
-            return Physics.CheckSphere(groundDetector.position, 0.3f, groundLayer);
-        }
-
-        private void SelectWeapon()
-        {
-            selectedWeapon = weapons[currentWeaponIndex];
-            UIManager.shared.SetWeaponName(selectedWeapon.name);
+            _look.Disable();
+            _fire.Disable();
+            _move.Disable();
+            _weaponChange.Disable();
         }
 
         private void OnDrawGizmos()
@@ -243,14 +192,14 @@ namespace MyGame
 
         public IEnumerator TakeDamage(float damageAmount)
         {
-            currentHealth -= damageAmount;
-            if (currentHealth <= 0)
+            _currentHealth -= damageAmount;
+            if (_currentHealth <= 0)
             {
                 //TODO
                 //game over!
             }
 
-            HealthBar.SetHealth(currentHealth);
+            HealthBar.SetHealth(_currentHealth);
             scratchView.SetActive(true);
             var image = scratchView.GetComponentInChildren<Canvas>();
 
@@ -264,16 +213,66 @@ namespace MyGame
             scratchView.SetActive(false);
         }
 
+        private void HandleRotation()
+        {
+            var pos = _mouse.delta.ReadValue();
+            Debug.Log($"Position: {pos}");
+            var x = pos.x * sensitivity * Time.deltaTime;
+            var y = pos.y * sensitivity * Time.deltaTime;
+            /* Ray ray = camera.ScreenPointToRay(pos);
+ 
+             if (Physics.Raycast(ray, out var hit, 100))
+             {
+                 transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
+             }*/
+
+            characterController.transform.Rotate(Vector3.up * x);
+
+            _rotation -= y;
+            _rotation = Mathf.Clamp(_rotation, -70f, 60f);
+
+            camera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
+            //So player can shoot where she looks at
+            shootFromPoint.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
+        }
+
+        private IEnumerator Jump()
+        {
+            animator.SetTrigger("jump");
+
+            yield return new WaitForSeconds(0.5f);
+
+            velocity.y = jumpHeight;
+        }
+
+        private void Shoot(InputAction.CallbackContext ctx)
+        {
+            _selectedWeapon.Shoot();
+        }
+
+        private void ChangeWeapon(InputAction.CallbackContext ctx)
+        {
+            _currentWeaponIndex = (_currentWeaponIndex + 1) % _weapons.Count;
+            SelectWeapon();
+        }
+
+        private bool IsGrounded()
+        {
+            return Physics.CheckSphere(groundDetector.position, 0.3f, groundLayer);
+        }
+
+        private void SelectWeapon()
+        {
+            _selectedWeapon = _weapons[_currentWeaponIndex];
+            UIManager.shared.SetWeaponName(_selectedWeapon.name);
+        }
+
         public bool IsVictory()
         {
             var characters = charactersContainer.GetComponentsInChildren<Transform>();
             foreach (var item in characters)
-            {
                 if (item.gameObject.tag == "Enemy")
-                {
                     return false;
-                }
-            }
 
             return true;
         }

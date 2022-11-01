@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace MyGame
+﻿namespace MyGame
 {
-    public struct PlayerPrefNames 
+    public struct PlayerPrefNames
     {
         public static string SoundVolume = "SoundVolume";
         public static string MusicVolume = "MusicVolume";

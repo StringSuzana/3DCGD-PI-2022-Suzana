@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace MyGame
+﻿namespace MyGame
 {
     public struct SoundNames
     {

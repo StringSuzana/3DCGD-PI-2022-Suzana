@@ -1,6 +1,4 @@
 using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 namespace MyGame
@@ -30,7 +28,7 @@ namespace MyGame
                     JsonSerializer serializer = new JsonSerializer();
                     info = (PlayerInfo)serializer.Deserialize(file, typeof(PlayerInfo));
                 }
-               Debug.Log("Loaded from path: " + path);
+                Debug.Log("Loaded from path: " + path);
                 return info;
             }
             else

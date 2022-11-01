@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 namespace MyGame
@@ -92,7 +91,7 @@ namespace MyGame
             if (walkPointSet)
                 if (agent.SetDestination(walkPoint))
                 {
-                    anim.SetFloat("speed", 1);                    
+                    anim.SetFloat("speed", 1);
                 }
 
             Vector3 distanceToWalkPoint = transform.position - walkPoint;

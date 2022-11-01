@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletController : MonoBehaviour
@@ -14,7 +12,7 @@ public class BulletController : MonoBehaviour
     void Update()
     {
         maxLifeTime -= Time.deltaTime;
-      
+
         if (maxLifeTime <= 0)
         {
             Instantiate(particleEffect, transform.position, transform.rotation);
@@ -23,11 +21,11 @@ public class BulletController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-  
-        if(other.tag != "Player")//don't want to collide with shooting point on player
+
+        if (other.tag != "Player")//don't want to collide with shooting point on player
         {
             Instantiate(particleEffect, transform.position, transform.rotation);
-           
+
         }
 
     }
