@@ -10,7 +10,7 @@ namespace MyGame
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
-        [Tooltip("Hides default camera")] public new Camera camera;
+        [Tooltip("Hides default camera")] public Camera camera;
 
         [SerializeField] private HealthBar healthBar;
 
@@ -71,8 +71,10 @@ namespace MyGame
         private List<Weapon> _weapons;
         private IWeaponService _weaponService;
         private static readonly int Run = Animator.StringToHash("run");
-        private const string Speed = "speed";
-        private const string JumpTrigger = "jump";
+        private static readonly int ShootTrigger = Animator.StringToHash("shoot");
+        private static readonly int JumpTrigger = Animator.StringToHash("jump");
+        private static readonly int SpeedBool = Animator.StringToHash("speed");
+
 
 
         private void Awake()
@@ -235,14 +237,14 @@ namespace MyGame
         private void AnimateMovement(Vector3 moveVector)
         {
             if (IsPlayerRunning()) return;
-            if ((moveVector).x > 0 || (moveVector).z > 0)
+            if (moveVector.x > 0 || moveVector.z > 0)
             {
-                animator.SetFloat(Speed, speed);
+                animator.SetFloat(SpeedBool, speed);
                 PlayWalkSoundFx();
             }
             else
             {
-                animator.SetFloat(Speed, 0);
+                animator.SetFloat(SpeedBool, 0);
                 StopCurrentSoundFx();
             }
         }
@@ -256,7 +258,6 @@ namespace MyGame
 
         private void PlayWalkSoundFx()
         {
-            Debug.Log("Walk SFX");
             if (audioSource.isPlaying)
                 return;
 
@@ -266,8 +267,6 @@ namespace MyGame
 
         private void PlayRunSoundFx()
         {
-            Debug.Log("Run SFX");
-
             if (audioSource.isPlaying)
                 return;
             audioSource.pitch = 1f;
@@ -283,9 +282,25 @@ namespace MyGame
             velocity.y = jumpHeight;
         }
 
+        private bool CanShoot()
+        {
+            return true;
+        }
+
+        private IEnumerator Shoot()
+        {
+            animator.SetTrigger(ShootTrigger);
+
+            yield return new WaitForSeconds(1f);
+
+            _selectedWeapon.Shoot();
+        }
         private void Shoot(InputAction.CallbackContext ctx)
         {
-            _selectedWeapon.Shoot();
+            if(CanShoot())
+            {
+                StartCoroutine(Shoot());
+            }
         }
 
         private void JumpInput(InputAction.CallbackContext ctx)
