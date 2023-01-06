@@ -71,9 +71,9 @@ namespace MyGame
         private List<Weapon> _weapons;
         private IWeaponService _weaponService;
         private static readonly int Run = Animator.StringToHash("run");
-        private static readonly int ShootTrigger = Animator.StringToHash("shoot");
-        private static readonly int JumpTrigger = Animator.StringToHash("jump");
-        private static readonly int SpeedBool = Animator.StringToHash("speed");
+        private static readonly int ShootTriggerAnim = Animator.StringToHash("shoot");
+        private static readonly int JumpTriggerAnim = Animator.StringToHash("jump");
+        private static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
 
 
 
@@ -137,22 +137,24 @@ namespace MyGame
             _weaponChange.performed += ChangeWeapon;
         }
 
+  
         private void RunIfAltKeyIsPressed()
         {
             if (_keyboard.altKey.wasPressedThisFrame)
             {
                 animator.SetBool(Run, true);
                 speed += 5;
+                PlayRunSoundFx();
             }
             else if (_keyboard.altKey.isPressed)
             {
                 PlayRunSoundFx();
             }
 
-            if (_keyboard.altKey.wasReleasedThisFrame)
+            else if (_keyboard.altKey.wasReleasedThisFrame)
             {
                 speed -= 5;
-                animator.SetBool("run", false);
+                animator.SetBool(Run, false);
             }
         }
 
@@ -239,12 +241,12 @@ namespace MyGame
             if (IsPlayerRunning()) return;
             if (moveVector.x > 0 || moveVector.z > 0)
             {
-                animator.SetFloat(SpeedBool, speed);
+                animator.SetFloat(SpeedFloatAnim, speed);
                 PlayWalkSoundFx();
             }
             else
             {
-                animator.SetFloat(SpeedBool, 0);
+                animator.SetFloat(SpeedFloatAnim, 0);
                 StopCurrentSoundFx();
             }
         }
@@ -275,7 +277,7 @@ namespace MyGame
 
         private IEnumerator Jump()
         {
-            animator.SetTrigger(JumpTrigger);
+            animator.SetTrigger(JumpTriggerAnim);
 
             yield return new WaitForSeconds(0.5f);
 
@@ -284,12 +286,13 @@ namespace MyGame
 
         private bool CanShoot()
         {
+            //TODO
             return true;
         }
 
         private IEnumerator Shoot()
         {
-            animator.SetTrigger(ShootTrigger);
+            animator.SetTrigger(ShootTriggerAnim);
 
             yield return new WaitForSeconds(1f);
 

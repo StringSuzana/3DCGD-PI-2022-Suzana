@@ -131,7 +131,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 82458f9948fcb33469c8f51a07b2c273, type: 2}
+  m_Motion: {fileID: -203655887218126122, guid: 9b112fc4890373341b9ab6ecc21161a1, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -182,9 +182,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.22284228
-  m_TransitionOffset: 0
-  m_ExitTime: 0.7321429
+  m_TransitionDuration: 0.16008079
+  m_TransitionOffset: 0.10388119
+  m_ExitTime: 0.8234323
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -287,9 +287,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.2873509
+  m_TransitionDuration: 0.23435229
   m_TransitionOffset: 0
-  m_ExitTime: 0.9084637
+  m_ExitTime: 0.9084638
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -411,9 +411,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.43883926
-  m_TransitionOffset: 0
-  m_ExitTime: 0.6010554
+  m_TransitionDuration: 0.15041542
+  m_TransitionOffset: 0.09177126
+  m_ExitTime: 0.7679121
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -478,9 +478,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.17789388
   m_TransitionOffset: 0
-  m_ExitTime: 0.875
+  m_ExitTime: 0.8192818
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -506,7 +506,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.58482146
+  m_TransitionDuration: 0.18231112
   m_TransitionOffset: 0
   m_ExitTime: 0.7983691
   m_HasExitTime: 0
@@ -607,7 +607,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.6543962
+  m_TransitionDuration: 0.21255541
   m_TransitionOffset: 0
   m_ExitTime: 0.64769363
   m_HasExitTime: 0
