@@ -8,16 +8,15 @@ namespace MyGame
     public class HealthPickup : MonoBehaviour
     {
         [SerializeField] 
-        private int heathAmount;
+        private int healthAmount;
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("ON TRIGGER ENTER HEALTH PICKUP");
-
             if (other.gameObject.TryGetComponent(out IPlayer player))
             {
-                Debug.Log("PLAYER DETECTED");
-                player.Heal(heathAmount);
+                Debug.Log($@"Player will gain {healthAmount}");
+                player.Heal(healthAmount);
+                Destroy(gameObject);
             }
         }
 
