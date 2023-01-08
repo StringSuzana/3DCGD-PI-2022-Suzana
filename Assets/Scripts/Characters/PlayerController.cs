@@ -74,6 +74,7 @@ namespace MyGame
         private static readonly int ShootTriggerAnim = Animator.StringToHash("shoot");
         private static readonly int JumpTriggerAnim = Animator.StringToHash("jump");
         private static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
+        private static readonly int DieTriggerAnim = Animator.StringToHash("die");
 
 
 
@@ -179,8 +180,11 @@ namespace MyGame
             _currentHealth -= damageAmount;
             if (_currentHealth <= 0)
             {
+                animator.SetTrigger(DieTriggerAnim);
                 //TODO
+                //Start timeline
                 //game over!
+                //Display something
             }
 
             healthBar.SetHealth(_currentHealth);
