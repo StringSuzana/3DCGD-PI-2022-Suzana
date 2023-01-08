@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Global;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -10,7 +11,9 @@ namespace MyGame
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
-        [Tooltip("Hides default camera")] public Camera camera;
+        [SerializeField] private GameObject GameManager;
+
+        [Tooltip("Virtual camera on plazez")] public Camera camera;
 
         [SerializeField] private HealthBar healthBar;
 
@@ -77,7 +80,6 @@ namespace MyGame
         private static readonly int DieTriggerAnim = Animator.StringToHash("die");
 
 
-
         private void Awake()
         {
             _playerInput = new PlayerInputActions();
@@ -138,7 +140,7 @@ namespace MyGame
             _weaponChange.performed += ChangeWeapon;
         }
 
-  
+
         private void RunIfAltKeyIsPressed()
         {
             if (_keyboard.altKey.wasPressedThisFrame)
@@ -181,24 +183,27 @@ namespace MyGame
             if (_currentHealth <= 0)
             {
                 animator.SetTrigger(DieTriggerAnim);
+                GameManager.GetComponent<IGameManager>().PlayGameOver();
                 //TODO
                 //Start timeline
                 //game over!
                 //Display something
             }
+            else
+            {
+                healthBar.SetHealth(_currentHealth);
+                scratchView.SetActive(true);
+                var image = scratchView.GetComponentInChildren<Canvas>();
 
-            healthBar.SetHealth(_currentHealth);
-            scratchView.SetActive(true);
-            var image = scratchView.GetComponentInChildren<Canvas>();
+                yield return new WaitForSecondsRealtime(0.4f);
+                image.enabled = false;
 
-            yield return new WaitForSecondsRealtime(0.4f);
-            image.enabled = false;
+                yield return new WaitForSecondsRealtime(0.2f);
+                image.enabled = true;
 
-            yield return new WaitForSecondsRealtime(0.2f);
-            image.enabled = true;
-
-            yield return new WaitForSecondsRealtime(0.2f);
-            scratchView.SetActive(false);
+                yield return new WaitForSecondsRealtime(0.2f);
+                scratchView.SetActive(false);
+            }
         }
 
         public void Heal(int healAmount)
@@ -208,6 +213,7 @@ namespace MyGame
             {
                 _currentHealth = GameData.MaxPlayerHealth;
             }
+
             healthBar.SetHealth(_currentHealth);
         }
 
@@ -312,9 +318,10 @@ namespace MyGame
 
             _selectedWeapon.Shoot();
         }
+
         private void Shoot(InputAction.CallbackContext ctx)
         {
-            if(CanShoot())
+            if (CanShoot())
             {
                 StartCoroutine(Shoot());
             }
