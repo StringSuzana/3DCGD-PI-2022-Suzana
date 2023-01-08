@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+
 namespace MyGame
 {
     public class Enemy : MonoBehaviour, IEnemy
     {
-
         private float stunForSeconds;
         private IPlayer iPlayer;
 
@@ -45,6 +45,7 @@ namespace MyGame
 
             iPlayer = player.parent.GetComponent<IPlayer>();
         }
+
         public void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.GetComponent<Projectile>() != null)
@@ -67,6 +68,7 @@ namespace MyGame
                 }
             }
         }
+
         private void Update()
         {
             stunForSeconds -= Time.deltaTime;
@@ -76,14 +78,14 @@ namespace MyGame
             }
 
             //Check for sight and attack range
-            playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+            playerInSightRange = Physics.CheckSphere(transform.position,  sightRange,  playerLayer);
             playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
 
             if (!playerInSightRange && !playerInAttackRange) Patroling();
             if (playerInSightRange && !playerInAttackRange) FollowTarget();
             if (playerInAttackRange && playerInSightRange) AttackTarget();
-
         }
+
         private void Patroling()
         {
             if (!walkPointSet) SearchWalkPoint();
@@ -105,13 +107,15 @@ namespace MyGame
 
             transform.LookAt(walkPoint);
         }
+
         private void SearchWalkPoint()
         {
             //Calculate random point in range
             float randomZ = Random.Range(-walkPointRange, walkPointRange);
             float randomX = Random.Range(-walkPointRange, walkPointRange);
 
-            walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+            walkPoint = new Vector3(transform.position.x + randomX, transform.position.y,
+                transform.position.z + randomZ);
 
             if (Physics.Raycast(walkPoint, -transform.up, 2f, groundLayer))
                 walkPointSet = true;
@@ -125,7 +129,6 @@ namespace MyGame
 
             if (!alreadyAttacked)
             {
-
                 Debug.Log("AttackTarget with 15 damage.");
                 AttackAudioSource.Play();
                 StartCoroutine(iPlayer.TakeDamage(dealthDamage));
@@ -155,6 +158,8 @@ namespace MyGame
 
         public void Stop()
         {
+            Debug.Log("Stop attacking");
+            this.stunForSeconds = 200;
             anim.enabled = false;
             agent.isStopped = true;
         }
@@ -164,7 +169,6 @@ namespace MyGame
             anim.enabled = true;
             agent.isStopped = false;
         }
-
 
 
         public void FollowTarget()
@@ -199,8 +203,6 @@ namespace MyGame
 
             var pe = Instantiate(particleDieEffect, transform.position, transform.rotation);
             Destroy(gameObject);
-
-
         }
 
         private void OnDrawGizmosSelected()
@@ -210,6 +212,5 @@ namespace MyGame
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, sightRange);
         }
-
     }
 }

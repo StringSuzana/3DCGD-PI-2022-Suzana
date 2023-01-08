@@ -189,7 +189,10 @@ namespace MyGame
                 var enemies = charactersContainer.GetComponentsInChildren<Transform>();
                 foreach (var enemy in enemies)
                 {
-                    enemy.GetComponent<IEnemy>().Stop();
+                    if (enemy.TryGetComponent(out IEnemy enemyCharacter))
+                    {
+                        enemyCharacter.Stop();
+                    }
                 }
             }
             else
