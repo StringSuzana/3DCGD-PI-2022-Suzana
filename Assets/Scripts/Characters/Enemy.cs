@@ -152,6 +152,13 @@ namespace MyGame
             agent.SetDestination(transform.position);
             agent.isStopped = true;
         }
+
+        public void Stop()
+        {
+            anim.enabled = false;
+            agent.isStopped = true;
+        }
+
         private void Unstun()
         {
             anim.enabled = true;

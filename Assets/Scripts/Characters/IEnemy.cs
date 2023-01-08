@@ -8,6 +8,7 @@
         void FollowTarget();
         void AttackTarget();
         void Stun(float damageAmount);
+        void Stop();
     }
 
 }

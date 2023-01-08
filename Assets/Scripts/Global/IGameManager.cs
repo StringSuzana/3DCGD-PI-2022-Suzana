@@ -7,6 +7,5 @@ namespace Assets.Scripts.Global
     {
         public void PlayGameOver();
 
-
     }
 }

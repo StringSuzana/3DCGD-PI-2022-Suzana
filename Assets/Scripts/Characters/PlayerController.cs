@@ -184,10 +184,13 @@ namespace MyGame
             {
                 animator.SetTrigger(DieTriggerAnim);
                 GameManager.GetComponent<IGameManager>().PlayGameOver();
-                //TODO
-                //Start timeline
-                //game over!
-                //Display something
+
+                //stop enemies
+                var enemies = charactersContainer.GetComponentsInChildren<Transform>();
+                foreach (var enemy in enemies)
+                {
+                    enemy.GetComponent<IEnemy>().Stop();
+                }
             }
             else
             {
