@@ -204,7 +204,7 @@ namespace MyGame
             {
                 _currentHealth = GameData.MaxPlayerHealth;
             }
-
+            healthBar.SetHealth(_currentHealth);
         }
 
         private void HandleRotation()

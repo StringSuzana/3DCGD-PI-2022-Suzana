@@ -10,7 +10,7 @@ namespace MyGame
         {
             foreach (var s in gameIntro.sentences)
             {
-                Debug.Log(s);
+               // Debug.Log(s);
             }
             DialogManager.Instance.StartDialogue(gameIntro);
         }
