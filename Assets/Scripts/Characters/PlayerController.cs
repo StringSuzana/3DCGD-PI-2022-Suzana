@@ -197,6 +197,16 @@ namespace MyGame
             scratchView.SetActive(false);
         }
 
+        public void Heal(int healAmount)
+        {
+            _currentHealth += healAmount;
+            if (_currentHealth > GameData.MaxPlayerHealth)
+            {
+                _currentHealth = GameData.MaxPlayerHealth;
+            }
+
+        }
+
         private void HandleRotation()
         {
             var delta = _mouse.delta.ReadValue();
@@ -376,5 +386,6 @@ namespace MyGame
     public interface IPlayer
     {
         IEnumerator TakeDamage(float damageAmount);
+        void Heal(int healAmount);
     }
 }
