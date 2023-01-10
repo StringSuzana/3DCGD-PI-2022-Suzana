@@ -1,14 +1,16 @@
-using Newtonsoft.Json;
 using System.IO;
+using MyGame;
+using Newtonsoft.Json;
 using UnityEngine;
-namespace MyGame
+
+namespace Data
 {
     public class SaveSystem
     {
         public static void SavePlayerInfoToJson(PlayerInfo info)
         {
             string path = Application.persistentDataPath + "/player_"
-                + info.PlayerName.ToUpper() + ".json";
+                + info.playerName.ToUpper() + ".json";
             Debug.Log("Creating file: " + path);
             using (StreamWriter file = File.CreateText(path))
             {

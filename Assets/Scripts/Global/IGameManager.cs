@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets.Scripts.Global
+namespace Global
 {
     public interface IGameManager
     {

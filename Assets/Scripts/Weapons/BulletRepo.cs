@@ -1,46 +1,48 @@
 using UnityEngine;
 
-public class BulletRepo : MonoBehaviour
+namespace Weapons
 {
-    public static BulletRepo bulletRepoShared { get; private set; }
-
-    [SerializeField]
-    private GameObject smallBullet;
-    [SerializeField]
-    private GameObject bigBullet;
-    [SerializeField]
-    private GameObject heartBullet;
-
-    private void Awake()
+    public class BulletRepo : MonoBehaviour
     {
-        if (bulletRepoShared == null)
+        public static BulletRepo BulletRepoShared { get; private set; }
+
+        [SerializeField] private GameObject smallBullet;
+        [SerializeField] private GameObject bigBullet;
+        [SerializeField] private GameObject heartBullet;
+
+        private void Awake()
         {
-            bulletRepoShared = this;
-            DontDestroyOnLoad(this);
+            if (BulletRepoShared == null)
+            {
+                BulletRepoShared = this;
+                DontDestroyOnLoad(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        else
+
+        public static GameObject GetBullet(BulletPrefabs prefab)
         {
-            Destroy(gameObject);
+            switch (prefab)
+            {
+                case BulletPrefabs.SmallBullet:
+                    return BulletRepoShared.smallBullet;
+                case BulletPrefabs.BigBullet:
+                    return BulletRepoShared.bigBullet;
+                case BulletPrefabs.HeartBullet:
+                    return BulletRepoShared.heartBullet;
+                default:
+                    return BulletRepoShared.smallBullet;
+            }
         }
     }
 
-    public static GameObject GetBullet(BulletPrefabs prefab)
+    public enum BulletPrefabs
     {
-        switch (prefab)
-        {
-            case BulletPrefabs.smallBullet:
-                return bulletRepoShared.smallBullet;
-            case BulletPrefabs.bigBullet:
-                return bulletRepoShared.bigBullet;
-            case BulletPrefabs.heartBullet:
-                return bulletRepoShared.heartBullet;
-            default:
-                return bulletRepoShared.smallBullet;
-        }
+        SmallBullet,
+        BigBullet,
+        HeartBullet
     }
-}
-
-public enum BulletPrefabs
-{
-    smallBullet, bigBullet, heartBullet
 }

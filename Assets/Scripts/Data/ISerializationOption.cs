@@ -1,8 +1,8 @@
-﻿namespace MyGame
+﻿namespace Data
 {
     public interface ISerializationOption
     {
-        string ContentType_Json { get; }
+        string ContentTypeJson { get; }
 
         T Deserialize<T>(string text);
     }

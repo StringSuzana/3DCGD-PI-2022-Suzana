@@ -1,19 +1,20 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Global;
+using Data;
+using Global;
+using MyGame;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
+using Weapons;
 
-namespace MyGame
+namespace Characters
 {
     public class PlayerController : MonoBehaviour, IPlayer
     {
-        [SerializeField] private GameObject GameManager;
+        [SerializeField] private GameObject gameManager;
 
-        [Tooltip("Virtual camera on plazez")] public Camera camera;
+        [Tooltip("Virtual camera on player")] public Camera camera;
 
         [SerializeField] private HealthBar healthBar;
 
@@ -218,7 +219,7 @@ namespace MyGame
             }
             audioSource.Stop();
             animator.SetTrigger(DieTriggerAnim);
-            GameManager.GetComponent<IGameManager>().PlayGameOverTimeline();
+            gameManager.GetComponent<IGameManager>().PlayGameOverTimeline();
 
         }
 
@@ -366,7 +367,7 @@ namespace MyGame
         private void SelectWeapon()
         {
             _selectedWeapon = _weapons[_currentWeaponIndex];
-            UIManager.shared.SetWeaponName(_selectedWeapon.name);
+            UIManager.shared.SetWeaponName(_selectedWeapon.Name);
         }
 
         /**Victory is when there are no more enemies in character container*/

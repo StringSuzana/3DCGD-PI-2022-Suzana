@@ -1,11 +1,13 @@
-using Assets.Scripts.Constants;
 using System;
 using System.Collections;
+using Assets.Scripts.Constants;
+using Data;
+using MyGame;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MyGame
+namespace Global
 {
     public class MainMenuManager : MonoBehaviour
     {
@@ -54,11 +56,11 @@ namespace MyGame
                 //Create NEW data
                 var playerInfo = new PlayerInfo
                 {
-                    PlayerName = username,
-                    HealthPoints = GameData.MaxPlayerHealth,
-                    LevelName = LevelNames.FirstLevel,
-                    MusicVolume = 1,
-                    SoundVolume = 1
+                    playerName = username,
+                    healthPoints = GameData.MaxPlayerHealth,
+                    levelName = LevelNames.FirstLevel,
+                    musicVolume = 1,
+                    soundVolume = 1
                 };
                 SaveSystem.SavePlayerInfoToJson(playerInfo);
                 PlayerInfo = playerInfo;
@@ -67,11 +69,11 @@ namespace MyGame
             {
                 ShowMessage($"Welcome back, {username}", Color.green);
                 PlayerInfo = SaveSystem.LoadPlayerInfoFromJson(username);
-                if (PlayerInfo.HealthPoints == 0)
+                if (PlayerInfo.healthPoints == 0)
                 {
                     ShowMessage("You will start from first level", Color.yellow);
-                    PlayerInfo.LevelName = LevelNames.FirstLevel;
-                    PlayerInfo.HealthPoints = GameData.MaxPlayerHealth;
+                    PlayerInfo.levelName = LevelNames.FirstLevel;
+                    PlayerInfo.healthPoints = GameData.MaxPlayerHealth;
                 }
             }
 
@@ -80,18 +82,18 @@ namespace MyGame
 
         private void SetPlayerPrefs()
         {
-            PlayerPrefs.SetFloat(PlayerPrefNames.Health, PlayerInfo.HealthPoints);
-            PlayerPrefs.SetString(PlayerPrefNames.Username,        PlayerInfo.PlayerName);
-            PlayerPrefs.SetString(PlayerPrefNames.LastPlayedLevel, PlayerInfo.LevelName);
-            PlayerPrefs.SetFloat(PlayerPrefNames.MusicVolume, PlayerInfo.MusicVolume);
-            PlayerPrefs.SetFloat(PlayerPrefNames.SoundVolume, PlayerInfo.SoundVolume);
+            PlayerPrefs.SetFloat(PlayerPrefNames.Health, PlayerInfo.healthPoints);
+            PlayerPrefs.SetString(PlayerPrefNames.Username,        PlayerInfo.playerName);
+            PlayerPrefs.SetString(PlayerPrefNames.LastPlayedLevel, PlayerInfo.levelName);
+            PlayerPrefs.SetFloat(PlayerPrefNames.MusicVolume, PlayerInfo.musicVolume);
+            PlayerPrefs.SetFloat(PlayerPrefNames.SoundVolume, PlayerInfo.soundVolume);
         }
 
         private IEnumerator LoadGameForPlayer(String username)
         {
             yield return new WaitForSecondsRealtime(6);
 
-            SceneManager.LoadScene(PlayerInfo.LevelName);
+            SceneManager.LoadScene(PlayerInfo.levelName);
         }
 
         private IEnumerator PlaySoundStart(int waitForSeconds)
@@ -99,7 +101,7 @@ namespace MyGame
             AudioManager.Instance.PlaySoundOneTime(SoundNames.GameStart);
             yield return new WaitForSecondsRealtime(waitForSeconds);
 
-            LevelSongs.dict.TryGetValue(PlayerInfo.LevelName, out string levelSongName);
+            LevelSongs.dict.TryGetValue(PlayerInfo.levelName, out string levelSongName);
             AudioManager.Instance.PlayMusic(levelSongName);
         }
     }

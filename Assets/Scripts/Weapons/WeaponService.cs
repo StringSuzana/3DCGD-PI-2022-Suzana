@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Weapons;
+
 namespace MyGame
 {
     public interface IWeaponService
@@ -14,7 +16,7 @@ namespace MyGame
             Weapon createTool = new CatnipPlanter(shootFromPoint);
             List<Weapon> weapons = new List<Weapon>();
             weapons.Add(new HeartGun(shootFromPoint));
-            weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.smallBullet)));
+            weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.SmallBullet)));
 
             return weapons;
         }
@@ -27,7 +29,7 @@ namespace MyGame
             Weapon createTool = new CatnipPlanter(shootFromPoint);
             List<Weapon> weapons = new List<Weapon>();
             weapons.Add(new HeartGun(shootFromPoint));
-            weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.smallBullet)));
+            weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.SmallBullet)));
             weapons.Add(new CatnipPlanter(shootFromPoint));
 
             return weapons;

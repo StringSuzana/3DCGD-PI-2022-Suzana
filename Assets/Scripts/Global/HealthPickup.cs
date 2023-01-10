@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Characters;
 using UnityEngine;
 
 namespace MyGame
@@ -12,6 +13,7 @@ namespace MyGame
 
         private void OnTriggerEnter(Collider other)
         {
+            //Only player can get health
             if (other.gameObject.TryGetComponent(out IPlayer player))
             {
                 Debug.Log($@"Player will gain {healthAmount}");

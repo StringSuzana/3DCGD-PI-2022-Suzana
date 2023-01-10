@@ -1,4 +1,4 @@
-﻿namespace MyGame
+﻿namespace Characters
 {
 
     public interface IEnemy

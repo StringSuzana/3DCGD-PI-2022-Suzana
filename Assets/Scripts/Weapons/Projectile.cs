@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-namespace MyGame
+namespace Weapons
 {
     public enum ProjectileType
     {
-        damage, attract, stun
+        Damage, Attract, Stun
     }
     public class Projectile : MonoBehaviour
     {

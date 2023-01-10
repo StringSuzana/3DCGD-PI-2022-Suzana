@@ -1,22 +1,22 @@
+using Data;
+using MyGame;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace MyGame
+namespace Global
 {
     public class SettingsManager : MonoBehaviour
     {
-        [SerializeField]
-        private Canvas settingsMenu;
-        [SerializeField]
-        private Slider musicSlider;
-        [SerializeField]
-        private Slider soundSlider;
-        private Keyboard keyboard;
+        [SerializeField] private Canvas settingsMenu;
+        [SerializeField] private Slider musicSlider;
+        [SerializeField] private Slider soundSlider;
+        private Keyboard _keyboard;
+
         private void Start()
         {
-            keyboard = InputSystem.GetDevice<Keyboard>();
+            _keyboard = InputSystem.GetDevice<Keyboard>();
             //Get music and sound volume and return 1 if value does not exist
             var musicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume, 1);
             var soundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume, 1);
@@ -26,12 +26,14 @@ namespace MyGame
 
             settingsMenu.gameObject.SetActive(false);
         }
+
         void Update()
         {
-            if (keyboard.escapeKey.wasPressedThisFrame)
+            if (_keyboard.escapeKey.wasPressedThisFrame)
             {
                 settingsMenu.gameObject.SetActive(!settingsMenu.isActiveAndEnabled);
             }
+
             if (settingsMenu.isActiveAndEnabled)
             {
                 Cursor.lockState = CursorLockMode.Confined;
@@ -39,16 +41,19 @@ namespace MyGame
                 Time.timeScale = 0;
             }
         }
+
         public void SetMusicVolume()
         {
             PlayerPrefs.SetFloat(PlayerPrefNames.MusicVolume, musicSlider.value);
             AudioManager.Instance.SetMusicVolume(musicSlider.value);
         }
+
         public void SetSoundsVolume()
         {
             PlayerPrefs.SetFloat(PlayerPrefNames.SoundVolume, soundSlider.value);
             AudioManager.Instance.SetSoundsVolume(soundSlider.value);
         }
+
         public void CloseMenu()
         {
             //Cursor.lockState = CursorLockMode.Locked;
@@ -56,10 +61,12 @@ namespace MyGame
             Time.timeScale = 1;
             settingsMenu.gameObject.SetActive(false);
         }
+
         public void OpenMenu()
         {
             settingsMenu.gameObject.SetActive(true);
         }
+
         public void ExitButtonPressed()
         {
             AudioManager.Instance.PlayMusic(SoundNames.MainMenu);
@@ -67,18 +74,18 @@ namespace MyGame
             SavePlayerInfo(username);
             SceneManager.LoadScene(LevelNames.MainMenuScene);
         }
+
         private void SavePlayerInfo(string username)
         {
             var playerInfo = new PlayerInfo
             {
-                PlayerName = username,
-                MusicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
-                SoundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume),
-                LevelName = SceneManager.GetActiveScene().name,
-                HealthPoints = PlayerPrefs.GetFloat(PlayerPrefNames.Health)
+                playerName = username,
+                musicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
+                soundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume),
+                levelName = SceneManager.GetActiveScene().name,
+                healthPoints = PlayerPrefs.GetFloat(PlayerPrefNames.Health)
             };
             SaveSystem.SavePlayerInfoToJson(playerInfo);
-      
         }
     }
 }

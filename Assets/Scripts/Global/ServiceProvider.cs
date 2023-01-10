@@ -1,4 +1,6 @@
-namespace MyGame
+using MyGame;
+
+namespace Global
 {
     public class ServiceProvider
     {

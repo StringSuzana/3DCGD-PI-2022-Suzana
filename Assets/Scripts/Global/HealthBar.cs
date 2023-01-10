@@ -1,8 +1,10 @@
+using Data;
+using MyGame;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MyGame
+namespace Global
 {
     public class HealthBar : MonoBehaviour
     {

@@ -1,5 +1,6 @@
 using UnityEngine;
-namespace MyGame
+
+namespace Global
 {
 
     public class GameIntro : MonoBehaviour

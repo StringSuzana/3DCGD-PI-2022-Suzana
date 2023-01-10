@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
+using MyGame;
 using UnityEngine;
 
-namespace MyGame
+namespace Global
 {
     public class AudioManager : MonoBehaviour
     {
@@ -10,6 +11,7 @@ namespace MyGame
 
         [Tooltip("The volume when this sound button is toggled on")]
         public float volumeOn = 1;
+
         [Tooltip("The volume when this sound button is toggled off")]
         public float volumeOff = 0;
 
@@ -17,9 +19,11 @@ namespace MyGame
         public Sound[] soundFxs;
 
         public static AudioManager Instance;
+
         void Awake()
         {
             #region SINGLETON
+
             if (Instance == null)
                 Instance = this;
             else
@@ -27,6 +31,7 @@ namespace MyGame
                 Destroy(gameObject);
                 return;
             }
+
             #endregion
 
             PlayerPrefs.SetFloat(PlayerPrefNames.MusicVolume, 1);
@@ -40,22 +45,24 @@ namespace MyGame
                 m.source.pitch = m.pitch;
                 m.source.loop = true;
             }
+
             foreach (var s in soundFxs)
             {
                 s.source = gameObject.AddComponent<AudioSource>();
                 s.source.clip = s.audioClip;
                 s.source.volume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume);
                 s.source.pitch = s.pitch;
-
             }
 
             DontDestroyOnLoad(gameObject);
         }
+
         private void Start()
         {
             Cursor.visible = true;
             PlayMusic(SoundNames.MainMenu);
         }
+
         public void PlaySoundOneTime(string name)
         {
             Sound s = Array.Find(soundFxs, sound => sound.name == name);
@@ -64,6 +71,7 @@ namespace MyGame
                 Debug.Log("AudioClip not found => maybe the name in inspector is wrong or it is not there");
                 return;
             }
+
             s.source.volume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume);
             s.source.PlayOneShot(s.audioClip);
         }
@@ -74,12 +82,14 @@ namespace MyGame
             {
                 old.source.Stop();
             }
+
             Sound m = Array.Find(music, song => song.name == name);
             if (m == null)
             {
                 Debug.Log("Sound not found => maybe the name in inspector is wrong or it is not there");
                 return;
             }
+
             m.source.volume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume);
             m.source.Play();
         }
@@ -94,9 +104,11 @@ namespace MyGame
             Sound song = Array.Find(music, m => m.name == songName);
             if (song == null)
             {
-                Debug.Log("AudioClip not found => maybe the name in inspector is wrong or it is not there=> " + songName);
+                Debug.Log(
+                    "AudioClip not found => maybe the name in inspector is wrong or it is not there=> " + songName);
                 yield return null;
             }
+
             float timeOut = 1;
             while (timeOut > 0)
             {
@@ -112,6 +124,7 @@ namespace MyGame
                         }
                     }
                 }
+
                 if ((1 - timeOut) <= PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume))
                 {
                     song.source.volume = (1 - timeOut);
@@ -119,8 +132,8 @@ namespace MyGame
                 else
                 {
                     song.source.volume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume);
-
                 }
+
                 if (!song.source.isPlaying)
                 {
                     Debug.Log("PLAY");
@@ -142,6 +155,7 @@ namespace MyGame
                 }
             }
         }
+
         public void StopAllMusic()
         {
             foreach (var s in music)

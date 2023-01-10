@@ -1,7 +1,10 @@
-public struct GameData
+namespace Data
 {
-    public static string GameName = "Pet invasion";
-    public static long MaxPlayerHealth = 200; 
-    public static int MaxPlayerLives = 3;
+    public struct GameData
+    {
+        public static string GameName = "Pet invasion";
+        public static long MaxPlayerHealth = 200; 
+        public static int MaxPlayerLives = 3;
 
+    }
 }

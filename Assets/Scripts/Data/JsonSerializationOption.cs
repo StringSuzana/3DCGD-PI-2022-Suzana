@@ -1,13 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using MyGame;
+using Newtonsoft.Json;
 using UnityEngine;
 
-namespace MyGame
+namespace Data
 {
 
     public class JsonSerializationOption : ISerializationOption
     {
-        public string ContentType_Json => "application/json";
+        public string ContentTypeJson => "application/json";
 
 
         public T Deserialize<T>(string text)

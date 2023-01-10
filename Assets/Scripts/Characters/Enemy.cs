@@ -1,21 +1,26 @@
 using System.Collections;
+using MyGame;
 using UnityEngine;
 using UnityEngine.AI;
+using Weapons;
 
-namespace MyGame
+namespace Characters
 {
     public class Enemy : MonoBehaviour, IEnemy
     {
-        private float stunForSeconds;
-        private IPlayer iPlayer;
+        private float _stunForSeconds;
+        private IPlayer _iPlayer;
 
         public float health = 50;
-        public float dealthDamage = 15;
+        public float enemyDamageAmount = 15;
         public int lives = 3;
         public GameObject attackTarget;
         public GameObject particleDieEffect;
 
-        public Animator anim;
+        public Animator animator;
+        private static readonly int DeadTriggerAnim = Animator.StringToHash("dead");
+        private static readonly int AttackTriggerAnim = Animator.StringToHash("attack");
+        private static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
 
         public AudioSource AttackAudioSource;
 
@@ -40,10 +45,10 @@ namespace MyGame
 
         private void Awake()
         {
-            anim = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
             agent = GetComponent<NavMeshAgent>();
 
-            iPlayer = player.parent.GetComponent<IPlayer>();
+            _iPlayer = player.parent.GetComponent<IPlayer>();
         }
 
         public void OnCollisionEnter(Collision collision)
@@ -54,14 +59,14 @@ namespace MyGame
                 var projectile = collision.gameObject.GetComponent<Projectile>();
                 switch (projectile.projectileType)
                 {
-                    case ProjectileType.attract:
+                    case ProjectileType.Attract:
                         //go to target
                         break;
-                    case ProjectileType.damage:
+                    case ProjectileType.Damage:
                         Debug.Log("Enemy takes damage");
                         TakeDamage(projectile.damage);
                         break;
-                    case ProjectileType.stun:
+                    case ProjectileType.Stun:
                         Debug.Log("Enemy is stunned");
                         Stun(projectile.damage);
                         break;
@@ -71,29 +76,29 @@ namespace MyGame
 
         private void Update()
         {
-            stunForSeconds -= Time.deltaTime;
-            if (stunForSeconds <= 0)
+            _stunForSeconds -= Time.deltaTime;
+            if (_stunForSeconds <= 0)
             {
                 Unstun();
             }
 
-            //Check for sight and attack range
+            //Check for InSight and InAttack range
             playerInSightRange = Physics.CheckSphere(transform.position,  sightRange,  playerLayer);
             playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
 
-            if (!playerInSightRange && !playerInAttackRange) Patroling();
+            if (!playerInSightRange && !playerInAttackRange) Patrol();
             if (playerInSightRange && !playerInAttackRange) FollowTarget();
             if (playerInAttackRange && playerInSightRange) AttackTarget();
         }
 
-        private void Patroling()
+        private void Patrol()
         {
-            if (!walkPointSet) SearchWalkPoint();
+            if (!walkPointSet) FindRandomWalkPoint();
 
             if (walkPointSet)
                 if (agent.SetDestination(walkPoint))
                 {
-                    anim.SetFloat("speed", 1);
+                    animator.SetFloat("speed", 1);
                 }
 
             Vector3 distanceToWalkPoint = transform.position - walkPoint;
@@ -102,13 +107,13 @@ namespace MyGame
             if (distanceToWalkPoint.magnitude < 1f)
             {
                 walkPointSet = false;
-                anim.SetFloat("speed", 0);
+                animator.SetFloat("speed", 0);
             }
 
             transform.LookAt(walkPoint);
         }
 
-        private void SearchWalkPoint()
+        private void FindRandomWalkPoint()
         {
             //Calculate random point in range
             float randomZ = Random.Range(-walkPointRange, walkPointRange);
@@ -131,8 +136,8 @@ namespace MyGame
             {
                 Debug.Log("AttackTarget with 15 damage.");
                 AttackAudioSource.Play();
-                StartCoroutine(iPlayer.TakeDamage(dealthDamage));
-                anim.SetTrigger("attack");
+                StartCoroutine(_iPlayer.TakeDamage(enemyDamageAmount));
+                animator.SetTrigger(AttackTriggerAnim);
                 ///End of attack
 
                 alreadyAttacked = true;
@@ -148,10 +153,10 @@ namespace MyGame
 
         public void Stun(float damageAmount)
         {
-            this.stunForSeconds = damageAmount;
+            this._stunForSeconds = damageAmount;
             Debug.Log("StopMovingForSeconds: " + damageAmount);
 
-            anim.enabled = false;
+            animator.enabled = false;
             agent.SetDestination(transform.position);
             agent.isStopped = true;
         }
@@ -159,14 +164,14 @@ namespace MyGame
         public void Stop()
         {
             Debug.Log("Stop attacking");
-            this.stunForSeconds = 200;
-            anim.enabled = false;
+            this._stunForSeconds = 200;
+            animator.enabled = false;
             agent.isStopped = true;
         }
 
         private void Unstun()
         {
-            anim.enabled = true;
+            animator.enabled = true;
             agent.isStopped = false;
         }
 
@@ -175,18 +180,18 @@ namespace MyGame
         {
             Debug.Log("FollowTarget ");
             agent.SetDestination(attackTarget.transform.position);
-            anim.SetFloat("speed", 1);
+            animator.SetFloat(SpeedFloatAnim, 1);
         }
 
         public float GetHealth()
         {
-            Debug.Log("GetHealth " + health);
+            Debug.Log("Enemy health: " + health);
             return health;
         }
 
         public void TakeDamage(float damageAmount)
         {
-            Debug.Log("Take damage " + damageAmount);
+            Debug.Log($"Enemy took {damageAmount} damage: ");
             health -= damageAmount;
             if (health <= 0)
             {
@@ -196,8 +201,8 @@ namespace MyGame
 
         private IEnumerator Die()
         {
-            Debug.Log("Enemy dead.");
-            anim.SetTrigger("dead");
+            Debug.Log("Enemy is dead.");
+            animator.SetTrigger(DeadTriggerAnim);
 
             yield return new WaitForSecondsRealtime(2f);
 

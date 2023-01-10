@@ -1,16 +1,16 @@
 using UnityEngine;
 
-namespace MyGame
+namespace Weapons
 {
     public abstract class Weapon
     {
-        public string name;
-        protected Transform origin;
+        public string Name;
+        protected Transform Origin;
 
         protected Weapon(Transform transform, string name)
         {
-            this.origin = transform;
-            this.name = name;
+            this.Origin = transform;
+            this.Name = name;
         }
 
         public abstract void Shoot();
@@ -24,7 +24,7 @@ namespace MyGame
 
         public override void Shoot()
         {
-            if (!Physics.Raycast(origin.position, origin.forward, out RaycastHit hit, 100f)) return;
+            if (!Physics.Raycast(Origin.position, Origin.forward, out RaycastHit hit, 100f)) return;
 
             //TODO: instantiate catnip GameObject
             var createdObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -39,17 +39,17 @@ namespace MyGame
 
         public HeartGun(Transform transform) : base(transform, "Heart gun")
         {
-            _projectile = BulletRepo.GetBullet(BulletPrefabs.heartBullet);
+            _projectile = BulletRepo.GetBullet(BulletPrefabs.HeartBullet);
         }
 
         public override void Shoot()
         {
             var createdObject = GameObject.Instantiate(_projectile);
-            createdObject.transform.position = origin.position;
+            createdObject.transform.position = Origin.position;
             createdObject.layer = 8;
 
             var rb = createdObject.GetComponent<Rigidbody>();
-            rb.AddForce(origin.forward * 30f, ForceMode.Impulse);
+            rb.AddForce(Origin.forward * 30f, ForceMode.Impulse);
         }
     }
 
@@ -65,11 +65,11 @@ namespace MyGame
         public override void Shoot()
         {
             var createdObject = GameObject.Instantiate(_projectile);
-            createdObject.transform.position = origin.position;
+            createdObject.transform.position = Origin.position;
             createdObject.layer = 8;
 
             var rb = createdObject.GetComponent<Rigidbody>();
-            rb.AddForce(origin.forward * 20f, ForceMode.Impulse);
+            rb.AddForce(Origin.forward * 20f, ForceMode.Impulse);
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MyGame;
 using TMPro;
 using UnityEngine;
 
-namespace MyGame
+namespace Global
 {
-
     public class DialogManager : MonoBehaviour
     {
-        public Queue<string> sentences;//FIFO
+        public Queue<string> sentences; //FIFO
         public TextMeshProUGUI characterNameTextField;
         public TextMeshProUGUI dialogTextField;
         public Canvas dialogCanvas;
@@ -27,8 +27,8 @@ namespace MyGame
                 Destroy(gameObject);
                 return;
             }
-            sentences = new Queue<string>();
 
+            sentences = new Queue<string>();
         }
 
         public void StartDialogue(Dialogue dialogue)
@@ -41,9 +41,10 @@ namespace MyGame
             {
                 sentences.Enqueue(sentence);
             }
-            DisplayNextSentece();
 
+            DisplayNextSentece();
         }
+
         public void Update()
         {
             if (dialogCanvas.isActiveAndEnabled)
@@ -53,6 +54,7 @@ namespace MyGame
                 Time.timeScale = 0;
             }
         }
+
         public void DisplayNextSentece()
         {
             if (sentences.Count == 0)
@@ -60,10 +62,12 @@ namespace MyGame
                 EndDialogue();
                 return;
             }
+
             string sentence = sentences.Dequeue();
             StopAllCoroutines();
             StartCoroutine(TypeSentence(sentence));
         }
+
         IEnumerator TypeSentence(string sentence)
         {
             dialogTextField.text = "";
@@ -80,8 +84,6 @@ namespace MyGame
             Cursor.visible = true;
             Time.timeScale = 1;
             dialogCanvas.gameObject.SetActive(false);
-
         }
     }
-
 }

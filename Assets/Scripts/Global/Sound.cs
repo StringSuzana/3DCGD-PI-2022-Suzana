@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MyGame
+namespace Global
 {
     [System.Serializable]
     public class Sound

@@ -1,35 +1,28 @@
 using Newtonsoft.Json;
 
-namespace MyGame
+namespace Data
 {
     [System.Serializable]
     public class PlayerInfo
     {
-        [JsonProperty("playerName")]
-        public string PlayerName;
+        [JsonProperty("playerName")] public string playerName;
 
-        [JsonProperty("healthPoints")]
-        public float HealthPoints;
+        [JsonProperty("healthPoints")] public float healthPoints;
 
-        [JsonProperty("levelName")]
-        public string LevelName;
+        [JsonProperty("levelName")] public string levelName;
 
-        [JsonProperty("soundVolume")]
-        public float SoundVolume;
+        [JsonProperty("soundVolume")] public float soundVolume;
 
-        [JsonProperty("musicVolume")]
-        public float MusicVolume;
+        [JsonProperty("musicVolume")] public float musicVolume;
 
         public PlayerInfo() //Have to have default constructor because of Json deserialization
         {
-
         }
+
         public override string ToString()
         {
-            return $"Student name: {PlayerName} \nPoints: {HealthPoints}\nLevel name: {LevelName}\nMusic Vol: {MusicVolume}\nSound Vol: {SoundVolume}\n";
+            return
+                $"Student name: {playerName} \nPoints: {healthPoints}\nLevel name: {levelName}\nMusic Vol: {musicVolume}\nSound Vol: {soundVolume}\n";
         }
-
-
     }
-
 }

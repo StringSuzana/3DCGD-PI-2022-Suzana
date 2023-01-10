@@ -1,32 +1,33 @@
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+namespace Weapons
 {
-    public float lifeTime;
-    private float maxLifeTime = 3;
-
-    public Rigidbody bulletRigidBody;
-    public GameObject particleEffect;
-
-
-    void Update()
+    public class BulletController : MonoBehaviour
     {
-        maxLifeTime -= Time.deltaTime;
+        public float lifeTime;
+        private float maxLifeTime = 3;
 
-        if (maxLifeTime <= 0)
+        public Rigidbody bulletRigidBody;
+        public GameObject particleEffect;
+
+
+        void Update()
         {
-            Instantiate(particleEffect, transform.position, transform.rotation);
-            Destroy(gameObject);
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
+            maxLifeTime -= Time.deltaTime;
 
-        if (other.tag != "Player")//don't want to collide with shooting point on player
-        {
-            Instantiate(particleEffect, transform.position, transform.rotation);
-
+            if (maxLifeTime <= 0)
+            {
+                Instantiate(particleEffect, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.tag != "Player") //don't want to collide with shooting point on player
+            {
+                Instantiate(particleEffect, transform.position, transform.rotation);
+            }
+        }
     }
 }

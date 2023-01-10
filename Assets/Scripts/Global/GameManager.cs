@@ -1,27 +1,27 @@
-using Assets.Scripts.Global;
+using MyGame;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-namespace MyGame
+namespace Global
 {
     public class GameManager : MonoBehaviour, IGameManager
     {
 
-        [SerializeField] private PlayableDirector _gameOverTimeline;
+        [SerializeField] private PlayableDirector gameOverTimeline;
 
         public void PlayGameOverTimeline()
         {
             AudioManager.Instance.StopAllMusic();
             Cursor.lockState = CursorLockMode.Locked;
 
-            _gameOverTimeline.Play();
+            gameOverTimeline.Play();
         }
 
         public void GameOver()
         {
             AudioManager.Instance.PlayMusic(SoundNames.MainMenu);
-            var username = PlayerPrefs.GetString(PlayerPrefNames.Username);
+            string username = PlayerPrefs.GetString(PlayerPrefNames.Username);
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene(LevelNames.MainMenuScene);
         }

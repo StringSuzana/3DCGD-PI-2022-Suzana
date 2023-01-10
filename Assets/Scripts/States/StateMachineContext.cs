@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using MyGame;
 
-namespace MyGame
+namespace States
 {
     public interface IStateMachineState
     {

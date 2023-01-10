@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using MyGame;
+using UnityEngine;
 
-namespace MyGame
+namespace Global
 {
     public class AudioUiManager : MonoBehaviour
     {
@@ -8,10 +9,12 @@ namespace MyGame
         {
             AudioManager.Instance.PlaySoundOneTime(SoundNames.Hover);
         }
+
         public void PLayClickSound()
         {
             AudioManager.Instance.PlaySoundOneTime(SoundNames.Click);
         }
+
         public void PLayHealthBarSound()
         {
             AudioManager.Instance.PlaySoundOneTime(SoundNames.Click);
