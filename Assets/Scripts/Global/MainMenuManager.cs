@@ -9,10 +9,8 @@ namespace MyGame
 {
     public class MainMenuManager : MonoBehaviour
     {
-        [SerializeField]
-        private TMP_InputField PlayerName;
-        [SerializeField]
-        private TextMeshProUGUI Message;
+        [SerializeField] private TMP_InputField PlayerName;
+        [SerializeField] private TextMeshProUGUI Message;
 
         private PlayerInfo PlayerInfo;
 
@@ -20,15 +18,18 @@ namespace MyGame
         {
             Message.text = "";
         }
+
         public void OpenSettings()
         {
             SceneManager.LoadScene(LevelNames.Settings);
         }
+
         public void ShowMessage(string message, Color color)
         {
             Message.text = $"!! {message} !!";
             Message.color = color;
         }
+
         public void StartGame()
         {
             if (string.IsNullOrWhiteSpace(PlayerName.text))
@@ -37,7 +38,6 @@ namespace MyGame
             }
             else
             {
-                ShowMessage("Welcome", Color.green);
                 SavePlayerInfo(PlayerName.text);
 
                 StartCoroutine(PlaySoundStart(6));
@@ -50,30 +50,35 @@ namespace MyGame
             PlayerPrefs.SetString("username", username);
             if (SaveSystem.LoadPlayerInfoFromJson(username) == null)
             {
+                ShowMessage("Welcome", Color.green);
                 //Create NEW data
-                SaveSystem.SavePlayerInfoToJson(new PlayerInfo
+                var playerInfo = new PlayerInfo
                 {
                     PlayerName = username,
                     HealthPoints = GameData.MaxPlayerHealth,
                     LevelName = LevelNames.FirstLevel,
-                    MusicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
-                    SoundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume)
-                });
-
+                    MusicVolume = 1,
+                    SoundVolume = 1
+                };
+                SaveSystem.SavePlayerInfoToJson(playerInfo);
+                PlayerInfo = playerInfo;
             }
-            InitializePlayerInfoProperty(username);
+            else
+            {
+                ShowMessage($@"Welcome back, {username}", Color.green);
+                PlayerInfo = SaveSystem.LoadPlayerInfoFromJson(username);
+            }
+
             SetPlayerPrefs();
         }
 
         private void SetPlayerPrefs()
         {
             PlayerPrefs.SetFloat(PlayerPrefNames.Health, PlayerInfo.HealthPoints);
-            PlayerPrefs.SetString(PlayerPrefNames.Username, PlayerInfo.PlayerName);
-        }
-
-        private void InitializePlayerInfoProperty(String username)
-        {
-            PlayerInfo = SaveSystem.LoadPlayerInfoFromJson(username);
+            PlayerPrefs.SetString(PlayerPrefNames.Username,        PlayerInfo.PlayerName);
+            PlayerPrefs.SetString(PlayerPrefNames.LastPlayedLevel, PlayerInfo.LevelName);
+            PlayerPrefs.SetFloat(PlayerPrefNames.MusicVolume, PlayerInfo.MusicVolume);
+            PlayerPrefs.SetFloat(PlayerPrefNames.SoundVolume, PlayerInfo.SoundVolume);
         }
 
         private IEnumerator LoadGameForPlayer(String username)
@@ -82,6 +87,7 @@ namespace MyGame
 
             SceneManager.LoadScene(PlayerInfo.LevelName);
         }
+
         private IEnumerator PlaySoundStart(int waitForSeconds)
         {
             AudioManager.Instance.PlaySoundOneTime(SoundNames.GameStart);

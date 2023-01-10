@@ -182,6 +182,8 @@ namespace MyGame
             _currentHealth -= damageAmount;
             if (_currentHealth <= 0)
             {
+                PlayerPrefs.SetFloat(PlayerPrefNames.Health, 0);
+
                 animator.SetTrigger(DieTriggerAnim);
                 GameManager.GetComponent<IGameManager>().PlayGameOver();
 
@@ -197,6 +199,7 @@ namespace MyGame
             }
             else
             {
+                PlayerPrefs.SetFloat(PlayerPrefNames.Health, _currentHealth);
                 healthBar.SetHealth(_currentHealth);
                 scratchView.SetActive(true);
                 var image = scratchView.GetComponentInChildren<Canvas>();
@@ -219,7 +222,7 @@ namespace MyGame
             {
                 _currentHealth = GameData.MaxPlayerHealth;
             }
-
+            PlayerPrefs.SetFloat(PlayerPrefNames.Health, _currentHealth);
             healthBar.SetHealth(_currentHealth);
         }
 

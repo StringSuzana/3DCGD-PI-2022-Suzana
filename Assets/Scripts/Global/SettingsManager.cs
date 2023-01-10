@@ -63,7 +63,22 @@ namespace MyGame
         public void ExitButtonPressed()
         {
             AudioManager.Instance.PlayMusic(SoundNames.MainMenu);
+            var username = PlayerPrefs.GetString(PlayerPrefNames.Username);
+            SavePlayerInfo(username);
             SceneManager.LoadScene(LevelNames.MainMenuScene);
+        }
+        private void SavePlayerInfo(string username)
+        {
+            var playerInfo = new PlayerInfo
+            {
+                PlayerName = username,
+                MusicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
+                SoundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume),
+                LevelName = SceneManager.GetActiveScene().name,
+                HealthPoints = PlayerPrefs.GetFloat(PlayerPrefNames.Health)
+            };
+            SaveSystem.SavePlayerInfoToJson(playerInfo);
+      
         }
     }
 }
