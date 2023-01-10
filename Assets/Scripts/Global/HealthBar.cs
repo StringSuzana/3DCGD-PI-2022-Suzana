@@ -16,8 +16,8 @@ namespace MyGame
         {
             Slider.maxValue = GameData.MaxPlayerHealth;
             Slider.minValue = 0;
-            Debug.Log("Reset to max health in HealthBar script");
-            HealthAmount.text = $@"{GameData.MaxPlayerHealth}/{GameData.MaxPlayerHealth}";
+            Debug.Log("Reset to health from PlayerPrefs in HealthBar script");
+            HealthAmount.text = $@"{PlayerPrefs.GetFloat(PlayerPrefNames.Health)}/{GameData.MaxPlayerHealth}";
         }
 
         public void SetHealth(float healthPoints)

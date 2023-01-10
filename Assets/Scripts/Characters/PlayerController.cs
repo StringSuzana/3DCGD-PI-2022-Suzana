@@ -182,20 +182,7 @@ namespace MyGame
             _currentHealth -= damageAmount;
             if (_currentHealth <= 0)
             {
-                PlayerPrefs.SetFloat(PlayerPrefNames.Health, 0);
-
-                animator.SetTrigger(DieTriggerAnim);
-                GameManager.GetComponent<IGameManager>().PlayGameOver();
-
-                //stop enemies
-                var enemies = charactersContainer.GetComponentsInChildren<Transform>();
-                foreach (var enemy in enemies)
-                {
-                    if (enemy.TryGetComponent(out IEnemy enemyCharacter))
-                    {
-                        enemyCharacter.Stop();
-                    }
-                }
+                GameOver();
             }
             else
             {
@@ -215,6 +202,26 @@ namespace MyGame
             }
         }
 
+        private void GameOver()
+        {
+            PlayerPrefs.SetFloat(PlayerPrefNames.Health, 0);
+            _currentHealth = 0;
+
+            //stop enemies
+            Transform[] enemies = charactersContainer.GetComponentsInChildren<Transform>();
+            foreach (Transform enemy in enemies)
+            {
+                if (enemy.TryGetComponent(out IEnemy enemyCharacter))
+                {
+                    enemyCharacter.Stop();
+                }
+            }
+            audioSource.Stop();
+            animator.SetTrigger(DieTriggerAnim);
+            GameManager.GetComponent<IGameManager>().PlayGameOverTimeline();
+
+        }
+
         public void Heal(int healAmount)
         {
             _currentHealth += healAmount;
@@ -222,15 +229,16 @@ namespace MyGame
             {
                 _currentHealth = GameData.MaxPlayerHealth;
             }
+
             PlayerPrefs.SetFloat(PlayerPrefNames.Health, _currentHealth);
             healthBar.SetHealth(_currentHealth);
         }
 
         private void HandleRotation()
         {
-            var delta = _mouse.delta.ReadValue();
-            var x = delta.x * sensitivity * Time.deltaTime;
-            var y = delta.y * sensitivity * Time.deltaTime;
+            Vector2 delta = _mouse.delta.ReadValue();
+            float x = delta.x * sensitivity * Time.deltaTime;
+            float y = delta.y * sensitivity * Time.deltaTime;
 
             characterController.transform.Rotate(Vector3.up * x);
 

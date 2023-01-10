@@ -65,8 +65,14 @@ namespace MyGame
             }
             else
             {
-                ShowMessage($@"Welcome back, {username}", Color.green);
+                ShowMessage($"Welcome back, {username}", Color.green);
                 PlayerInfo = SaveSystem.LoadPlayerInfoFromJson(username);
+                if (PlayerInfo.HealthPoints == 0)
+                {
+                    ShowMessage("You will start from first level", Color.yellow);
+                    PlayerInfo.LevelName = LevelNames.FirstLevel;
+                    PlayerInfo.HealthPoints = GameData.MaxPlayerHealth;
+                }
             }
 
             SetPlayerPrefs();

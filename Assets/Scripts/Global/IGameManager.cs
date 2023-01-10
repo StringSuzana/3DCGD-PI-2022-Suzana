@@ -5,7 +5,7 @@ namespace Assets.Scripts.Global
 {
     public interface IGameManager
     {
-        public void PlayGameOver();
+        public void PlayGameOverTimeline();
 
     }
 }

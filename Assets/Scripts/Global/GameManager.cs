@@ -1,6 +1,7 @@
 using Assets.Scripts.Global;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 namespace MyGame
 {
@@ -9,9 +10,20 @@ namespace MyGame
 
         [SerializeField] private PlayableDirector _gameOverTimeline;
 
-        public void PlayGameOver()
+        public void PlayGameOverTimeline()
         {
+            AudioManager.Instance.StopAllMusic();
+            Cursor.lockState = CursorLockMode.Locked;
+
             _gameOverTimeline.Play();
+        }
+
+        public void GameOver()
+        {
+            AudioManager.Instance.PlayMusic(SoundNames.MainMenu);
+            var username = PlayerPrefs.GetString(PlayerPrefNames.Username);
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene(LevelNames.MainMenuScene);
         }
 
 

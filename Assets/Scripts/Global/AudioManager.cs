@@ -142,6 +142,16 @@ namespace MyGame
                 }
             }
         }
+        public void StopAllMusic()
+        {
+            foreach (var s in music)
+            {
+                if (s?.source.isPlaying == true)
+                {
+                    s.source.Stop();
+                }
+            }
+        }
 
         public void SetMusicVolume(float value)
         {

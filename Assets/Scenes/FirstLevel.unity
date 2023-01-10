@@ -4376,7 +4376,9 @@ PlayableDirector:
   - key: {fileID: -5681599420901472969, guid: 2381f238ec5dd294297a8b96117eaea7, type: 2}
     value: {fileID: 176120780}
   - key: {fileID: 5842239902028396621, guid: 2381f238ec5dd294297a8b96117eaea7, type: 2}
-    value: {fileID: 1138317311}
+    value: {fileID: 1595594261}
+  - key: {fileID: 1949434370856699074, guid: 2381f238ec5dd294297a8b96117eaea7, type: 2}
+    value: {fileID: 1400589584}
   m_ExposedReferences:
     m_References:
     - 0b0615b5732c7c94592b11cfa98e476a: {fileID: 1400627200}
@@ -15403,6 +15405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1400589583}
   - component: {fileID: 1400589582}
+  - component: {fileID: 1400589584}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -15437,6 +15440,36 @@ Transform:
   m_Father: {fileID: 550370839}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1400589584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400589581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 599617e343933324ab5560ba8600a315, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1400589582}
+          m_TargetAssemblyTypeName: MyGame.GameManager, Assembly-CSharp
+          m_MethodName: GameOver
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1400627199
 GameObject:
   m_ObjectHideFlags: 0
@@ -15941,6 +15974,11 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: Hover
+    source: {fileID: 0}
+  - audioClip: {fileID: 8300000, guid: 48e198ba43ca8ec4593f3ed465ff434b, type: 3}
+    volume: 1
+    pitch: 1
+    name: death_bells
     source: {fileID: 0}
 --- !u!4 &1595594259
 Transform:
