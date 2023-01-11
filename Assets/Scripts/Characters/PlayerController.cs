@@ -5,6 +5,7 @@ using Data;
 using Global;
 using MyGame;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
 using Weapons;
 
@@ -41,6 +42,7 @@ namespace Characters
 
         [Tooltip("Damage intake")] [SerializeField]
         private GameObject scratchView;
+        
 
         [Tooltip("Audio sources")] [SerializeField]
         private AudioSource audioSource;
@@ -191,6 +193,7 @@ namespace Characters
                 healthBar.SetHealth(_currentHealth);
                 scratchView.SetActive(true);
                 var image = scratchView.GetComponentInChildren<Canvas>();
+                
 
                 yield return new WaitForSecondsRealtime(0.4f);
                 image.enabled = false;
