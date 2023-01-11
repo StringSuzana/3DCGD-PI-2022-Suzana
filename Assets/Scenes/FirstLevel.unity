@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 604c7a8df4a8ac74e91ec6389d234d5b, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!43 &25219563
 Mesh:
   m_ObjectHideFlags: 0
@@ -4399,6 +4399,7 @@ GameObject:
   - component: {fileID: 176120781}
   - component: {fileID: 176120780}
   - component: {fileID: 176120779}
+  - component: {fileID: 176120783}
   m_Layer: 9
   m_Name: CineBrain
   m_TagString: MainCamera
@@ -4521,7 +4522,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 176120777}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &176120782
 Camera:
   m_ObjectHideFlags: 0
@@ -4565,6 +4566,38 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &176120783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176120777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &204432236
 GameObject:
   m_ObjectHideFlags: 0
@@ -8737,7 +8770,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764746550}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 0.66
   m_Speed: 3
   m_Acceleration: 12
@@ -10061,6 +10094,7 @@ GameObject:
   - component: {fileID: 969826309}
   - component: {fileID: 969826308}
   - component: {fileID: 969826307}
+  - component: {fileID: 969826310}
   m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
@@ -10145,6 +10179,35 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969826305}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &969826310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969826305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: -334000983
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 3583dd21c37916b46a2c7276479fd362, type: 2}
 --- !u!1 &975335437
 GameObject:
   m_ObjectHideFlags: 0
@@ -15206,7 +15269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edf813297ce5c04ca9d28a793df258f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverTimeline: {fileID: 0}
+  gameOverTimeline: {fileID: 170705633}
+  firstLevelCompletedTimeline: {fileID: 0}
 --- !u!4 &1400589583
 Transform:
   m_ObjectHideFlags: 0
@@ -15600,20 +15664,25 @@ MonoBehaviour:
   volumeOn: 1
   volumeOff: 0
   music:
-  - audioClip: {fileID: 8300000, guid: f0c07f357826b574bbaf465904251cad, type: 3}
+  - audioClip: {fileID: 8300000, guid: a0fb7257d7a885146b9b47f67458ea35, type: 3}
     volume: 0.743
     pitch: 1
     name: FirstLevel
     source: {fileID: 0}
-  - audioClip: {fileID: 8300000, guid: f0c07f357826b574bbaf465904251cad, type: 3}
+  - audioClip: {fileID: 8300000, guid: 5a1944aa7c9b294499f993b3c5b484f5, type: 3}
     volume: 1
     pitch: 1
     name: SecondLevel
     source: {fileID: 0}
-  - audioClip: {fileID: 8300000, guid: 5147573dff423a443bdd454bfcdc60de, type: 3}
+  - audioClip: {fileID: 8300000, guid: 826bb8ea4939f9340ba3d55e1120eb1f, type: 3}
     volume: 1
     pitch: 1
     name: MainMenu
+    source: {fileID: 0}
+  - audioClip: {fileID: 8300000, guid: c6c5cd0ee2d7db447be3ac0e13978c23, type: 3}
+    volume: 1
+    pitch: 1
+    name: ThirdLevel
     source: {fileID: 0}
   soundFxs:
   - audioClip: {fileID: 8300000, guid: 2ff50118b66fecf44bbd5a0749b4deac, type: 3}
@@ -15650,6 +15719,11 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: death_bells
+    source: {fileID: 0}
+  - audioClip: {fileID: 8300000, guid: 4dbfbd1a56081db4ca174255a4d56b1f, type: 3}
+    volume: 1
+    pitch: 1
+    name: victory
     source: {fileID: 0}
 --- !u!4 &1595594259
 Transform:
@@ -26927,6 +27001,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1777161247}
     m_Modifications:
+    - target: {fileID: 8798528987606924408, guid: ad15f46f640137f4281a5b1db8e13073, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8798528987606924409, guid: ad15f46f640137f4281a5b1db8e13073, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -26982,6 +27060,14 @@ PrefabInstance:
     - target: {fileID: 8798528987606924412, guid: ad15f46f640137f4281a5b1db8e13073, type: 3}
       propertyPath: m_Name
       value: EnemyCat
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798528987606924413, guid: ad15f46f640137f4281a5b1db8e13073, type: 3}
+      propertyPath: m_AgentTypeID
+      value: -1372625422
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798528987606924413, guid: ad15f46f640137f4281a5b1db8e13073, type: 3}
+      propertyPath: m_WalkableMask
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad15f46f640137f4281a5b1db8e13073, type: 3}
