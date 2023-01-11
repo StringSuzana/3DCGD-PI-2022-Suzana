@@ -8,17 +8,21 @@ namespace Global
     public class GameManager : MonoBehaviour, IGameManager
     {
         [SerializeField] private PlayableDirector gameOverTimeline;
-        [SerializeField] private PlayableDirector firstLevelCompletedTimeline;
+        [SerializeField] private PlayableDirector levelCompletedTimeline;
         [SerializeField] private GameObject gameOverCanvas;
+        [SerializeField] private GameObject levelCompletedCanvas;
 
-        public void PlayFirstLevelCompleted()
+        public void PlayLevelCompleted()
         {
             AudioManager.Instance.StopAllMusic();
             AudioManager.Instance.StopAllSounds();
-            firstLevelCompletedTimeline.Play();
+            levelCompletedTimeline.Play();
 
         }
-
+        public void ShowLevelCompletedCanvas()
+        {
+            levelCompletedCanvas.SetActive(true);
+        }
         public void GoToNextLevel()
         {
 

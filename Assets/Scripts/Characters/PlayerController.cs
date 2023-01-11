@@ -118,6 +118,8 @@ namespace Characters
             if (IsVictory())
             {
                 Debug.Log("VICTORY");
+                gameManager.GetComponent<IGameManager>().PlayLevelCompleted();
+
             }
         }
 
