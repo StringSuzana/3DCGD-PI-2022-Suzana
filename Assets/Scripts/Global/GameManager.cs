@@ -9,6 +9,7 @@ namespace Global
     {
         [SerializeField] private PlayableDirector gameOverTimeline;
         [SerializeField] private PlayableDirector firstLevelCompletedTimeline;
+        [SerializeField] private GameObject gameOverCanvas;
 
         public void PlayFirstLevelCompleted()
         {
@@ -38,6 +39,11 @@ namespace Global
             string username = PlayerPrefs.GetString(PlayerPrefNames.Username);
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene(LevelNames.MainMenuScene);
+        }
+
+        public void ShowGameOverCanvas()
+        {
+            gameOverCanvas.SetActive(true);
         }
     }
 }
