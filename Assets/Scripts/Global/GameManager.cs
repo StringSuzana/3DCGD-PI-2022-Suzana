@@ -51,8 +51,6 @@ namespace Global
         public void StartTransitionToLevel(string nextLevelName)
         {
             Debug.Log("Going to second level");
-
-
             SceneManager.LoadScene(nextLevelName);
         }
 
