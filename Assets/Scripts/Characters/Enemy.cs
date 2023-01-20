@@ -25,6 +25,7 @@ namespace Characters
         private static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
 
         [SerializeField] private AudioSource attackAudioSource;
+        [SerializeField] private AudioClip attackAudioClip;
 
         [SerializeField] private NavMeshAgent agent;
 
@@ -142,7 +143,7 @@ namespace Characters
             if (!alreadyAttacked)
             {
                 Debug.Log("AttackTarget with 15 damage.");
-                attackAudioSource.Play();
+                attackAudioSource.PlayOneShot(attackAudioClip);
                 StartCoroutine(_iFpsPlayer.TakeDamage(enemyDamageAmount));
                 _animator.SetTrigger(AttackTriggerAnim);
                 ///End of attack

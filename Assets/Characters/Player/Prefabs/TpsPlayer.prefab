@@ -1522,7 +1522,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   sfxAudioSource: {fileID: 8051291444125001608}
-  walkAudioClip: {fileID: 8300000, guid: 2ff50118b66fecf44bbd5a0749b4deac, type: 3}
+  walkAudioClip: {fileID: 8300000, guid: 9b2fc5a0a71ee7344b7ae3ace18f925e, type: 3}
   jumpAudioClip: {fileID: 8300000, guid: 28c598a545d4f8e43bb287629ea034c3, type: 3}
   hurtAudioClip: {fileID: 8300000, guid: 9a9f43e971388954a9521b6dd330413d, type: 3}
   grabDistance: 1.58

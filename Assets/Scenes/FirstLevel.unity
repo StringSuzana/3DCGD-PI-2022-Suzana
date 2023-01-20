@@ -6764,6 +6764,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &553904526 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2240175733016505997, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+  m_PrefabInstance: {fileID: 2094786484}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &572683814
 GameObject:
   m_ObjectHideFlags: 0
@@ -25047,6 +25052,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2240175733016505997, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3274447191843088124, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_AgentTypeID
       value: -334000983
@@ -25063,6 +25072,14 @@ PrefabInstance:
       propertyPath: attackTarget
       value: 
       objectReference: {fileID: 1311248233}
+    - target: {fileID: 5714952100676894610, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+      propertyPath: attackAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 80502e18f68bb734b9dded7bb8d2e750, type: 3}
+    - target: {fileID: 5714952100676894610, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+      propertyPath: attackAudioSource
+      value: 
+      objectReference: {fileID: 553904526}
     - target: {fileID: 5714952100676894610, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: wayPoints.Array.size
       value: 4
