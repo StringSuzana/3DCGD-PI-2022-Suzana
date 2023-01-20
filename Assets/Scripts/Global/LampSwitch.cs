@@ -14,7 +14,7 @@ public class LampSwitch : MonoBehaviour
         bool playerDetected = false;
         for (int i = 0; i < hitColliders.Length; i++)
         {
-            if (hitColliders[i].GetComponent<IPlayer>() != null)
+            if (hitColliders[i].GetComponent<IFpsPlayer>() != null)
             {
                 playerDetected = true;
                 break;

@@ -1,54 +1,66 @@
+using System;
 using System.Collections;
 using MyGame;
 using UnityEngine;
 using UnityEngine.AI;
 using Weapons;
+using Random = UnityEngine.Random;
 
 namespace Characters
 {
     public class Enemy : MonoBehaviour, IEnemy
     {
         private float _stunForSeconds;
-        private IPlayer _iPlayer;
+        private IFpsPlayer _iFpsPlayer;
 
-        public float health = 50;
-        public float enemyDamageAmount = 15;
-        public int lives = 3;
-        public GameObject attackTarget;
-        public GameObject particleDieEffect;
+        [SerializeField] private float health = 50;
+        [SerializeField] private float enemyDamageAmount = 15;
+        [SerializeField] private int lives = 3;
+        [SerializeField] private GameObject attackTarget;
+        [SerializeField] private GameObject particleDieEffect;
 
-        public Animator animator;
+        private Animator _animator;
         private static readonly int DeadTriggerAnim = Animator.StringToHash("dead");
         private static readonly int AttackTriggerAnim = Animator.StringToHash("attack");
         private static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
 
-        public AudioSource AttackAudioSource;
+        [SerializeField] private AudioSource attackAudioSource;
 
-        public NavMeshAgent agent;
+        [SerializeField] private NavMeshAgent agent;
 
-        public Transform player;
+        [SerializeField] private Transform player;
 
-        public LayerMask groundLayer, playerLayer;
+        [SerializeField] private LayerMask groundLayer, playerLayer;
 
         //Patroling
-        public Vector3 walkPoint;
+        [SerializeField] private Vector3 walkPoint;
+        [SerializeField] private GameObject[] wayPoints;
+
         bool walkPointSet;
-        public float walkPointRange;
+        [SerializeField] private float walkPointRange;
 
         //Attacking
-        public float timeBetweenAttacks;
-        bool alreadyAttacked;
+        [SerializeField] private float timeBetweenAttacks;
+        bool alreadyAttacked = false;
 
         //States
-        public float sightRange, attackRange;
-        public bool playerInSightRange, playerInAttackRange;
+        [SerializeField] private float sightRange;
+        [SerializeField] private float attackRange;
+
+        [SerializeField] private bool playerInSightRange;
+        [SerializeField] private bool playerInAttackRange;
 
         private void Awake()
         {
-            animator = GetComponent<Animator>();
+            _animator = GetComponent<Animator>();
             agent = GetComponent<NavMeshAgent>();
 
-            _iPlayer = player.parent.GetComponent<IPlayer>();
+            _iFpsPlayer = player.parent.GetComponent<IFpsPlayer>();
+        }
+
+        private void Start()
+        {
+            GoToRandomWayPoint();
         }
 
         public void OnCollisionEnter(Collision collision)
@@ -80,6 +92,7 @@ namespace Characters
             if (_stunForSeconds <= 0)
             {
                 Unstun();
+                _animator.SetFloat(SpeedFloatAnim, agent.velocity.magnitude);
             }
 
             //Check for InSight and InAttack range
@@ -93,22 +106,9 @@ namespace Characters
 
         private void Patrol()
         {
-            if (!walkPointSet) FindRandomWalkPoint();
-
-            if (walkPointSet)
-                if (agent.SetDestination(walkPoint))
-                {
-                    animator.SetFloat("speed", 1);
-                }
+            if (agent.remainingDistance < 0.5) GoToRandomWayPoint();
 
             Vector3 distanceToWalkPoint = transform.position - walkPoint;
-
-            //Walkpoint reached
-            if (distanceToWalkPoint.magnitude < 1f)
-            {
-                walkPointSet = false;
-                animator.SetFloat("speed", 0);
-            }
 
             transform.LookAt(walkPoint);
         }
@@ -126,6 +126,13 @@ namespace Characters
                 walkPointSet = true;
         }
 
+        private void GoToRandomWayPoint()
+        {
+            int randomIndex = Random.Range(0, wayPoints.Length);
+            walkPoint = wayPoints[randomIndex].transform.position;
+            agent.SetDestination(walkPoint);
+        }
+
         public void AttackTarget()
         {
             transform.LookAt(attackTarget.transform.position);
@@ -135,9 +142,9 @@ namespace Characters
             if (!alreadyAttacked)
             {
                 Debug.Log("AttackTarget with 15 damage.");
-                AttackAudioSource.Play();
-                StartCoroutine(_iPlayer.TakeDamage(enemyDamageAmount));
-                animator.SetTrigger(AttackTriggerAnim);
+                attackAudioSource.Play();
+                StartCoroutine(_iFpsPlayer.TakeDamage(enemyDamageAmount));
+                _animator.SetTrigger(AttackTriggerAnim);
                 ///End of attack
 
                 alreadyAttacked = true;
@@ -156,7 +163,7 @@ namespace Characters
             this._stunForSeconds = damageAmount;
             Debug.Log("StopMovingForSeconds: " + damageAmount);
 
-            animator.enabled = false;
+            _animator.enabled = false;
             agent.SetDestination(transform.position);
             agent.isStopped = true;
         }
@@ -165,13 +172,13 @@ namespace Characters
         {
             Debug.Log("Stop attacking");
             this._stunForSeconds = 200;
-            animator.enabled = false;
+            _animator.enabled = false;
             agent.isStopped = true;
         }
 
         private void Unstun()
         {
-            animator.enabled = true;
+            _animator.enabled = true;
             agent.isStopped = false;
         }
 
@@ -180,7 +187,7 @@ namespace Characters
         {
             Debug.Log("FollowTarget ");
             agent.SetDestination(attackTarget.transform.position);
-            animator.SetFloat(SpeedFloatAnim, 1);
+            _animator.SetFloat(SpeedFloatAnim, 1);
         }
 
         public float GetHealth()
@@ -202,7 +209,7 @@ namespace Characters
         private IEnumerator Die()
         {
             Debug.Log("Enemy is dead.");
-            animator.SetTrigger(DeadTriggerAnim);
+            _animator.SetTrigger(DeadTriggerAnim);
 
             yield return new WaitForSecondsRealtime(2f);
 

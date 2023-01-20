@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,10 @@ using Weapons;
 
 namespace Characters
 {
-    public class FpsPlayerController : BasePlayerController
+    public class FpsPlayerController : BasePlayerController, IFpsPlayer
     {
+        [SerializeField] private GameObject charactersContainer;
+
         [SerializeField] private Transform shootFromPoint;
         [SerializeField] private GameObject scratchView;
 
@@ -38,7 +41,7 @@ namespace Characters
             Cursor.lockState = CursorLockMode.Confined;
         }
 
-        protected override void Update()
+        protected void FixedUpdate()
         {
             #if ENABLE_INPUT_SYSTEM
             HandleRotation();
@@ -51,7 +54,10 @@ namespace Characters
             HandleMovement_OldInputSystem();
             RunIfAltKeyIsPressed();
             #endif
+        }
 
+        protected override void Update()
+        {
             //velocity.y -= _gravity * Time.deltaTime;
             //characterController.Move(velocity * Time.deltaTime);
 
@@ -128,7 +134,7 @@ namespace Characters
 
         #region IPlayer methods
 
-        public override IEnumerator TakeDamage(float damageAmount)
+        public IEnumerator TakeDamage(float damageAmount)
         {
             _currentHealth -= damageAmount;
             if (_currentHealth <= 0)
@@ -154,7 +160,7 @@ namespace Characters
             }
         }
 
-        public override void Heal(int healAmount)
+        public void Heal(int healAmount)
         {
             _currentHealth += healAmount;
             if (_currentHealth > GameData.MaxPlayerHealth)
@@ -164,11 +170,6 @@ namespace Characters
 
             PlayerPrefs.SetFloat(PlayerPrefNames.Health, _currentHealth);
             healthBar.SetHealth(_currentHealth);
-        }
-
-        public override void GrabVaccineBag()
-        {
-            Debug.Log("Not implemented here.");
         }
 
         #endregion

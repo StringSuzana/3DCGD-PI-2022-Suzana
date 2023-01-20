@@ -11,7 +11,7 @@ using Weapons;
 
 namespace Characters
 {
-    public abstract class BasePlayerController : MonoBehaviour, IPlayer
+    public abstract class BasePlayerController : MonoBehaviour
     {
         [SerializeField]
         protected GameObject gameManager;
@@ -20,8 +20,6 @@ namespace Characters
         [SerializeField]
         protected HealthBar healthBar;
         [SerializeField]
-        protected GameObject charactersContainer;
-        [SerializeField]
         protected CharacterController characterController;
         [SerializeField]
         protected Animator animator;
@@ -29,6 +27,8 @@ namespace Characters
         protected float sensitivity;
         [SerializeField]
         protected float speed;
+
+        protected float _lastSpeed;
         [SerializeField]
         protected float jumpHeight;
         [SerializeField]
@@ -112,6 +112,7 @@ namespace Characters
             {
                 animator.SetBool(Run, true);
                 speed += 5;
+                _lastSpeed = speed;
                 PlayRunSoundFx();
             }
             else if (_keyboard.altKey.isPressed)
@@ -122,6 +123,7 @@ namespace Characters
             else if (_keyboard.altKey.wasReleasedThisFrame)
             {
                 speed -= 5;
+                _lastSpeed = speed;
                 animator.SetBool(Run, false);
             }
         }
@@ -173,13 +175,15 @@ namespace Characters
                 velocity.y = 0;
             }
 
-            AnimateMovement(moveVector);
             characterController.Move(moveVector + velocity);
+            AnimateMovement(moveVector);
         }
 
 
         protected void AnimateMovement(Vector3 moveVector)
         {
+            animator.SetFloat(SpeedFloatAnim, speed);
+
             if (IsPlayerRunning()) return;
             if (moveVector.x > 0 || moveVector.z > 0)
             {
@@ -224,13 +228,6 @@ namespace Characters
                 StartCoroutine(JumpAction());
             }
         }
-
-        #region IPlayer methods
-
-        public abstract IEnumerator TakeDamage(float damageAmount);
-        public abstract void Heal(int healAmount);
-        public abstract void GrabVaccineBag();
-
-        #endregion
+     
     }
 }

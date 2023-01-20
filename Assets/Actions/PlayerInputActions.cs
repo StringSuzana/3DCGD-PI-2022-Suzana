@@ -75,6 +75,14 @@ namespace MyGame
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Grab"",
+                    ""type"": ""Button"",
+                    ""id"": ""016c01de-d2e7-4e07-adc5-961071b124c0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -322,6 +330,17 @@ namespace MyGame
                 },
                 {
                     ""name"": """",
+                    ""id"": ""60c1a091-c002-4135-ad1f-8cf3e43061e5"",
+                    ""path"": ""*/{SecondaryTrigger}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""WeaponChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""0e8e1b81-28ea-44fb-ac99-3cccb7b0c902"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -339,6 +358,39 @@ namespace MyGame
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ee8c272-b8d8-4667-aac8-53e6aca01ad7"",
+                    ""path"": ""<Joystick>/stick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb84fecb-e607-47e7-910e-cdbcfbda30e7"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b847c9c-7a88-45b7-8b29-76d382442994"",
+                    ""path"": ""<Joystick>/stick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Grab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -923,6 +975,7 @@ namespace MyGame
             m_Player_WeaponChange = m_Player.FindAction("WeaponChange", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+            m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -991,6 +1044,7 @@ namespace MyGame
         private readonly InputAction m_Player_WeaponChange;
         private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Jump;
+        private readonly InputAction m_Player_Grab;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -1002,6 +1056,7 @@ namespace MyGame
             public InputAction @WeaponChange => m_Wrapper.m_Player_WeaponChange;
             public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
+            public InputAction @Grab => m_Wrapper.m_Player_Grab;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1032,6 +1087,9 @@ namespace MyGame
                     @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                     @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                     @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                    @Grab.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
+                    @Grab.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
+                    @Grab.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1057,6 +1115,9 @@ namespace MyGame
                     @Jump.started += instance.OnJump;
                     @Jump.performed += instance.OnJump;
                     @Jump.canceled += instance.OnJump;
+                    @Grab.started += instance.OnGrab;
+                    @Grab.performed += instance.OnGrab;
+                    @Grab.canceled += instance.OnGrab;
                 }
             }
         }
@@ -1220,6 +1281,7 @@ namespace MyGame
             void OnWeaponChange(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
+            void OnGrab(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

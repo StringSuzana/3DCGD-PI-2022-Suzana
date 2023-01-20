@@ -14,7 +14,7 @@ namespace MyGame
         private void OnTriggerEnter(Collider other)
         {
             //Only player can get health
-            if (other.gameObject.TryGetComponent(out IPlayer player))
+            if (other.gameObject.TryGetComponent(out IFpsPlayer player))
             {
                 Debug.Log($@"Player will gain {healthAmount}");
                 player.Heal(healthAmount);
