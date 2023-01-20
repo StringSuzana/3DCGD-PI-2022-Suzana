@@ -18,6 +18,7 @@ namespace Weapons
             if (maxLifeTime <= 0)
             {
                 Instantiate(particleEffect, transform.position, transform.rotation);
+                Destroy(particleEffect);
                 Destroy(gameObject);
             }
         }
