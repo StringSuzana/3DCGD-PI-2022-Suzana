@@ -1537,7 +1537,6 @@ MonoBehaviour:
   camera: {fileID: 1128103675326533138}
   healthBar: {fileID: 0}
   charactersContainer: {fileID: 0}
-  shootFromPoint: {fileID: 1128103675312800783}
   characterController: {fileID: 1128103674809716363}
   animator: {fileID: 1128103675164471553}
   sensitivity: 40
@@ -1548,11 +1547,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  scratchView: {fileID: 0}
-  audioSource: {fileID: 1128103674809716365}
+  sfxAudioSource: {fileID: 1128103674809716365}
   walkAudioClip: {fileID: 8300000, guid: 2ff50118b66fecf44bbd5a0749b4deac, type: 3}
-  jumpAudioClip: {fileID: 8300000, guid: b5c1aa0c82f80ec4e96f7bab215b4667, type: 3}
-  hurtAudioClip: {fileID: 8300000, guid: bea876438b0ce8642ab957246fb4dfa0, type: 3}
+  jumpAudioClip: {fileID: 8300000, guid: 28c598a545d4f8e43bb287629ea034c3, type: 3}
+  hurtAudioClip: {fileID: 8300000, guid: adc45099c0a74b24bacc57357ddca31c, type: 3}
+  shootFromPoint: {fileID: 1128103675312800783}
+  scratchView: {fileID: 0}
 --- !u!82 &1128103674809716365
 AudioSource:
   m_ObjectHideFlags: 0
