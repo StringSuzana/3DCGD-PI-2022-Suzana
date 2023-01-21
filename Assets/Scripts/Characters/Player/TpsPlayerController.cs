@@ -15,17 +15,15 @@ namespace Characters
 {
     public class TpsPlayerController : BasePlayerController, ITpsPlayer
     {
-        
-        [SerializeField]
-        private float grabDistance;
+        [SerializeField] private CinemachineVirtualCamera virtualCamera;
+        [SerializeField] private float grabDistance;
         [SerializeField] private Transform grabPoint;
 
-        [SerializeField]
-        private AudioClip grabAudioClip;
+        [SerializeField] private AudioClip grabAudioClip;
         private InputAction _grab;
-        [SerializeField]
-        private InventoryObject inventoryOfBags;
+        [SerializeField] private InventoryObject inventoryOfBags;
 
+        #region Unity methods
         protected override void Start()
         {
             _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
@@ -36,12 +34,13 @@ namespace Characters
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
-
         }
+
         protected override void Update()
         {
             HandleMovement();
             HandleRotation();
+            RunIfAltKeyIsPressed();
             HandleInteractions();
         }
 
@@ -59,30 +58,15 @@ namespace Characters
             _grab.Disable();
         }
 
-
-        private void HandleMovement()
+        protected new void OnDrawGizmos()
         {
-            float moveX = _move.ReadValue<Vector2>().x;
-            float moveZ = _move.ReadValue<Vector2>().y;
-
-            Transform t = characterController.transform;
-            Vector3 moveVector = t.forward * moveZ;
-            moveVector += t.right * moveX;
-            moveVector *= speed * Time.deltaTime;
-
-            AnimateMovement(moveVector);
-            characterController.Move(moveVector);
+            base.OnDrawGizmos();
+            Gizmos.DrawSphere(grabPoint.position, grabDistance);
         }
 
-        public override bool IsVictory()
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public override void GameOver()
-        {
-            throw new System.NotImplementedException();
-        }
+
+        #endregion
 
         protected override void HandleRotation()
         {
@@ -94,11 +78,7 @@ namespace Characters
             // Rotate the player
             transform.Rotate(Vector3.up * mouseX);
 
-            virtualCamera.m_YAxis.Value += mouseX * sensitivity;
-
-
-            //camera.transform.Rotate(Vector3.left * mouseY);
-            //camera.transform.LookAt(transform);
+            virtualCamera.transform.Rotate(Vector3.left * mouseY * 0.5f);
         }
 
         private void Grab(InputAction.CallbackContext obj)
@@ -113,13 +93,14 @@ namespace Characters
                 }
             }
         }
-       
+
         public void GrabVaccineBag(BagObject bag)
         {
             Debug.Log("Add bag to inventory");
             inventoryOfBags.AddItem(bag, 1);
             Destroy(bag);
         }
+
         private void HandleInteractions()
         {
             if (!_keyboard.eKey.wasPressedThisFrame) return;
@@ -131,12 +112,15 @@ namespace Characters
                 npc?.Interact();
             }
         }
-        protected new void OnDrawGizmos()
+
+        public override bool IsVictory()
         {
-            base.OnDrawGizmos();
-            Gizmos.DrawSphere(grabPoint.position, grabDistance);
+            throw new System.NotImplementedException();
         }
 
-      
+        public override void GameOver()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

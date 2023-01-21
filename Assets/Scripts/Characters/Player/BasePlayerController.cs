@@ -14,39 +14,22 @@ namespace Characters
 {
     public abstract class BasePlayerController : MonoBehaviour
     {
-        [SerializeField]
-        protected GameObject gameManager;
-        [SerializeField] protected CinemachineFreeLook virtualCamera;
-        // [SerializeField]
-        // protected Camera camera;
-        [SerializeField]
-        protected HealthBar healthBar;
-        [SerializeField]
-        protected CharacterController characterController;
-        [SerializeField]
-        protected Animator animator;
-        [SerializeField]
-        protected float sensitivity;
-        [SerializeField]
-        protected float speed;
+        [SerializeField] protected GameObject gameManager;
+        [SerializeField] protected HealthBar healthBar;
+        [SerializeField] protected CharacterController characterController;
+        [SerializeField] protected Animator animator;
+        [SerializeField] protected float sensitivity;
+        [SerializeField] protected float speed;
 
         protected float _lastSpeed;
-        [SerializeField]
-        protected float jumpHeight;
-        [SerializeField]
-        protected Vector3 velocity = Vector3.zero;
-        [SerializeField]
-        protected Transform groundDetector;
-        [SerializeField]
-        protected LayerMask groundLayer;
-        [SerializeField]
-        protected AudioSource sfxAudioSource;
-        [SerializeField]
-        protected AudioClip walkAudioClip;
-        [SerializeField]
-        protected AudioClip jumpAudioClip;
-        [SerializeField]
-        protected AudioClip hurtAudioClip;
+        [SerializeField] protected float jumpHeight;
+        [SerializeField] protected Vector3 velocity = Vector3.zero;
+        [SerializeField] protected Transform groundDetector;
+        [SerializeField] protected LayerMask groundLayer;
+        [SerializeField] protected AudioSource sfxAudioSource;
+        [SerializeField] protected AudioClip walkAudioClip;
+        [SerializeField] protected AudioClip jumpAudioClip;
+        [SerializeField] protected AudioClip hurtAudioClip;
 
         protected float _currentHealth;
         protected PlayerInputActions _playerInput;
@@ -138,6 +121,7 @@ namespace Characters
             sfxAudioSource.pitch = 0.5f;
             sfxAudioSource.PlayOneShot(walkAudioClip);
         }
+
         protected void PlayJumpSoundFx()
         {
             if (sfxAudioSource.isPlaying)
@@ -187,7 +171,7 @@ namespace Characters
             animator.SetFloat(SpeedFloatAnim, speed);
 
             if (IsPlayerRunning()) return;
-            if (moveVector.x > 0 || moveVector.z > 0)
+            if (moveVector.x != 0 || moveVector.z != 0)
             {
                 animator.SetFloat(SpeedFloatAnim, speed);
                 PlayWalkSoundFx();
@@ -221,8 +205,8 @@ namespace Characters
             velocity.y = jumpHeight;
             PlayJumpSoundFx();
             Debug.Log($"[JumpAction 2] Velocity.y {velocity.y} ");
-
         }
+
         protected void JumpInput(InputAction.CallbackContext ctx)
         {
             if (IsGrounded())
@@ -230,6 +214,5 @@ namespace Characters
                 StartCoroutine(JumpAction());
             }
         }
-     
     }
 }

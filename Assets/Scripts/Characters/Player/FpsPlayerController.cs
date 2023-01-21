@@ -15,8 +15,8 @@ namespace Characters
 {
     public class FpsPlayerController : BasePlayerController, IFpsPlayer
     {
+        [SerializeField] protected Camera camera;
         [SerializeField] private GameObject charactersContainer;
-
         [SerializeField] private Transform shootFromPoint;
         [SerializeField] private GameObject scratchView;
 
@@ -125,7 +125,7 @@ namespace Characters
             _rotation -= y;
             _rotation = Mathf.Clamp(_rotation, -70f, 60f);
 
-            virtualCamera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
+            camera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
             shootFromPoint.localRotation = Quaternion.Euler(_rotation,   0f, 0f);
         }
 
