@@ -1334,7 +1334,6 @@ GameObject:
   - component: {fileID: 8051291444371501554}
   - component: {fileID: 8051291444125001614}
   - component: {fileID: 8051291444125001608}
-  - component: {fileID: 8051291444125001609}
   - component: {fileID: 8051291444125001611}
   m_Layer: 9
   m_Name: TpsPlayer
@@ -1477,25 +1476,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &8051291444125001609
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8051291444125001610}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &8051291444125001611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1512,7 +1492,7 @@ MonoBehaviour:
   camera: {fileID: 8051291444646274839}
   healthBar: {fileID: 0}
   characterController: {fileID: 8051291444125001614}
-  animator: {fileID: 8051291444125001609}
+  animator: {fileID: 0}
   sensitivity: 40
   speed: 3
   jumpHeight: 0.3
