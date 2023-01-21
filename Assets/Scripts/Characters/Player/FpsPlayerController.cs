@@ -125,7 +125,7 @@ namespace Characters
             _rotation -= y;
             _rotation = Mathf.Clamp(_rotation, -70f, 60f);
 
-            camera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
+            virtualCamera.transform.localRotation = Quaternion.Euler(_rotation, 0f, 0f);
             shootFromPoint.localRotation = Quaternion.Euler(_rotation,   0f, 0f);
         }
 

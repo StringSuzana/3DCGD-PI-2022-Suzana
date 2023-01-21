@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Data;
 using Global;
 using MyGame;
@@ -15,8 +16,9 @@ namespace Characters
     {
         [SerializeField]
         protected GameObject gameManager;
-        [SerializeField]
-        protected Camera camera;
+        [SerializeField] protected CinemachineFreeLook virtualCamera;
+        // [SerializeField]
+        // protected Camera camera;
         [SerializeField]
         protected HealthBar healthBar;
         [SerializeField]

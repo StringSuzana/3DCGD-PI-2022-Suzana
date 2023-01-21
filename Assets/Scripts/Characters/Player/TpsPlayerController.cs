@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Data;
 using Global;
 using MyGame;
@@ -14,6 +15,7 @@ namespace Characters
 {
     public class TpsPlayerController : BasePlayerController, ITpsPlayer
     {
+        
         [SerializeField]
         private float grabDistance;
         [SerializeField] private Transform grabPoint;
@@ -39,6 +41,7 @@ namespace Characters
         protected override void Update()
         {
             HandleMovement();
+            HandleRotation();
             HandleInteractions();
         }
 
@@ -83,14 +86,19 @@ namespace Characters
 
         protected override void HandleRotation()
         {
-            float mouseX = _look.ReadValue<Vector2>().x * sensitivity * Time.deltaTime;
-            float mouseY = _look.ReadValue<Vector2>().y * sensitivity * Time.deltaTime;
+            Vector2 delta = _mouse.delta.ReadValue();
+            float mouseX = delta.x * sensitivity * Time.deltaTime;
+            float mouseY = delta.y * sensitivity * Time.deltaTime;
+
 
             // Rotate the player
             transform.Rotate(Vector3.up * mouseX);
 
-            camera.transform.Rotate(Vector3.left * mouseY);
-            camera.transform.LookAt(transform);
+            virtualCamera.m_YAxis.Value += mouseX * sensitivity;
+
+
+            //camera.transform.Rotate(Vector3.left * mouseY);
+            //camera.transform.LookAt(transform);
         }
 
         private void Grab(InputAction.CallbackContext obj)
