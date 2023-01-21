@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4896609353773983518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5437300673182657343}
+  - component: {fileID: 1989687674722265951}
+  - component: {fileID: 1998811352433354382}
+  m_Layer: 0
+  m_Name: Healt Pickup Box Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5437300673182657343
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4896609353773983518}
+  m_LocalRotation: {x: 0.032403454, y: 0.6714061, z: -0.01966417, w: 0.74011976}
+  m_LocalPosition: {x: -0.23306726, y: -2.1457207, z: -0.9635093}
+  m_LocalScale: {x: 1.5584502, y: 1.5584495, z: 1.55845}
+  m_Children: []
+  m_Father: {fileID: 8457421386168912302}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1989687674722265951
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4896609353773983518}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 15.986061, y: 6.0079975, z: 16.875177}
+  m_Center: {x: 3.2541962, y: 1.2187157, z: 0.11676884}
+--- !u!114 &1998811352433354382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4896609353773983518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 0
+  priority: 0
+  blendDistance: 1
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: b9bc772a188134e408fb6121dc73ee3a, type: 2}
 --- !u!1 &8457421385204046684
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +207,7 @@ Transform:
   m_LocalScale: {x: 0.6076465, y: 0.6076466, z: 0.60764647}
   m_Children:
   - {fileID: 8457421385204046687}
+  - {fileID: 5437300673182657343}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

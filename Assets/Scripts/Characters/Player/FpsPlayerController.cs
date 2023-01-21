@@ -41,12 +41,13 @@ namespace Characters
             Cursor.lockState = CursorLockMode.Confined;
         }
 
-        protected void FixedUpdate()
+        protected override void Update()
         {
             #if ENABLE_INPUT_SYSTEM
             HandleRotation();
             HandleMovement();
             RunIfAltKeyIsPressed();
+
             #endif
 
             #if ENABLE_LEGACY_INPUT_MANAGER
@@ -54,10 +55,6 @@ namespace Characters
             HandleMovement_OldInputSystem();
             RunIfAltKeyIsPressed();
             #endif
-        }
-
-        protected override void Update()
-        {
             //velocity.y -= _gravity * Time.deltaTime;
             //characterController.Move(velocity * Time.deltaTime);
 

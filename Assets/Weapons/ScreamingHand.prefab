@@ -78,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 5
   bulletRigidBody: {fileID: 4919534465400934176}
-  particleEffect: {fileID: 417543461715254319, guid: 1fe09df7545989d4b8b0ff5f8e34ec12, type: 3}
+  particleEffect: {fileID: 417543461715254319, guid: d47c2d1c84c076c47ad3315f227fb184, type: 3}
 --- !u!114 &5937381929979157522
 MonoBehaviour:
   m_ObjectHideFlags: 0
