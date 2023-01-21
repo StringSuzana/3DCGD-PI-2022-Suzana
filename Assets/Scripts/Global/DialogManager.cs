@@ -8,11 +8,12 @@ namespace Global
 {
     public class DialogManager : MonoBehaviour
     {
-        public Queue<string> sentences; //FIFO
-        public TextMeshProUGUI characterNameTextField;
-        public TextMeshProUGUI dialogTextField;
+        public Queue<string> Sentences; //FIFO
+        public TextMeshProUGUI headerTextField;
+        public TextMeshProUGUI textField;
         public Canvas dialogCanvas;
         public bool isOpened = false;
+        public bool stopTime;
 
         public static DialogManager Instance;
 
@@ -28,18 +29,18 @@ namespace Global
                 return;
             }
 
-            sentences = new Queue<string>();
+            Sentences = new Queue<string>();
         }
 
         public void StartDialogue(Dialogue dialogue)
         {
             dialogCanvas.gameObject.SetActive(true);
-            characterNameTextField.SetText(dialogue.name);
-            sentences.Clear();
+            headerTextField.SetText(dialogue.name);
+            Sentences.Clear();
 
             foreach (var sentence in dialogue.sentences)
             {
-                sentences.Enqueue(sentence);
+                Sentences.Enqueue(sentence);
             }
 
             DisplayNextSentece();
@@ -51,29 +52,29 @@ namespace Global
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                Time.timeScale = 0;
+                Time.timeScale = stopTime == true ? 0 : 1;
             }
         }
 
         public void DisplayNextSentece()
         {
-            if (sentences.Count == 0)
+            if (Sentences.Count == 0)
             {
                 EndDialogue();
                 return;
             }
 
-            string sentence = sentences.Dequeue();
+            string sentence = Sentences.Dequeue();
             StopAllCoroutines();
             StartCoroutine(TypeSentence(sentence));
         }
 
         IEnumerator TypeSentence(string sentence)
         {
-            dialogTextField.text = "";
+            textField.text = "";
             foreach (char letter in sentence.ToCharArray())
             {
-                dialogTextField.text += letter;
+                textField.text += letter;
                 yield return new WaitForSecondsRealtime(letterTypingSpeed);
             }
         }

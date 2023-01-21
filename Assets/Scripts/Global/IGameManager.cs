@@ -6,7 +6,7 @@ namespace Global
     public interface IGameManager
     {
         public void PlayGameOverTimeline();
-        public void PlayLevelCompleted();
+        public void PlayLevelCompletedTimeline();
 
     }
 }

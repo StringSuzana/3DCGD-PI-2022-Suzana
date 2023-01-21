@@ -3,22 +3,22 @@ using UnityEngine;
 namespace Global
 {
 
-    public class GameIntro : MonoBehaviour
+    public class DialoguePlayer : MonoBehaviour
     {
         [SerializeField]
         private Dialogue dialogue;
-        public void TriggerDialogue(Dialogue gameIntro)
+        public void TriggerDialogue()
         {
-            foreach (var s in gameIntro.sentences)
+            foreach (var s in dialogue.sentences)
             {
                // Debug.Log(s);
             }
-            DialogManager.Instance.StartDialogue(gameIntro);
+            DialogManager.Instance.StartDialogue(dialogue);
         }
 
         void Start()
         {
-            TriggerDialogue(dialogue);
+           // TriggerDialogue();
         }
 
     }

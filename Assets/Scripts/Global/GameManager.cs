@@ -17,13 +17,20 @@ namespace Global
         [SerializeField] private GameObject levelCompletedCanvas;
 
 
-        public void PlayLevelCompleted()
+        public void PlayLevelCompletedTimeline()
         {
             AudioManager.Instance.StopAllMusic();
             AudioManager.Instance.StopAllSounds();
             levelCompletedTimeline.Play();
         }
+        public void PlayGameOverTimeline()
+        {
+            AudioManager.Instance.StopAllMusic();
+            AudioManager.Instance.StopAllSounds();
+            Cursor.lockState = CursorLockMode.Locked;
 
+            gameOverTimeline.Play();
+        }
         public void ShowLevelCompletedCanvas()
         {
             levelCompletedCanvas.SetActive(true);
@@ -54,14 +61,7 @@ namespace Global
             SceneManager.LoadScene(nextLevelName);
         }
 
-        public void PlayGameOverTimeline()
-        {
-            AudioManager.Instance.StopAllMusic();
-            AudioManager.Instance.StopAllSounds();
-            Cursor.lockState = CursorLockMode.Locked;
 
-            gameOverTimeline.Play();
-        }
 
         public void GameOver()
         {
