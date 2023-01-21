@@ -1,15 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Cinemachine;
-using Data;
-using Global;
 using MyGame;
-using UnityEditor.Recorder.Input;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
-using Weapons;
 
 namespace Characters
 {
@@ -63,9 +55,6 @@ namespace Characters
             base.OnDrawGizmos();
             Gizmos.DrawSphere(grabPoint.position, grabDistance);
         }
-
-
-
         #endregion
 
         protected override void HandleRotation()
@@ -80,7 +69,22 @@ namespace Characters
 
             virtualCamera.transform.Rotate(Vector3.left * mouseY * 0.5f);
         }
+        protected override void PlayWalkSoundFx()
+        {
+            if (sfxAudioSource.isPlaying)
+                return;
 
+            sfxAudioSource.pitch = 1.5f;
+            sfxAudioSource.PlayOneShot(walkAudioClip);
+        }
+
+        protected override void PlayRunSoundFx()
+        {
+            if (sfxAudioSource.isPlaying)
+                return;
+            sfxAudioSource.pitch = 2.6f;
+            sfxAudioSource.PlayOneShot(walkAudioClip);
+        }
         private void Grab(InputAction.CallbackContext obj)
         {
             RaycastHit hit;

@@ -113,7 +113,7 @@ namespace Characters
             }
         }
 
-        protected void PlayWalkSoundFx()
+        protected virtual void PlayWalkSoundFx()
         {
             if (sfxAudioSource.isPlaying)
                 return;
@@ -122,7 +122,7 @@ namespace Characters
             sfxAudioSource.PlayOneShot(walkAudioClip);
         }
 
-        protected void PlayJumpSoundFx()
+        protected virtual void PlayJumpSoundFx()
         {
             if (sfxAudioSource.isPlaying)
                 sfxAudioSource.Stop();
@@ -131,7 +131,7 @@ namespace Characters
             sfxAudioSource.PlayOneShot(jumpAudioClip);
         }
 
-        protected void PlayRunSoundFx()
+        protected virtual void PlayRunSoundFx()
         {
             if (sfxAudioSource.isPlaying)
                 return;
