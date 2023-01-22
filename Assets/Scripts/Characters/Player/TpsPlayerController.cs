@@ -14,8 +14,15 @@ namespace Characters
         [SerializeField] private AudioClip grabAudioClip;
         private InputAction _grab;
         [SerializeField] private InventoryObject inventoryOfBags;
+        private bool _stopPlayerMotion;
 
         #region Unity methods
+
+        protected new void Awake()
+        {
+            base.Awake();
+            _stopPlayerMotion = false;
+        }
         protected override void Start()
         {
             _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
@@ -30,9 +37,13 @@ namespace Characters
 
         protected override void Update()
         {
-            HandleMovement();
-            HandleRotation();
-            RunIfAltKeyIsPressed();
+            if (_stopPlayerMotion ==  false)
+            {
+                HandleMovement();
+                HandleRotation();
+                RunIfAltKeyIsPressed();
+            }
+
             HandleInteractions();
         }
 
@@ -55,6 +66,7 @@ namespace Characters
             base.OnDrawGizmos();
             Gizmos.DrawSphere(grabPoint.position, grabDistance);
         }
+
         #endregion
 
         protected override void HandleRotation()
@@ -69,6 +81,7 @@ namespace Characters
 
             virtualCamera.transform.Rotate(Vector3.left * mouseY * 0.5f);
         }
+
         protected override void PlayWalkSoundFx()
         {
             if (sfxAudioSource.isPlaying)
@@ -85,6 +98,7 @@ namespace Characters
             sfxAudioSource.pitch = 2.6f;
             sfxAudioSource.PlayOneShot(walkAudioClip);
         }
+
         private void Grab(InputAction.CallbackContext obj)
         {
             RaycastHit hit;
@@ -125,6 +139,11 @@ namespace Characters
         public override void GameOver()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void StopPlayerMotion(bool stop)
+        {
+            _stopPlayerMotion = stop;
         }
     }
 }

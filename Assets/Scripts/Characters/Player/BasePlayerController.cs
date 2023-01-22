@@ -50,7 +50,7 @@ namespace Characters
 
         #region Unity methods
 
-        private void Awake()
+        protected void Awake()
         {
             _playerInput = new PlayerInputActions();
             _mouse = InputSystem.GetDevice<Mouse>();
