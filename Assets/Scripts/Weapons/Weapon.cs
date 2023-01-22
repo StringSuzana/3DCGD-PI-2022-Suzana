@@ -16,20 +16,25 @@ namespace Weapons
         public abstract void Shoot();
     }
 
-    public class CatnipPlanter : Weapon
+    public class BagThrower : Weapon
     {
-        public CatnipPlanter(Transform transform) : base(transform, "Catnip Tool")
+        private readonly GameObject _bag;
+
+        public BagThrower(Transform transform) : base(transform, "Bag thrower")
         {
+            _bag = BulletRepo.GetBullet(BulletPrefabs.VaccineBag);
         }
 
         public override void Shoot()
         {
             if (!Physics.Raycast(Origin.position, Origin.forward, out RaycastHit hit, 100f)) return;
 
-            //TODO: instantiate catnip GameObject
-            var createdObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            createdObject.transform.position = hit.point + hit.normal * 0.5f;
+            var createdObject = GameObject.Instantiate(_bag);
+            createdObject.transform.position = Origin.position;
             createdObject.layer = 8;
+
+            var rb = createdObject.GetComponent<Rigidbody>();
+            rb.AddForce(Origin.forward * 5f, ForceMode.Impulse);
         }
     }
 

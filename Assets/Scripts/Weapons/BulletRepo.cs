@@ -9,6 +9,7 @@ namespace Weapons
         [SerializeField] private GameObject smallBullet;
         [SerializeField] private GameObject bigBullet;
         [SerializeField] private GameObject heartBullet;
+        [SerializeField] private GameObject vaccineBag;
 
         private void Awake()
         {
@@ -33,6 +34,8 @@ namespace Weapons
                     return BulletRepoShared.bigBullet;
                 case BulletPrefabs.HeartBullet:
                     return BulletRepoShared.heartBullet;
+                case BulletPrefabs.VaccineBag:
+                    return BulletRepoShared.vaccineBag;
                 default:
                     return BulletRepoShared.smallBullet;
             }
@@ -43,6 +46,7 @@ namespace Weapons
     {
         SmallBullet,
         BigBullet,
-        HeartBullet
+        HeartBullet,
+        VaccineBag
     }
 }

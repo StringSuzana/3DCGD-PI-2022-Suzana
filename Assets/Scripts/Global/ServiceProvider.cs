@@ -10,7 +10,7 @@ namespace Global
         }
         public static IWeaponService MockWeaponService()
         {
-            return new AnotherWeapoenService();
+            return new AnotherWeaponService();
         }
     }
 }
