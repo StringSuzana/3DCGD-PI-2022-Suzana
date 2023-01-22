@@ -63,4 +63,5 @@ public class GameTimer : MonoBehaviour
             inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.MainVaccineBag)!.amount;
         return mainBagCount == GameData.MaxMainBag;
     }
+
 }
