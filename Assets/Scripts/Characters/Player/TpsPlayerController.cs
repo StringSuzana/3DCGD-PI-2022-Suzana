@@ -14,14 +14,14 @@ namespace Characters
         [SerializeField] private AudioClip grabAudioClip;
         private InputAction _grab;
         [SerializeField] private InventoryObject inventoryOfBags;
-        private bool _stopPlayerMotion;
+        [SerializeField] private bool _stopPlayerMotion;
 
         #region Unity methods
 
         protected new void Awake()
         {
             base.Awake();
-            _stopPlayerMotion = false;
+           _stopPlayerMotion = false;
         }
         protected override void Start()
         {
