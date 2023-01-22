@@ -17,7 +17,7 @@ namespace Characters
         [SerializeField] private AudioClip grabAudioClip;
         private InputAction _grab;
         private bool _enableGrab = false;
-        private Item _itemForGrab;
+        private Item _itemForGrab; 
         [SerializeField] private InventoryObject inventoryOfBags;
         [SerializeField] private bool _stopPlayerMotion;
 
@@ -34,11 +34,7 @@ namespace Characters
             instructionsCanvas.gameObject.SetActive(false);
 
             _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
-            if (inventoryOfBags == null)
-            {
-                inventoryOfBags = ScriptableObject.CreateInstance<InventoryObject>();
-            }
-
+            
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
@@ -82,7 +78,6 @@ namespace Characters
             Vector2 delta = _mouse.delta.ReadValue();
             float mouseX = delta.x * sensitivity * Time.deltaTime;
             float mouseY = delta.y * sensitivity * Time.deltaTime;
-
 
             // Rotate the player
             transform.Rotate(Vector3.up * mouseX);

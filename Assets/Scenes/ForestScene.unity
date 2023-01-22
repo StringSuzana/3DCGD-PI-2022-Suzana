@@ -6551,6 +6551,7 @@ MonoBehaviour:
   inventoryCanvas: {fileID: 1969244108}
   mainBagText: {fileID: 394687764}
   bagsCountText: {fileID: 2060019543}
+  inventoryOfBags: {fileID: 11400000, guid: ae0f598f8b472ee44ade32ef88b9e8a9, type: 2}
 --- !u!4 &557401919 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f2b0dfca5f6191542b7f738930142fd6, type: 3}
@@ -64845,7 +64846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1674862007
 Transform:
   m_ObjectHideFlags: 0
