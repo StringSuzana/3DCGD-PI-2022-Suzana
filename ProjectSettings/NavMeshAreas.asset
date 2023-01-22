@@ -12,9 +12,9 @@ NavMeshProjectSettings:
   - name: Jump
     cost: 2
   - name: Water
+    cost: 3
+  - name: Sand
     cost: 2
-  - name: 
-    cost: 1
   - name: 
     cost: 1
   - name: 
