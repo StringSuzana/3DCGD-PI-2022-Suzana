@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Cinemachine;
 using MyGame;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Characters
     public class TpsPlayerController : BasePlayerController, ITpsPlayer
     {
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
+        [SerializeField] private GameObject bagsContainer;
 
         [SerializeField] private float grabDistance;
         [SerializeField] private Transform grabPoint;
@@ -158,7 +160,7 @@ namespace Characters
 
         public override bool IsVictory()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void GameOver()

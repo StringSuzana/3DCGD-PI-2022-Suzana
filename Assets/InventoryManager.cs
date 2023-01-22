@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using MyGame;
 using TMPro;
 using UnityEngine;
@@ -13,14 +14,12 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private TMP_Text mainBagText;
     [SerializeField] private TMP_Text bagsCountText;
 
-    [Tooltip("Drag from player")] [SerializeField]
-    private InventoryObject inventoryOfBags;
+    [SerializeField] private InventoryObject inventoryOfBags;
 
     private PlayerInputActions _playerInput;
     private InputAction _inventory;
     private bool _openToggle = false;
-    private int maxMainBag = 1;
-    private int maxVaccineBags = 9;
+
 
     private void Awake()
     {
@@ -51,9 +50,9 @@ public class InventoryManager : MonoBehaviour
         Debug.Log("Open inventory");
         inventoryCanvas.gameObject.SetActive(_openToggle);
         mainBagText.text =
-            $"{inventoryOfBags.Container.Count(slot => slot.item.itemType == ItemType.MainVaccineBag)}/{maxMainBag}";
+            $"{inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.MainVaccineBag)!.amount}/{GameData.MaxMainBag}";
         bagsCountText.text =
-            $"{inventoryOfBags.Container.Count(slot => slot.item.itemType == ItemType.VaccineBag)}/{maxVaccineBags}";
+            $"{inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.VaccineBag)!.amount}/{GameData.MaxVaccineBags}";
     }
 
     private void OnDisable()
