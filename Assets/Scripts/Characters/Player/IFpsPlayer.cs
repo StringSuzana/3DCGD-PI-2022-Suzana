@@ -4,19 +4,18 @@ using UnityEngine;
 
 namespace Characters
 {
-    public interface IFpsPlayer: IPlayer
+    public interface IFpsPlayer : IPlayer
     {
         IEnumerator TakeDamage(float damageAmount);
         void Heal(int healAmount);
     }
 
-    public interface ITpsPlayer: IPlayer
+    public interface ITpsPlayer : IPlayer
     {
-        public void GrabVaccineBag(BagObject bag);
+        public void GrabVaccineBag(GameObject itemGameObject, ItemObject bag);
     }
 
     public interface IPlayer
     {
-
     }
 }

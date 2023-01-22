@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using MyGame;
 using UnityEngine;
@@ -13,16 +14,20 @@ namespace Characters
 
         [SerializeField] private AudioClip grabAudioClip;
         private InputAction _grab;
+        private bool _enableGrab = false;
+        private Item _itemForGrab;
         [SerializeField] private InventoryObject inventoryOfBags;
         [SerializeField] private bool _stopPlayerMotion;
 
         #region Unity methods
 
+
         protected new void Awake()
         {
             base.Awake();
-           _stopPlayerMotion = false;
+            _stopPlayerMotion = false;
         }
+
         protected override void Start()
         {
             _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
@@ -37,7 +42,7 @@ namespace Characters
 
         protected override void Update()
         {
-            if (_stopPlayerMotion ==  false)
+            if (_stopPlayerMotion == false)
             {
                 HandleMovement();
                 HandleRotation();
@@ -101,22 +106,45 @@ namespace Characters
 
         private void Grab(InputAction.CallbackContext obj)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, grabDistance))
+            Debug.Log("Grab method");
+            if (_enableGrab && _itemForGrab != null)
             {
-                BagObject bag = hit.collider.GetComponent<BagObject>();
-                if (bag != null)
-                {
-                    GrabVaccineBag(bag);
-                }
+                var itemGameObject = _itemForGrab.gameObject;
+                Debug.Log($"itemGameObject {itemGameObject}");
+                Debug.Log($"_itemForGrab: {_itemForGrab}");
+                Debug.Log($"_itemForGrab.itemObject.name: {_itemForGrab.itemObject.name}");
+
+                GrabVaccineBag(itemGameObject, _itemForGrab.itemObject);
             }
         }
 
-        public void GrabVaccineBag(BagObject bag)
+        public void OnTriggerEnter(Collider other)
+        {
+            var item = other.GetComponent<Item>();
+            if (item != null)
+            {
+                Debug.Log($"OnTriggerEnter {item}");
+                _enableGrab = true;
+                _itemForGrab = item;
+            }
+        }
+
+        public void OnTriggerExit(Collider other)
+        {
+            var item = other.GetComponent<Item>();
+            if (item != null)
+            {
+                Debug.Log($"OnTriggerExit {item}");
+                _enableGrab = false;
+                _itemForGrab = null;
+            }
+        }
+
+        public void GrabVaccineBag(GameObject itemGameObject, ItemObject bag)
         {
             Debug.Log("Add bag to inventory");
             inventoryOfBags.AddItem(bag, 1);
-            Destroy(bag);
+            Destroy(itemGameObject);
         }
 
         private void HandleInteractions()

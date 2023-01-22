@@ -12,7 +12,8 @@ public abstract class ItemObject : ScriptableObject
 }
 public enum ItemType
 {
-    VaccineBag = 1,
-    FoodBag = 2,
-    HealthBag = 3
+    MainVaccineBag = 1,
+    VaccineBag = 2,
+    FoodBag = 3,
+    HealthBag = 4
 }
