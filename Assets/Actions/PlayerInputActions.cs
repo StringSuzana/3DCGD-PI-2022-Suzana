@@ -83,6 +83,14 @@ namespace MyGame
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6c443fa-b3a8-4897-95ec-36fda5289a8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -391,6 +399,28 @@ namespace MyGame
                     ""processors"": """",
                     ""groups"": ""Joystick;Keyboard&Mouse"",
                     ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e622a8c-ee51-4828-a4c8-88e46d0727ac"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Joystick"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14ec1b5e-b85f-4d53-b678-453f469b2198"",
+                    ""path"": ""<Joystick>/stick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -976,6 +1006,7 @@ namespace MyGame
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
+            m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1045,6 +1076,7 @@ namespace MyGame
         private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Grab;
+        private readonly InputAction m_Player_Inventory;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -1057,6 +1089,7 @@ namespace MyGame
             public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Grab => m_Wrapper.m_Player_Grab;
+            public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1090,6 +1123,9 @@ namespace MyGame
                     @Grab.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
                     @Grab.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
                     @Grab.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
+                    @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                    @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                    @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1118,6 +1154,9 @@ namespace MyGame
                     @Grab.started += instance.OnGrab;
                     @Grab.performed += instance.OnGrab;
                     @Grab.canceled += instance.OnGrab;
+                    @Inventory.started += instance.OnInventory;
+                    @Inventory.performed += instance.OnInventory;
+                    @Inventory.canceled += instance.OnInventory;
                 }
             }
         }
@@ -1282,6 +1321,7 @@ namespace MyGame
             void OnRun(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnGrab(InputAction.CallbackContext context);
+            void OnInventory(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

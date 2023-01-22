@@ -168,6 +168,7 @@ namespace Characters
 
         public override void GameOver()
         {
+            //If game over => remove everything from inventory
             throw new System.NotImplementedException();
         }
 
