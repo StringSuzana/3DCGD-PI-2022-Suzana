@@ -1522,8 +1522,8 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   healthBar: {fileID: 0}
   characterController: {fileID: 8051291444125001614}
-  animator: {fileID: 0}
-  sensitivity: 40
+  animator: {fileID: 8051291444743460868}
+  sensitivity: 8
   speed: 3
   jumpHeight: 0.3
   velocity: {x: 0, y: 0, z: 0}
@@ -1536,10 +1536,12 @@ MonoBehaviour:
   jumpAudioClip: {fileID: 8300000, guid: 28c598a545d4f8e43bb287629ea034c3, type: 3}
   hurtAudioClip: {fileID: 8300000, guid: 9a9f43e971388954a9521b6dd330413d, type: 3}
   virtualCamera: {fileID: 0}
-  grabDistance: 1.58
+  grabDistance: 5.56
   grabPoint: {fileID: 8051291444628679946}
+  instructionsCanvas: {fileID: 0}
   grabAudioClip: {fileID: 8300000, guid: fe3018dbfd00f04429fa5b0feab4ac61, type: 3}
-  inventoryOfBags: {fileID: 0}
+  inventoryOfBags: {fileID: 11400000, guid: ae0f598f8b472ee44ade32ef88b9e8a9, type: 2}
+  _stopPlayerMotion: 0
 --- !u!1 &8051291444224603846
 GameObject:
   m_ObjectHideFlags: 0

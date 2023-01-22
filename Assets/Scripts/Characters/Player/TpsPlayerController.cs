@@ -9,8 +9,10 @@ namespace Characters
     public class TpsPlayerController : BasePlayerController, ITpsPlayer
     {
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
+
         [SerializeField] private float grabDistance;
         [SerializeField] private Transform grabPoint;
+        [SerializeField] private Canvas instructionsCanvas;
 
         [SerializeField] private AudioClip grabAudioClip;
         private InputAction _grab;
@@ -21,7 +23,6 @@ namespace Characters
 
         #region Unity methods
 
-
         protected new void Awake()
         {
             base.Awake();
@@ -30,6 +31,8 @@ namespace Characters
 
         protected override void Start()
         {
+            instructionsCanvas.gameObject.SetActive(false);
+
             _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
             if (inventoryOfBags == null)
             {
@@ -110,10 +113,6 @@ namespace Characters
             if (_enableGrab && _itemForGrab != null)
             {
                 var itemGameObject = _itemForGrab.gameObject;
-                Debug.Log($"itemGameObject {itemGameObject}");
-                Debug.Log($"_itemForGrab: {_itemForGrab}");
-                Debug.Log($"_itemForGrab.itemObject.name: {_itemForGrab.itemObject.name}");
-
                 GrabVaccineBag(itemGameObject, _itemForGrab.itemObject);
             }
         }
@@ -123,6 +122,7 @@ namespace Characters
             var item = other.GetComponent<Item>();
             if (item != null)
             {
+                instructionsCanvas.gameObject.SetActive(true);
                 Debug.Log($"OnTriggerEnter {item}");
                 _enableGrab = true;
                 _itemForGrab = item;
@@ -134,6 +134,7 @@ namespace Characters
             var item = other.GetComponent<Item>();
             if (item != null)
             {
+                instructionsCanvas.gameObject.SetActive(false);
                 Debug.Log($"OnTriggerExit {item}");
                 _enableGrab = false;
                 _itemForGrab = null;
@@ -142,9 +143,10 @@ namespace Characters
 
         public void GrabVaccineBag(GameObject itemGameObject, ItemObject bag)
         {
-            Debug.Log("Add bag to inventory");
+            Debug.Log("Add bag to inventory, destroy item GameObject from scene and hide instructions canvas");
             inventoryOfBags.AddItem(bag, 1);
             Destroy(itemGameObject);
+            instructionsCanvas.gameObject.SetActive(false);
         }
 
         private void HandleInteractions()
