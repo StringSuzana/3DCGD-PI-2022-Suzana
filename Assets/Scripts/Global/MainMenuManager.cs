@@ -60,7 +60,9 @@ namespace Global
                     healthPoints = GameData.MaxPlayerHealth,
                     levelName = LevelNames.FirstLevel,
                     musicVolume = 1,
-                    soundVolume = 1
+                    soundVolume = 1,
+                    vaccineBags = 0,
+                    mainBag = 0
                 };
                 SaveSystem.SavePlayerInfoToJson(playerInfo);
                 PlayerInfo = playerInfo;
@@ -87,6 +89,9 @@ namespace Global
             PlayerPrefs.SetString(PlayerPrefNames.LastPlayedLevel, PlayerInfo.levelName);
             PlayerPrefs.SetFloat(PlayerPrefNames.MusicVolume, PlayerInfo.musicVolume);
             PlayerPrefs.SetFloat(PlayerPrefNames.SoundVolume, PlayerInfo.soundVolume);
+
+            PlayerPrefs.SetFloat(PlayerPrefNames.VaccineBags, PlayerInfo.vaccineBags);
+            PlayerPrefs.SetFloat(PlayerPrefNames.MainBag,     PlayerInfo.mainBag);
         }
 
         private IEnumerator LoadGameForPlayer(String username)

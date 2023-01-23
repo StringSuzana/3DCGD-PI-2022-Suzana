@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Data;
 using MyGame;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Global
 {
@@ -65,15 +63,30 @@ namespace Global
 
         public void GameOver()
         {
+            SavePlayerInfo();
             AudioManager.Instance.PlayMusic(SoundNames.MainMenu);
-            string username = PlayerPrefs.GetString(PlayerPrefNames.Username);
             Cursor.lockState = CursorLockMode.None;
+
             SceneManager.LoadScene(LevelNames.MainMenuScene);
         }
 
         public void ShowGameOverCanvas()
         {
             gameOverCanvas.SetActive(true);
+        }
+        private void SavePlayerInfo()
+        {
+            var playerInfo = new PlayerInfo
+            {
+                playerName = PlayerPrefs.GetString(PlayerPrefNames.Username),
+                musicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
+                soundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume),
+                levelName = SceneManager.GetActiveScene().name,
+                healthPoints = PlayerPrefs.GetFloat(PlayerPrefNames.Health),
+                vaccineBags = PlayerPrefs.GetInt(PlayerPrefNames.VaccineBags),
+                mainBag = PlayerPrefs.GetInt(PlayerPrefNames.MainBag)
+            };
+            SaveSystem.SavePlayerInfoToJson(playerInfo);
         }
     }
 }

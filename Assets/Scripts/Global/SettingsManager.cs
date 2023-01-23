@@ -83,7 +83,10 @@ namespace Global
                 musicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
                 soundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume),
                 levelName = SceneManager.GetActiveScene().name,
-                healthPoints = PlayerPrefs.GetFloat(PlayerPrefNames.Health)
+                healthPoints = PlayerPrefs.GetFloat(PlayerPrefNames.Health),
+
+                vaccineBags = PlayerPrefs.GetInt(PlayerPrefNames.VaccineBags),
+                mainBag = PlayerPrefs.GetInt(PlayerPrefNames.MainBag)
             };
             SaveSystem.SavePlayerInfoToJson(playerInfo);
         }

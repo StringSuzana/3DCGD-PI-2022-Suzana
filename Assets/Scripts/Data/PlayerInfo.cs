@@ -15,6 +15,10 @@ namespace Data
 
         [JsonProperty("musicVolume")] public float musicVolume;
 
+        [JsonProperty("mainBag")] public int mainBag;
+
+        [JsonProperty("vaccineBags")] public int vaccineBags;
+
         public PlayerInfo() //Have to have default constructor because of Json deserialization
         {
         }
@@ -22,7 +26,7 @@ namespace Data
         public override string ToString()
         {
             return
-                $"Student name: {playerName} \nPoints: {healthPoints}\nLevel name: {levelName}\nMusic Vol: {musicVolume}\nSound Vol: {soundVolume}\n";
+                $"Student name: {playerName} \nPoints: {healthPoints}\nLevel name: {levelName}\nMusic Vol: {musicVolume}\nSound Vol: {soundVolume}\nVaccine Bag {vaccineBags}\nMain Bag {mainBag}\n";
         }
     }
 }

@@ -8,5 +8,7 @@
         public static string Health = "Health";
         public static string Points = "Points";
         public static string LastPlayedLevel = "LastPlayedLevel";
+        public static string VaccineBags = "VaccineBags";
+        public static string MainBag = "MainBag";
     }
 }
