@@ -540,7 +540,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  camera: {fileID: 5201580167607140785}
   healthBar: {fileID: 0}
   characterController: {fileID: 5201580166040437032}
   animator: {fileID: 5201580166040437039}
@@ -556,6 +555,7 @@ MonoBehaviour:
   walkAudioClip: {fileID: 8300000, guid: 2ff50118b66fecf44bbd5a0749b4deac, type: 3}
   jumpAudioClip: {fileID: 8300000, guid: 40c0236b8de07fa4eb8d2c038a5418f8, type: 3}
   hurtAudioClip: {fileID: 8300000, guid: adc45099c0a74b24bacc57357ddca31c, type: 3}
+  camera: {fileID: 5201580167607140785}
   charactersContainer: {fileID: 0}
   shootFromPoint: {fileID: 5201580167616744364}
   scratchView: {fileID: 0}

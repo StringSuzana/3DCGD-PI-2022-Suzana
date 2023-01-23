@@ -19,16 +19,16 @@ namespace Characters
         [SerializeField] private AudioClip grabAudioClip;
         private InputAction _grab;
         private bool _enableGrab = false;
-        private Item _itemForGrab; 
+        private Item _itemForGrab;
         [SerializeField] private InventoryObject inventoryOfBags;
-        [SerializeField] private bool _stopPlayerMotion;
+        [SerializeField] private bool stopPlayerMotion;
 
         #region Unity methods
 
         protected new void Awake()
         {
             base.Awake();
-            _stopPlayerMotion = false;
+            stopPlayerMotion = false;
         }
 
         protected override void Start()
@@ -36,14 +36,14 @@ namespace Characters
             instructionsCanvas.gameObject.SetActive(false);
 
             _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
-            
+
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
 
         protected override void Update()
         {
-            if (_stopPlayerMotion == false)
+            if (stopPlayerMotion == false)
             {
                 HandleMovement();
                 HandleRotation();
@@ -171,7 +171,7 @@ namespace Characters
 
         public void StopPlayerMotion(bool stop)
         {
-            _stopPlayerMotion = stop;
+            stopPlayerMotion = stop;
         }
     }
 }

@@ -9,8 +9,7 @@ namespace Data
     {
         public static void SavePlayerInfoToJson(PlayerInfo info)
         {
-            string path = Application.persistentDataPath + "/player_"
-                + info.playerName.ToUpper() + ".json";
+            string path = Application.persistentDataPath + "/player_" + info.playerName.ToUpper() + ".json";
             Debug.Log("Creating file: " + path);
             using (StreamWriter file = File.CreateText(path))
             {
@@ -18,6 +17,7 @@ namespace Data
                 serializer.Serialize(file, info);
             }
         }
+
         public static PlayerInfo LoadPlayerInfoFromJson(string playerName)
         {
             PlayerInfo info = new PlayerInfo();
@@ -30,6 +30,7 @@ namespace Data
                     JsonSerializer serializer = new JsonSerializer();
                     info = (PlayerInfo)serializer.Deserialize(file, typeof(PlayerInfo));
                 }
+
                 Debug.Log("Loaded from path: " + path);
                 return info;
             }
@@ -41,4 +42,3 @@ namespace Data
         }
     }
 }
-

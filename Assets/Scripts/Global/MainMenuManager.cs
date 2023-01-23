@@ -90,8 +90,8 @@ namespace Global
             PlayerPrefs.SetFloat(PlayerPrefNames.MusicVolume, PlayerInfo.musicVolume);
             PlayerPrefs.SetFloat(PlayerPrefNames.SoundVolume, PlayerInfo.soundVolume);
 
-            PlayerPrefs.SetFloat(PlayerPrefNames.VaccineBags, PlayerInfo.vaccineBags);
-            PlayerPrefs.SetFloat(PlayerPrefNames.MainBag,     PlayerInfo.mainBag);
+            PlayerPrefs.SetInt(PlayerPrefNames.VaccineBags, PlayerInfo.vaccineBags);
+            PlayerPrefs.SetInt(PlayerPrefNames.MainBag,     PlayerInfo.mainBag);
         }
 
         private IEnumerator LoadGameForPlayer(String username)

@@ -27,6 +27,8 @@ namespace Characters
         private List<Weapon> _weapons;
         private IWeaponService _weaponService;
         private static readonly int ShootTriggerAnim = Animator.StringToHash("shoot");
+        private const string EnemyTag = "Enemy";
+
 
         #region Unity methods
 
@@ -91,7 +93,7 @@ namespace Characters
         {
             /**Victory is when there are no more enemies in character container*/
             var characters = charactersContainer.GetComponentsInChildren<Transform>();
-            return characters.All(item => !item.gameObject.CompareTag("Enemy"));
+            return characters.All(item => !item.gameObject.CompareTag(EnemyTag));
         }
 
         public override void GameOver()

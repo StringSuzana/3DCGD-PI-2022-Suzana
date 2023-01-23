@@ -48,6 +48,8 @@ namespace Characters
         protected static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
         protected static readonly int DieTriggerAnim = Animator.StringToHash("die");
 
+
+
         #region Unity methods
 
         protected void Awake()

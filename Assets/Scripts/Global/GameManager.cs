@@ -21,6 +21,7 @@ namespace Global
             AudioManager.Instance.StopAllSounds();
             levelCompletedTimeline.Play();
         }
+
         public void PlayGameOverTimeline()
         {
             AudioManager.Instance.StopAllMusic();
@@ -29,6 +30,7 @@ namespace Global
 
             gameOverTimeline.Play();
         }
+
         public void ShowLevelCompletedCanvas()
         {
             levelCompletedCanvas.SetActive(true);
@@ -60,10 +62,9 @@ namespace Global
         }
 
 
-
         public void GameOver()
         {
-            SavePlayerInfo();
+            SavePlayerInfoGameOver();
             AudioManager.Instance.PlayMusic(SoundNames.MainMenu);
             Cursor.lockState = CursorLockMode.None;
 
@@ -74,17 +75,19 @@ namespace Global
         {
             gameOverCanvas.SetActive(true);
         }
-        private void SavePlayerInfo()
+
+        private void SavePlayerInfoGameOver()
         {
-            var playerInfo = new PlayerInfo
+            /*Reset values so that player starts from the beginning*/
+            PlayerInfo playerInfo = new PlayerInfo
             {
                 playerName = PlayerPrefs.GetString(PlayerPrefNames.Username),
                 musicVolume = PlayerPrefs.GetFloat(PlayerPrefNames.MusicVolume),
                 soundVolume = PlayerPrefs.GetFloat(PlayerPrefNames.SoundVolume),
-                levelName = SceneManager.GetActiveScene().name,
-                healthPoints = PlayerPrefs.GetFloat(PlayerPrefNames.Health),
-                vaccineBags = PlayerPrefs.GetInt(PlayerPrefNames.VaccineBags),
-                mainBag = PlayerPrefs.GetInt(PlayerPrefNames.MainBag)
+                levelName = LevelNames.FirstLevel,
+                healthPoints = GameData.MaxPlayerHealth,
+                vaccineBags = 0,
+                mainBag = 0
             };
             SaveSystem.SavePlayerInfoToJson(playerInfo);
         }

@@ -33,6 +33,7 @@ public class InventoryManager : MonoBehaviour
             inventoryOfBags = ScriptableObject.CreateInstance<InventoryObject>();
         }
 
+
         inventoryCanvas.gameObject.SetActive(false);
     }
 

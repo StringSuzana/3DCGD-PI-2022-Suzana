@@ -50,6 +50,7 @@ namespace Characters
 
         [SerializeField] private bool playerInSightRange;
         [SerializeField] private bool playerInAttackRange;
+        private int _currentWayPoint = 0;
 
         private void Awake()
         {
@@ -61,7 +62,7 @@ namespace Characters
 
         private void Start()
         {
-            GoToRandomWayPoint();
+            GoToNextWayPoint();
         }
 
         public void OnCollisionEnter(Collision collision)
@@ -107,11 +108,7 @@ namespace Characters
 
         private void Patrol()
         {
-            if (agent.remainingDistance < 0.5) GoToRandomWayPoint();
-
-            Vector3 distanceToWalkPoint = transform.position - walkPoint;
-
-            transform.LookAt(walkPoint);
+            if (agent.remainingDistance < 0.5) GoToNextWayPoint();
         }
 
         private void FindRandomWalkPoint()
@@ -127,11 +124,13 @@ namespace Characters
                 walkPointSet = true;
         }
 
-        private void GoToRandomWayPoint()
+        private void GoToNextWayPoint()
         {
-            int randomIndex = Random.Range(0, wayPoints.Length);
-            walkPoint = wayPoints[randomIndex].transform.position;
+            _currentWayPoint += 1;
+            _currentWayPoint %= wayPoints.Length;
+            walkPoint = wayPoints[_currentWayPoint].transform.position;
             agent.SetDestination(walkPoint);
+            transform.LookAt(walkPoint);
         }
 
         public void AttackTarget()
