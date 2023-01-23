@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Weapons;
 
-namespace Assets.Scripts.HSM
+namespace HSM
 {
     /**NpcStateMachine is a context*/
     public class PlayerStateMachine : MonoBehaviour
@@ -22,12 +22,14 @@ namespace Assets.Scripts.HSM
         [SerializeField] private GameObject gameManager;
         [SerializeField] private HealthBar healthBar;
         [SerializeField] private CharacterController characterController;
+
         [SerializeField] private Animator animator;
+
         [SerializeField] private float sensitivity;
         [SerializeField] private float speed;
-
         [SerializeField] private float jumpHeight;
-        [SerializeField] private Vector3 velocity = Vector3.zero;
+        [SerializeField] public Vector3 velocity;
+
         [SerializeField] private Transform groundDetector;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private AudioSource sfxAudioSource;
@@ -54,12 +56,46 @@ namespace Assets.Scripts.HSM
         private List<Weapon> _weapons;
         private IWeaponService _weaponService;
 
-        private static readonly int ShootTriggerAnim = Animator.StringToHash("shoot");
-        private static readonly int Run = Animator.StringToHash("run");
-        private static readonly int JumpTriggerAnim = Animator.StringToHash("jump");
-        private static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
-        private static readonly int DieTriggerAnim = Animator.StringToHash("die");
-        private const string EnemyTag = "Enemy";
+        public readonly int ShootTriggerAnim = Animator.StringToHash("shoot");
+        public readonly int Run = Animator.StringToHash("run");
+        public readonly int JumpTriggerAnim = Animator.StringToHash("jump");
+        public readonly int SpeedFloatAnim = Animator.StringToHash("speed");
+        public readonly int DieTriggerAnim = Animator.StringToHash("die");
+        public const string EnemyTag = "Enemy";
+
+
+        public PlayerBaseState CurrentState { get; set; }
+        public PlayerStateFactory StateFactory { get; set; }
+
+        public bool IsJumpPressed { get; set; }
+
+        public float JumpHeight
+        {
+            get => jumpHeight;
+            set => jumpHeight = value;
+        }
+
+        public Animator Animator
+        {
+            get => animator;
+            set => animator = value;
+        }
+
+        public AudioSource SfxAudioSource
+        {
+            get => sfxAudioSource;
+            set => sfxAudioSource = value;
+        }
+
+        public AudioClip JumpAudioClip
+        {
+            get => jumpAudioClip;
+            set => jumpAudioClip = value;
+        }
+
+        public bool IsGrounded { get; set; }
+
+        public bool IsJumping { get; set; }
 
         #region Unity methods
 
@@ -68,6 +104,10 @@ namespace Assets.Scripts.HSM
             _playerInput = new PlayerInputActions();
             _mouse = InputSystem.GetDevice<Mouse>();
             _keyboard = InputSystem.GetDevice<Keyboard>();
+
+            StateFactory = new PlayerStateFactory(this);
+            CurrentState = StateFactory.Grounded();
+            CurrentState.EnterState();
         }
 
         private void Start()
@@ -84,14 +124,43 @@ namespace Assets.Scripts.HSM
         private void Update()
         {
             HandleRotation();
-            HandleMovement();
             RunIfAltKeyIsPressed();
+
+            velocity.y -= _gravity * Time.deltaTime;
+            IsGrounded = !IsJumping && velocity.y < 0 && IsTouchingGround();
+            Debug.Log(IsGrounded);
+            HandleMovement();
+
+            CurrentState.UpdateState();
 
             if (IsVictory())
             {
                 Debug.Log("VICTORY");
                 gameManager.GetComponent<IGameManager>().PlayLevelCompletedTimeline();
             }
+        }
+
+
+        protected void HandleMovement()
+        {
+            float moveX = _move.ReadValue<Vector2>().x;
+            float moveZ = _move.ReadValue<Vector2>().y;
+
+            Transform t = characterController.transform;
+
+            Vector3 moveVector = t.forward * moveZ;
+            moveVector += t.right * moveX;
+            moveVector *= speed * Time.deltaTime;
+
+            /*gravity*/
+            // velocity.y -= _gravity * Time.deltaTime;
+            //if (IsGrounded() && velocity.y < 0)
+            //{
+            //    velocity.y = 0;
+            //}
+
+            characterController.Move(moveVector + velocity);
+            AnimateMovement(moveVector);
         }
 
         protected void OnEnable()
@@ -131,6 +200,11 @@ namespace Assets.Scripts.HSM
         }
 
         #endregion
+
+        public bool IsTouchingGround()
+        {
+            return Physics.CheckSphere(groundDetector.position, 0.3f, groundLayer);
+        }
 
         public bool IsVictory()
         {
@@ -229,12 +303,9 @@ namespace Assets.Scripts.HSM
             SelectWeapon();
         }
 
-        protected void JumpInput(InputAction.CallbackContext ctx)
+        private void JumpInput(InputAction.CallbackContext ctx)
         {
-            if (IsGrounded())
-            {
-                StartCoroutine(JumpAction());
-            }
+            IsJumpPressed = true;
         }
 
         #endregion
@@ -284,14 +355,14 @@ namespace Assets.Scripts.HSM
             sfxAudioSource.PlayOneShot(walkAudioClip);
         }
 
-        protected virtual void PlayJumpSoundFx()
-        {
-            if (sfxAudioSource.isPlaying)
-                sfxAudioSource.Stop();
+        //protected virtual void PlayJumpSoundFx()
+        //{
+        //    if (sfxAudioSource.isPlaying)
+        //        sfxAudioSource.Stop();
 
-            sfxAudioSource.pitch = 0.5f;
-            sfxAudioSource.PlayOneShot(jumpAudioClip);
-        }
+        //    sfxAudioSource.pitch = 0.5f;
+        //    sfxAudioSource.PlayOneShot(jumpAudioClip);
+        //}
 
         protected virtual void PlayRunSoundFx()
         {
@@ -299,29 +370,6 @@ namespace Assets.Scripts.HSM
                 return;
             sfxAudioSource.pitch = 1f;
             sfxAudioSource.PlayOneShot(walkAudioClip);
-        }
-
-
-        protected void HandleMovement()
-        {
-            float moveX = _move.ReadValue<Vector2>().x;
-            float moveZ = _move.ReadValue<Vector2>().y;
-
-            Transform t = characterController.transform;
-
-            Vector3 moveVector = t.forward * moveZ;
-            moveVector += t.right * moveX;
-            moveVector *= speed * Time.deltaTime;
-
-            /*gravity*/
-            velocity.y -= _gravity * Time.deltaTime;
-            if (IsGrounded() && velocity.y < 0)
-            {
-                velocity.y = 0;
-            }
-
-            characterController.Move(moveVector + velocity);
-            AnimateMovement(moveVector);
         }
 
 
@@ -348,22 +396,5 @@ namespace Assets.Scripts.HSM
         }
 
         private bool IsPlayerRunning() => _keyboard.altKey.isPressed;
-
-        protected bool IsGrounded()
-        {
-            return Physics.CheckSphere(groundDetector.position, 0.3f, groundLayer);
-        }
-
-        protected IEnumerator JumpAction()
-        {
-            animator.SetTrigger(JumpTriggerAnim);
-            Debug.Log($"[JumpAction 1] Velocity.y {velocity.y} ");
-
-            yield return new WaitForSeconds(0.5f);
-
-            velocity.y = jumpHeight;
-            PlayJumpSoundFx();
-            Debug.Log($"[JumpAction 2] Velocity.y {velocity.y} ");
-        }
     }
 }
