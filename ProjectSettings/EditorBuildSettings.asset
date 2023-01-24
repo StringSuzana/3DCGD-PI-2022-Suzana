@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ForestScene.unity
     guid: e3d45e944065328449a85b4bf5f1fa82
+  - enabled: 1
+    path: Assets/Scenes/ThirdLevel.unity
+    guid: 28e59315e7b7d904c9d4cc96fa93a605
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 05177671324c3ec438f89632ad2ae1a6, type: 2}

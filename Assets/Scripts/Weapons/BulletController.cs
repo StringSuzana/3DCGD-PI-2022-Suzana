@@ -6,7 +6,7 @@ namespace Weapons
     public class BulletController : MonoBehaviour
     {
         public float lifeTime;
-        private float maxLifeTime = 3;
+        private float maxLifeTime = 10;
 
         public Rigidbody bulletRigidBody;
         public GameObject particleEffect;

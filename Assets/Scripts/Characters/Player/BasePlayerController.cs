@@ -1,14 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Cinemachine;
-using Data;
 using Global;
 using MyGame;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
-using Weapons;
 
 namespace Characters
 {

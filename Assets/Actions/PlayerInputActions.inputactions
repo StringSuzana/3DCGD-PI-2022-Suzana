@@ -76,6 +76,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Talk",
+                    "type": "Button",
+                    "id": "ebd301e5-ce7d-47c7-b462-300bf51855da",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -406,6 +414,17 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92945132-0ebd-4b86-b6e1-adbac1b24624",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse;Joystick",
+                    "action": "Talk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

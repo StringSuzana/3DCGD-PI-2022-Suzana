@@ -4,12 +4,15 @@
     public abstract class NpcBaseState
     {
         protected NpcStateMachine _context;
-        protected NpcStateFactory _playerStateFactory;
+        protected NpcStateFactory _npcStateFactory;
+        protected NpcBaseState _currentSuperState;
+        protected NpcBaseState _currentSubState;
+        protected bool _isRootState = false;
 
-        protected NpcBaseState(NpcStateMachine context, NpcStateFactory playerStateFactory)
+        protected NpcBaseState(NpcStateMachine context, NpcStateFactory npcStateFactory)
         {
             _context = context;
-            _playerStateFactory = playerStateFactory;
+            _npcStateFactory = npcStateFactory;
         }
 
         public abstract void EnterState();
@@ -18,8 +21,13 @@
         public abstract void CheckSwitchStates();
         public abstract void InitSubState();
 
-        private void UpdateStates()
+        public void UpdateStates()
         {
+            UpdateState();
+            if (_currentSubState != null)
+            {
+                _currentSubState.UpdateState();
+            }
         }
 
         protected void SwitchState(NpcBaseState newState)
@@ -31,16 +39,26 @@
             //Enter to new
             newState.EnterState();
 
-            //Set CurrentState in PlayerStateMachine to new state
-            _context.CurrentState = newState;
+            if (_isRootState)
+            {
+                //Set CurrentState in PlayerStateMachine to new state
+                _context.CurrentState = newState;
+            }
+            else if (_currentSuperState != null)
+            {
+                _currentSuperState.SetSubState(newState);
+            }
         }
 
-        protected void SetSuperState()
+        protected void SetSuperState(NpcBaseState newSuperState)
         {
+            _currentSuperState = newSuperState;
         }
 
-        protected void SetSubState()
+        protected void SetSubState(NpcBaseState newSubState)
         {
+            _currentSubState = newSubState;
+            newSubState.SetSuperState(this);
         }
     }
 }

@@ -91,6 +91,14 @@ namespace MyGame
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Talk"",
+                    ""type"": ""Button"",
+                    ""id"": ""ebd301e5-ce7d-47c7-b462-300bf51855da"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -421,6 +429,17 @@ namespace MyGame
                     ""processors"": """",
                     ""groups"": ""Joystick"",
                     ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92945132-0ebd-4b86-b6e1-adbac1b24624"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Joystick"",
+                    ""action"": ""Talk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1007,6 +1026,7 @@ namespace MyGame
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+            m_Player_Talk = m_Player.FindAction("Talk", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1077,6 +1097,7 @@ namespace MyGame
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Grab;
         private readonly InputAction m_Player_Inventory;
+        private readonly InputAction m_Player_Talk;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -1090,6 +1111,7 @@ namespace MyGame
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Grab => m_Wrapper.m_Player_Grab;
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+            public InputAction @Talk => m_Wrapper.m_Player_Talk;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1126,6 +1148,9 @@ namespace MyGame
                     @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                     @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                     @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                    @Talk.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTalk;
+                    @Talk.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTalk;
+                    @Talk.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTalk;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1157,6 +1182,9 @@ namespace MyGame
                     @Inventory.started += instance.OnInventory;
                     @Inventory.performed += instance.OnInventory;
                     @Inventory.canceled += instance.OnInventory;
+                    @Talk.started += instance.OnTalk;
+                    @Talk.performed += instance.OnTalk;
+                    @Talk.canceled += instance.OnTalk;
                 }
             }
         }
@@ -1322,6 +1350,7 @@ namespace MyGame
             void OnJump(InputAction.CallbackContext context);
             void OnGrab(InputAction.CallbackContext context);
             void OnInventory(InputAction.CallbackContext context);
+            void OnTalk(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

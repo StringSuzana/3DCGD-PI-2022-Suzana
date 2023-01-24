@@ -31,7 +31,16 @@ namespace Global
         {
             if (_keyboard.escapeKey.wasPressedThisFrame)
             {
-                settingsMenu.gameObject.SetActive(!settingsMenu.isActiveAndEnabled);
+                if (settingsMenu.isActiveAndEnabled)
+                {
+                    CloseMenu();
+                }
+                else
+                {
+                    settingsMenu.gameObject.SetActive(true);
+                }
+
+
             }
 
             if (settingsMenu.isActiveAndEnabled)
