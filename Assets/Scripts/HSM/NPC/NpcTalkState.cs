@@ -24,17 +24,11 @@ namespace HSM
         {
             Debug.Log("Exit Talk State");
             EndInteraction();
-            _context.IsTalking = false;
-
         }
 
         public override void CheckSwitchStates()
         {
-            if (_context.IsFollowingPlayer)
-            {
-                SwitchState(_npcStateFactory.Follow());
-            }
-            else if (_context.IsIdle)
+            if (_context.IsTalking == false)
             {
                 SwitchState(_npcStateFactory.Idle());
             }
@@ -52,17 +46,18 @@ namespace HSM
         private void ShowDialogueCanvas()
         {
             _context.DialogueCanvas.gameObject.SetActive(true);
-            _context.DialogueCanvas.enabled = true;
+            //_context.DialogueCanvas.enabled = true;
         }
 
         public void EndInteraction()
         {
             _context.DialogueCanvas.gameObject.SetActive(false);
-            _context.DialogueCanvas.enabled = false;
+            //_context.DialogueCanvas.enabled = false;
         }
 
         public void Interact()
         {
+            _context.transform.LookAt(_context.Player);
             PlayInteractSound();
             ShowDialogueCanvas();
         }

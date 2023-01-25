@@ -8,6 +8,7 @@ namespace HSM
             : base(context, npcStateFactory)
         {
         }
+
         public override void EnterState()
         {
             Debug.Log("Enter Follow State");
@@ -16,7 +17,7 @@ namespace HSM
 
         public override void UpdateState()
         {
-            //FollowPlayer();
+            FollowPlayer();
             CheckSwitchStates();
         }
 
@@ -33,17 +34,16 @@ namespace HSM
 
         public override void CheckSwitchStates()
         {
-            if (_context.IsIdle)
-            {
-                Debug.Log("Follow => Idle");
-                SwitchState(_npcStateFactory.Idle());
-            }
-            else if (_context.IsTalking)
+            if (_context.IsTalking)
             {
                 Debug.Log("Follow => Talk");
                 SwitchState(_npcStateFactory.Talk());
             }
-
+            else if (_context.IsTalking == false && _context.IsFollowingPlayer == false)
+            {
+                Debug.Log("Follow => Idle");
+                SwitchState(_npcStateFactory.Idle());
+            }
         }
 
         private void StopFollowingPlayer()
@@ -58,13 +58,10 @@ namespace HSM
             Vector3 position = _context.Player.position;
             _context.transform.LookAt(position);
             _context.Agent.SetDestination(position);
-            _context.Animator.SetBool(_context.Walk, true);
 
+            _context.Animator.SetBool(_context.Walk, true);
             Debug.Log("Following player.");
             //    attackAudioSource.PlayOneShot(attackAudioClip);
-            //    StartCoroutine(_iFpsPlayer.TakeDamage(enemyDamageAmount));
-            //    _animator.SetTrigger(AttackTriggerAnim);
-            //    ///End of attack
         }
     }
 }

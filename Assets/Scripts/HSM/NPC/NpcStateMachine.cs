@@ -36,12 +36,10 @@ public class NpcStateMachine : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
 
     [SerializeField] private float sightRange;
-    [SerializeField] private float interactRange;
 
     #region Getters anSetters
 
     public Transform Player => player;
-
     public Animator Animator => animator;
     public AudioClip InteractClip => interactClip;
     public Canvas DialogueCanvas => dialogueCanvas;
@@ -95,6 +93,10 @@ public class NpcStateMachine : MonoBehaviour
         CurrentState.EnterState();
     }
 
+  private void HandleDialogue()
+    {
+        IsTalking = !dialogueCanvas.isActiveAndEnabled;
+    }
 
     private void Update()
     {
@@ -107,32 +109,13 @@ public class NpcStateMachine : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<IPlayer>() == null) return;
-
-        if (IsPlayerInSight)
-        {
-            IsFollowingPlayer = false;
-            IsInInteractRange = true;
-        }
-        else
-        {
-            IsFollowingPlayer = true;
-            IsPlayerInSight = true;
-        }
+        IsPlayerInSight = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.GetComponent<IPlayer>() == null) return;
-        if (IsInInteractRange)
-        {
-            IsFollowingPlayer = true;
-            IsInInteractRange = false;
-        }
-        else
-        {
-            IsFollowingPlayer = false;
-            IsPlayerInSight = false;
-        }
+        IsPlayerInSight = false;
     }
 
     protected void OnEnable()
@@ -150,16 +133,14 @@ public class NpcStateMachine : MonoBehaviour
 
     private void TalkPressed(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("Talk pressed");
-        IsTalking = true;
+        IsTalking = !dialogueCanvas.isActiveAndEnabled;
+        Debug.Log($"Talk pressed IsTalking {IsTalking}");
     }
 
 
     private void OnDrawGizmosSelected()
     {
         Vector3 npcPosition = transform.position;
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(npcPosition, interactRange);
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(npcPosition, sightRange);
     }

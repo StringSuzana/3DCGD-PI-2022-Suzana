@@ -29,12 +29,19 @@
                 _currentSubState.UpdateState();
             }
         }
-
+        public void ExitStates()
+        {
+            if (_currentSubState != null)
+            {
+                _currentSubState.ExitState();
+            }
+            ExitState();
+        }
         protected void SwitchState(NpcBaseState newState)
         {
             //Exit from current state
             //Each state implements it's own logic
-            ExitState();
+            ExitStates();
 
             //Enter to new
             newState.EnterState();

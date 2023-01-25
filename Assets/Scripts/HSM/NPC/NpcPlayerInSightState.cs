@@ -41,19 +41,11 @@ namespace HSM
         {
             Debug.Log("Init Sub states [NpcPlayerInSight]");
             Debug.Log($"IsTalking{_context.IsTalking}");
-            Debug.Log($"IsFollowingPlayer{_context.IsFollowingPlayer}");
-            Debug.Log($"IsIdle{_context.IsIdle}");
             if (_context.IsTalking)
             {
                 SetSubState(_npcStateFactory.Talk());
             }
-
-            else if (_context.IsFollowingPlayer)
-            {
-                SetSubState(_npcStateFactory.Follow());
-            }
-
-            else if (_context.IsIdle)
+            else
             {
                 SetSubState(_npcStateFactory.Idle());
             }

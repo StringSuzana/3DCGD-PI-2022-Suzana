@@ -23,8 +23,6 @@ namespace HSM
         public override void ExitState()
         {
             Debug.Log("Exit Idle State");
-            _context.IsIdle = false;
-
         }
 
         public override void CheckSwitchStates()
@@ -32,11 +30,6 @@ namespace HSM
             if (_context.IsTalking)
             {
                 SwitchState(_npcStateFactory.Talk());
-            }
-
-            else if (_context.IsFollowingPlayer)
-            {
-                SwitchState(_npcStateFactory.Follow());
             }
         }
 

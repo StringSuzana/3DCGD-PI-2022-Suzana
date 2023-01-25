@@ -13,6 +13,8 @@ namespace HSM
         public override void EnterState()
         {
             Debug.Log("Enter  Patrol State");
+            _context.Agent.isStopped = false;
+            _context.HasNextWayPoint = false;
             GoToNextWayPoint();
         }
 
@@ -42,6 +44,7 @@ namespace HSM
         private void GoToNextWayPoint()
         {
             if (_context.HasNextWayPoint) return;
+            Debug.Log("GoToNextWayPoint");
 
             _context.CurrentWayPoint += 1;
             _context.CurrentWayPoint %= _context.WayPoints.Length;
