@@ -16,7 +16,7 @@ namespace HSM
 
         public override void UpdateState()
         {
-            FollowPlayer();
+            //FollowPlayer();
             CheckSwitchStates();
         }
 

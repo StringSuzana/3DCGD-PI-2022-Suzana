@@ -38,7 +38,6 @@ namespace Characters
         [SerializeField] private GameObject[] wayPoints;
 
         bool walkPointSet;
-        [SerializeField] private float walkPointRange;
 
         //Attacking
         [SerializeField] private float timeBetweenAttacks;
@@ -109,19 +108,6 @@ namespace Characters
         private void Patrol()
         {
             if (agent.remainingDistance < 0.5) GoToNextWayPoint();
-        }
-
-        private void FindRandomWalkPoint()
-        {
-            //Calculate random point in range
-            float randomZ = Random.Range(-walkPointRange, walkPointRange);
-            float randomX = Random.Range(-walkPointRange, walkPointRange);
-
-            walkPoint = new Vector3(transform.position.x + randomX, transform.position.y,
-                transform.position.z + randomZ);
-
-            if (Physics.Raycast(walkPoint, -transform.up, 2f, groundLayer))
-                walkPointSet = true;
         }
 
         private void GoToNextWayPoint()
