@@ -35,14 +35,15 @@ namespace HSM
         {
             if (_context.IsIdle)
             {
+                Debug.Log("Follow => Idle");
                 SwitchState(_npcStateFactory.Idle());
             }
             else if (_context.IsTalking)
             {
+                Debug.Log("Follow => Talk");
                 SwitchState(_npcStateFactory.Talk());
             }
 
-            //  idle/talk
         }
 
         private void StopFollowingPlayer()
@@ -54,8 +55,9 @@ namespace HSM
 
         private void FollowPlayer()
         {
-            _context.transform.LookAt(_context.Player.position);
-            _context.Agent.SetDestination(_context.transform.position);
+            Vector3 position = _context.Player.position;
+            _context.transform.LookAt(position);
+            _context.Agent.SetDestination(position);
             _context.Animator.SetBool(_context.Walk, true);
 
             Debug.Log("Following player.");
