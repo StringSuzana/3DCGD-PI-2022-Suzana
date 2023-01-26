@@ -65,6 +65,7 @@ public class NpcStateMachine : MonoBehaviour
     public readonly int Talk = Animator.StringToHash("Talk");
     public readonly int Idle = Animator.StringToHash("Idle");
     public readonly int Walk = Animator.StringToHash("Walk");
+    public readonly int InSight = Animator.StringToHash("InSight");
 
     //HSM
     //States
@@ -143,7 +144,6 @@ public class NpcStateMachine : MonoBehaviour
     private void TalkPressed(InputAction.CallbackContext callbackContext)
     {
         IsTalking = !HintManager.Instance.IsHintActive();
-        Debug.Log($"Talk pressed IsTalking {IsTalking}");
     }
 
 

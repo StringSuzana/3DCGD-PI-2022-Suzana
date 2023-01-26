@@ -11,7 +11,6 @@ namespace HSM
 
         public override void EnterState()
         {
-            Debug.Log("Enter  Idle State");
             BeIdle();
         }
 
@@ -22,7 +21,6 @@ namespace HSM
 
         public override void ExitState()
         {
-            Debug.Log("Exit Idle State");
             HideInstructionsCanvas();
             _context.Animator.SetBool(_context.Idle, false);
 

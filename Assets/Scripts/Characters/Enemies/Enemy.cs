@@ -107,7 +107,7 @@ namespace Characters
 
         private void Patrol()
         {
-            if (agent.remainingDistance < 0.5) GoToNextWayPoint();
+            if (!agent.pathPending && agent.remainingDistance < 0.5) GoToNextWayPoint();
         }
 
         private void GoToNextWayPoint()

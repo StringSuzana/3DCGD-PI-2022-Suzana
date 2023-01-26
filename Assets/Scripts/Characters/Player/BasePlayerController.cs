@@ -42,6 +42,8 @@ namespace Characters
         protected static readonly int SpeedFloatAnim = Animator.StringToHash("speed");
         protected static readonly int DieTriggerAnim = Animator.StringToHash("die");
 
+        private float _groundedDistance = 0.3f;
+
 
 
         #region Unity methods
@@ -82,7 +84,7 @@ namespace Characters
 
         protected void OnDrawGizmos()
         {
-            Gizmos.DrawSphere(groundDetector.position, 0.3f);
+            Gizmos.DrawSphere(groundDetector.position, _groundedDistance);
         }
 
         #endregion
@@ -188,7 +190,7 @@ namespace Characters
 
         protected bool IsGrounded()
         {
-            return Physics.CheckSphere(groundDetector.position, 0.3f, groundLayer);
+            return Physics.CheckSphere(groundDetector.position, _groundedDistance, groundLayer);
         }
 
         protected IEnumerator JumpAction()
@@ -205,8 +207,10 @@ namespace Characters
 
         protected void JumpInput(InputAction.CallbackContext ctx)
         {
+            Debug.Log("Grounded?");
             if (IsGrounded())
             {
+                Debug.Log("GROUNDED!");
                 StartCoroutine(JumpAction());
             }
         }

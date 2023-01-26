@@ -11,7 +11,6 @@ namespace HSM
 
         public override void EnterState()
         {
-            Debug.Log("Enter Follow State");
             FollowPlayer();
             ShowNpcAlertCanvas();
         }
@@ -24,7 +23,6 @@ namespace HSM
 
         public override void ExitState()
         {
-            Debug.Log("Exit Follow State");
             StopFollowingPlayer();
             HideNpcAlertCanvas();
             _context.IsFollowingPlayer = false;
@@ -62,7 +60,6 @@ namespace HSM
             _context.Agent.SetDestination(position);
 
             _context.Animator.SetBool(_context.Walk, true);
-            Debug.Log("Following player.");
         }
         private void ShowNpcAlertCanvas()
         {

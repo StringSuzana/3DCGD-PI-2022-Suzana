@@ -11,7 +11,6 @@ namespace HSM
 
         public override void EnterState()
         {
-            Debug.Log("Enter Talk State");
             Interact();
             HideNpcAlertCanvas();
             ShowInstructionsCanvas();
@@ -22,7 +21,6 @@ namespace HSM
             if (HintManager.Instance.IsDone)
             {
                 StopTalkAnimation();
-                Debug.Log("Stop TALKING animation");
             }
 
             CheckSwitchStates();
@@ -30,7 +28,6 @@ namespace HSM
 
         public override void ExitState()
         {
-            Debug.Log("Exit Talk State");
             EndInteraction();
         }
 

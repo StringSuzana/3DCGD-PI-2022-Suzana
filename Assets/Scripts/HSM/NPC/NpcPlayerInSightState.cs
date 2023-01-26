@@ -13,22 +13,19 @@ namespace HSM
 
         public override void EnterState()
         {
-            _context.Animator.SetBool("InSight", true);
-            Debug.Log("Enter [PlayerInSight] State");
+            _context.Animator.SetBool(_context.InSight, true);
             ShowNpcAlertCanvas();
         }
 
         public override void UpdateState()
         {
-           // ShowInstructionsCanvas();
             CheckSwitchStates();
         }
 
         public override void ExitState()
         {
-            _context.Animator.SetBool("InSight", false);
+            _context.Animator.SetBool(_context.InSight, false);
 
-            Debug.Log("Exit [PlayerInSight] State");
             HideAllCanvases();
             _context.IsFollowingPlayer = false;
         }
@@ -41,7 +38,6 @@ namespace HSM
             }
         }
 
-        //SEALED!!
         public sealed override void InitSubState()
         {
             Debug.Log("Init Sub states [NpcPlayerInSight]");
