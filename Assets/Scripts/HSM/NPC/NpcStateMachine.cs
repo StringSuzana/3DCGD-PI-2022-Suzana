@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Characters;
+using Global;
 using HSM;
 using MyGame;
 using TMPro;
@@ -17,13 +18,13 @@ public class NpcStateMachine : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Animator animator;
 
-    [SerializeField] private Canvas dialogueCanvas;
+    //[SerializeField] private Canvas dialogueCanvas;
+    [SerializeField] private Hint hintText;
     [SerializeField] private Canvas npcAlertCanvas;
     [SerializeField] private Canvas interactionInstructionsCanvas;
-    [SerializeField] private TMP_Text interactText;
+
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip interactClip;
-    [SerializeField] private Button nextButton; //listener for closed conversation
     private PlayerInputActions _playerInput;
     private InputAction _talk;
 
@@ -41,7 +42,7 @@ public class NpcStateMachine : MonoBehaviour
     public Transform Player => player;
     public Animator Animator => animator;
     public AudioClip InteractClip => interactClip;
-    public Canvas DialogueCanvas => dialogueCanvas;
+    public Hint HintText => hintText;
     public Canvas InteractionInstructionsCanvas => interactionInstructionsCanvas;
     public Canvas NpcAlertCanvas => npcAlertCanvas;
     public NavMeshAgent Agent => agent;
@@ -81,21 +82,15 @@ public class NpcStateMachine : MonoBehaviour
     private void Awake()
     {
         _playerInput = new PlayerInputActions();
-        
+
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
-        dialogueCanvas.gameObject.SetActive(false);
 
         IFpsPlayer = player.parent.GetComponent<IFpsPlayer>();
 
         StateFactory = new NpcStateFactory(this);
         CurrentState = StateFactory.Patrol();
         CurrentState.EnterState();
-    }
-
-  private void HandleDialogue()
-    {
-        IsTalking = !dialogueCanvas.isActiveAndEnabled;
     }
 
     private void Update()
@@ -117,7 +112,6 @@ public class NpcStateMachine : MonoBehaviour
         {
             IsInInteractRange = true;
         }
-
     }
 
     private void OnTriggerExit(Collider other)
@@ -148,7 +142,7 @@ public class NpcStateMachine : MonoBehaviour
 
     private void TalkPressed(InputAction.CallbackContext callbackContext)
     {
-        IsTalking = !dialogueCanvas.isActiveAndEnabled;
+        IsTalking = !HintManager.Instance.IsHintActive();
         Debug.Log($"Talk pressed IsTalking {IsTalking}");
     }
 

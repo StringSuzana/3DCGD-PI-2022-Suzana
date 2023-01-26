@@ -19,6 +19,12 @@ namespace HSM
 
         public override void UpdateState()
         {
+            if (HintManager.Instance.IsDone)
+            {
+                StopTalkAnimation();
+                Debug.Log("Stop TALKING animation");
+            }
+
             CheckSwitchStates();
         }
 
@@ -34,7 +40,7 @@ namespace HSM
             {
                 SwitchState(_npcStateFactory.Idle());
             }
-            else if(_context.IsInInteractRange == false)
+            else if (_context.IsInInteractRange == false)
             {
                 _context.IsTalking = false;
                 SwitchState(_npcStateFactory.Follow());
@@ -50,26 +56,33 @@ namespace HSM
             AudioSource.PlayClipAtPoint(_context.InteractClip, _context.transform.position);
         }
 
-        
+
         public void EndInteraction()
         {
-            HideDialogueCanvas();
-            _context.Animator.SetBool(_context.Talk, false);
+            HintManager.Instance.EndDialogue();
+            StopTalkAnimation();
         }
 
-     
+
         public void Interact()
         {
             _context.transform.LookAt(_context.Player);
+            HintManager.Instance.StartHint(_context.HintText);
             PlayTalkAnimation();
             PlayInteractSound();
-            ShowDialogueCanvas();
         }
 
         private void PlayTalkAnimation()
         {
             _context.Animator.SetBool(_context.Talk, true);
         }
+
+        private void StopTalkAnimation()
+        {
+            _context.Animator.SetBool(_context.Talk, false);
+           // _context.Animator.SetBool(_context.Idle, true);
+        }
+
         private void ShowInstructionsCanvas()
         {
             _context.InteractionInstructionsCanvas.gameObject.SetActive(true);
@@ -79,15 +92,5 @@ namespace HSM
         {
             _context.NpcAlertCanvas.gameObject.SetActive(false);
         }
-        private void ShowDialogueCanvas()
-        {
-            _context.DialogueCanvas.gameObject.SetActive(true);
-        }
-        private void HideDialogueCanvas()
-        {
-            _context.DialogueCanvas.gameObject.SetActive(false);
-        }
-
-
     }
 }
