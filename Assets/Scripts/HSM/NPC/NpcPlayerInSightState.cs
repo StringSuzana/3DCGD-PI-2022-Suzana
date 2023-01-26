@@ -13,6 +13,7 @@ namespace HSM
 
         public override void EnterState()
         {
+            _context.Animator.SetBool("InSight", true);
             Debug.Log("Enter [PlayerInSight] State");
             ShowNpcAlertCanvas();
         }
@@ -25,6 +26,8 @@ namespace HSM
 
         public override void ExitState()
         {
+            _context.Animator.SetBool("InSight", false);
+
             Debug.Log("Exit [PlayerInSight] State");
             HideAllCanvases();
             _context.IsFollowingPlayer = false;
