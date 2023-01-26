@@ -171,7 +171,6 @@ namespace Characters
 
         public void FollowTarget()
         {
-            Debug.Log("FollowTarget ");
             agent.SetDestination(attackTarget.transform.position);
             _animator.SetFloat(SpeedFloatAnim, 1);
         }
