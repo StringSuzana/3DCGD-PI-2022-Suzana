@@ -55,12 +55,12 @@ namespace Characters
         {
             _animator = GetComponent<Animator>();
             agent = GetComponent<NavMeshAgent>();
-
-            _iFpsPlayer = player.parent.GetComponent<IFpsPlayer>();
         }
 
         private void Start()
         {
+            _iFpsPlayer = player.parent.GetComponent<IFpsPlayer>();
+            Debug.Log($"{gameObject.name}: player.parent {player.parent.name}, _iFpsPlayer {_iFpsPlayer}");
             GoToNextWayPoint();
         }
 

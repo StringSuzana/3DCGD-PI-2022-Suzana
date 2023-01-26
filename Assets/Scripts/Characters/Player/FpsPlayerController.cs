@@ -135,6 +135,7 @@ namespace Characters
 
         public IEnumerator TakeDamage(float damageAmount)
         {
+            Debug.Log("TAKE DAMAGE");
             _currentHealth -= damageAmount;
             if (_currentHealth <= 0)
             {
