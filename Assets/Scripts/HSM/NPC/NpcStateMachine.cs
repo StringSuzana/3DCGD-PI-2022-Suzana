@@ -18,6 +18,7 @@ public class NpcStateMachine : MonoBehaviour
     [SerializeField] private Animator animator;
 
     [SerializeField] private Canvas dialogueCanvas;
+    [SerializeField] private Canvas npcAlertCanvas;
     [SerializeField] private Canvas interactionInstructionsCanvas;
     [SerializeField] private TMP_Text interactText;
     [SerializeField] private AudioSource audioSource;
@@ -33,8 +34,6 @@ public class NpcStateMachine : MonoBehaviour
     [SerializeField] private GameObject[] wayPoints;
     private int _currentWayPoint = 0;
 
-    [SerializeField] private LayerMask playerLayer;
-
     [SerializeField] private float sightRange;
 
     #region Getters anSetters
@@ -44,6 +43,7 @@ public class NpcStateMachine : MonoBehaviour
     public AudioClip InteractClip => interactClip;
     public Canvas DialogueCanvas => dialogueCanvas;
     public Canvas InteractionInstructionsCanvas => interactionInstructionsCanvas;
+    public Canvas NpcAlertCanvas => npcAlertCanvas;
     public NavMeshAgent Agent => agent;
     public GameObject[] WayPoints => wayPoints;
 
@@ -109,13 +109,28 @@ public class NpcStateMachine : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<IPlayer>() == null) return;
-        IsPlayerInSight = true;
+        if (IsPlayerInSight == false)
+        {
+            IsPlayerInSight = true;
+        }
+        else
+        {
+            IsInInteractRange = true;
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.GetComponent<IPlayer>() == null) return;
-        IsPlayerInSight = false;
+        if (IsInInteractRange)
+        {
+            IsInInteractRange = false;
+        }
+        else
+        {
+            IsPlayerInSight = false;
+        }
     }
 
     protected void OnEnable()

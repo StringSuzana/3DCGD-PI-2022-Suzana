@@ -26,6 +26,7 @@ namespace HSM
         public override void ExitState()
         {
             _context.Agent.isStopped = true;
+            _context.Animator.SetBool(_context.Walk, false);
             Debug.Log("Exit Patrol State");
         }
 
@@ -45,13 +46,14 @@ namespace HSM
         {
             if (_context.HasNextWayPoint) return;
             Debug.Log("GoToNextWayPoint");
-
             _context.CurrentWayPoint += 1;
             _context.CurrentWayPoint %= _context.WayPoints.Length;
             _context.NextWalkPoint = _context.WayPoints[_context.CurrentWayPoint].transform.position;
 
             _context.Agent.SetDestination(_context.NextWalkPoint);
             _context.transform.LookAt(_context.NextWalkPoint);
+            _context.Animator.SetBool(_context.Walk, true);
+
 
             _context.HasNextWayPoint = true;
         }

@@ -13,6 +13,7 @@ namespace HSM
         {
             Debug.Log("Enter Follow State");
             FollowPlayer();
+            ShowNpcAlertCanvas();
         }
 
         public override void UpdateState()
@@ -25,6 +26,7 @@ namespace HSM
         {
             Debug.Log("Exit Follow State");
             StopFollowingPlayer();
+            HideNpcAlertCanvas();
             _context.IsFollowingPlayer = false;
         }
 
@@ -34,14 +36,12 @@ namespace HSM
 
         public override void CheckSwitchStates()
         {
-            if (_context.IsTalking)
+            if (_context.IsInInteractRange && _context.IsTalking)
             {
-                Debug.Log("Follow => Talk");
                 SwitchState(_npcStateFactory.Talk());
             }
-            else if (_context.IsTalking == false && _context.IsFollowingPlayer == false)
+            else if (_context.IsInInteractRange && _context.IsTalking == false)
             {
-                Debug.Log("Follow => Idle");
                 SwitchState(_npcStateFactory.Idle());
             }
         }
@@ -55,13 +55,23 @@ namespace HSM
 
         private void FollowPlayer()
         {
+            _context.Agent.isStopped = false;
+
             Vector3 position = _context.Player.position;
             _context.transform.LookAt(position);
             _context.Agent.SetDestination(position);
 
             _context.Animator.SetBool(_context.Walk, true);
             Debug.Log("Following player.");
-            //    attackAudioSource.PlayOneShot(attackAudioClip);
+        }
+        private void ShowNpcAlertCanvas()
+        {
+            _context.NpcAlertCanvas.gameObject.SetActive(true);
+        }
+
+        private void HideNpcAlertCanvas()
+        {
+            _context.NpcAlertCanvas.gameObject.SetActive(false);
         }
     }
 }

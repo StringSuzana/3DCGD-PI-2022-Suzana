@@ -13,19 +13,21 @@ namespace HSM
 
         public override void EnterState()
         {
-            Debug.Log("Enter PlayerInSight State");
-            ShowInstructionsCanvas();
+            Debug.Log("Enter [PlayerInSight] State");
+            ShowNpcAlertCanvas();
         }
 
         public override void UpdateState()
         {
+           // ShowInstructionsCanvas();
             CheckSwitchStates();
         }
 
         public override void ExitState()
         {
-            Debug.Log("Exit PlayerInSight State");
-            HideInstructionsCanvas();
+            Debug.Log("Exit [PlayerInSight] State");
+            HideAllCanvases();
+            _context.IsFollowingPlayer = false;
         }
 
         public override void CheckSwitchStates()
@@ -41,23 +43,29 @@ namespace HSM
         {
             Debug.Log("Init Sub states [NpcPlayerInSight]");
             Debug.Log($"IsTalking{_context.IsTalking}");
-            if (_context.IsTalking)
+
+            if (_context.IsInInteractRange && _context.IsTalking)
             {
                 SetSubState(_npcStateFactory.Talk());
             }
-            else
+            else if (_context.IsInInteractRange && _context.IsTalking == false)
             {
-                SetSubState(_npcStateFactory.Idle());
+               SetSubState(_npcStateFactory.Idle());
+            }
+            else if (_context.IsInInteractRange == false)
+            {
+                SetSubState(_npcStateFactory.Follow());
             }
         }
 
-        private void ShowInstructionsCanvas()
+        private void ShowNpcAlertCanvas()
         {
-            _context.InteractionInstructionsCanvas.gameObject.SetActive(true);
+            _context.NpcAlertCanvas.gameObject.SetActive(true);
         }
 
-        private void HideInstructionsCanvas()
+        private void HideAllCanvases()
         {
+            _context.NpcAlertCanvas.gameObject.SetActive(false);
             _context.InteractionInstructionsCanvas.gameObject.SetActive(false);
         }
     }
