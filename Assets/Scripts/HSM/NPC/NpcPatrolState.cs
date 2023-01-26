@@ -45,11 +45,13 @@ namespace HSM
         private void GoToNextWayPoint()
         {
             if (_context.HasNextWayPoint) return;
-            Debug.Log("GoToNextWayPoint");
+            Debug.Log($"[old]CurrentWayPoint {_context.CurrentWayPoint}");
+      
             _context.CurrentWayPoint += 1;
             _context.CurrentWayPoint %= _context.WayPoints.Length;
             _context.NextWalkPoint = _context.WayPoints[_context.CurrentWayPoint].transform.position;
-
+            Debug.Log($"[new]CurrentWayPoint {_context.CurrentWayPoint}");
+            Debug.Log($"NextWalkPoint {_context.CurrentWayPoint}");
             _context.Agent.SetDestination(_context.NextWalkPoint);
             _context.transform.LookAt(_context.NextWalkPoint);
             _context.Animator.SetBool(_context.Walk, true);

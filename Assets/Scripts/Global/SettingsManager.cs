@@ -39,8 +39,6 @@ namespace Global
                 {
                     settingsMenu.gameObject.SetActive(true);
                 }
-
-
             }
 
             if (settingsMenu.isActiveAndEnabled)

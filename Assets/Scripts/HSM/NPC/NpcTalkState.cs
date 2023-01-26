@@ -80,9 +80,7 @@ namespace HSM
         private void StopTalkAnimation()
         {
             _context.Animator.SetBool(_context.Talk, false);
-           // _context.Animator.SetBool(_context.Idle, true);
         }
-
         private void ShowInstructionsCanvas()
         {
             _context.InteractionInstructionsCanvas.gameObject.SetActive(true);
