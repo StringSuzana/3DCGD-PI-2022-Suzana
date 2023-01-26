@@ -99,7 +99,7 @@ public class NpcStateMachine : MonoBehaviour
         CurrentState.UpdateStates();
         CurrentState.CheckSwitchStates();
 
-        if (!agent.pathPending && agent.remainingDistance < 0.5) HasNextWayPoint = false;
+        if (agent.hasPath && agent.remainingDistance < 0.5f) HasNextWayPoint = false;
     }
 
     private void OnTriggerEnter(Collider other)
