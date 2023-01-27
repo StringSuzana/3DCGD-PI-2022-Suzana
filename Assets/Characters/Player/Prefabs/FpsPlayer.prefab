@@ -539,6 +539,7 @@ MonoBehaviour:
   charactersContainer: {fileID: 0}
   shootFromPoint: {fileID: 5201580167616744364}
   scratchView: {fileID: 0}
+  inventoryOfBags: {fileID: 11400000, guid: ae0f598f8b472ee44ade32ef88b9e8a9, type: 2}
 --- !u!1 &5201580166063047226
 GameObject:
   m_ObjectHideFlags: 0

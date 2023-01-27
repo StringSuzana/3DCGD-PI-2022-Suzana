@@ -13,7 +13,6 @@ namespace MyGame
     {
         public List<Weapon> GetWeapons(Transform shootFromPoint)
         {
-            Weapon bagWeapon = new BagThrower(shootFromPoint);
             List<Weapon> weapons = new List<Weapon>();
             weapons.Add(new HeartGun(shootFromPoint));
             weapons.Add(new HandGun(shootFromPoint, BulletRepo.GetBullet(BulletPrefabs.Hand)));

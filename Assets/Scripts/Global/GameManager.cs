@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Data;
 using MyGame;
 using UnityEngine;
@@ -39,6 +40,21 @@ namespace Global
             levelCompletedCanvas.SetActive(true);
         }
 
+        public void ShowVictoryCanvas()
+        {
+            Victory();
+        }
+
+        private IEnumerator Victory()
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            Time.timeScale = 0;
+
+            levelCompletedCanvas.SetActive(true);
+            yield return new WaitForSecondsRealtime(8);
+        }
+
         public void GoToNextLevel()
         {
             ResetCursorAndTime();
@@ -54,7 +70,7 @@ namespace Global
                     StartTransitionToLevel(LevelNames.ThirdLevel);
                     break;
                 case "ThirdLevel":
-                    Debug.Log("Victory. GG");
+                    ShowVictoryCanvas();
                     break;
             }
         }
@@ -73,12 +89,14 @@ namespace Global
             AudioManager.Instance.PlayMusic(SoundNames.MainMenu);
             Cursor.lockState = CursorLockMode.None;
 
+            StartCoroutine(ShowGameOverCanvas());
             SceneManager.LoadScene(LevelNames.MainMenuScene);
         }
 
-        public void ShowGameOverCanvas()
+        public IEnumerator ShowGameOverCanvas()
         {
             gameOverCanvas.SetActive(true);
+            yield return new WaitForSecondsRealtime(4);
         }
 
         private void SavePlayerInfoGameOver()
@@ -99,8 +117,14 @@ namespace Global
 
         private void ResetCursorAndTime()
         {
-            Cursor.visible = true;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
+        }
+
+        public void FakeVictory()
+        {
+            ShowLevelCompletedCanvas();
         }
     }
 }

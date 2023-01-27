@@ -18,7 +18,7 @@ namespace Weapons
             if (BulletRepoShared == null)
             {
                 BulletRepoShared = this;
-                DontDestroyOnLoad(this);
+               //DontDestroyOnLoad(this);
             }
             else
             {

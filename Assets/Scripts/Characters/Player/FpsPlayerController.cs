@@ -20,6 +20,7 @@ namespace Characters
         [SerializeField] private GameObject charactersContainer;
         [SerializeField] private Transform shootFromPoint;
         [SerializeField] private GameObject scratchView;
+        [SerializeField] private InventoryObject inventoryOfBags;
 
         private InputAction _fire;
         private InputAction _weaponChange;
@@ -29,7 +30,6 @@ namespace Characters
         private IWeaponService _weaponService;
         private static readonly int ShootTriggerAnim = Animator.StringToHash("shoot");
         private const string EnemyTag = "Enemy";
-
 
         #region Unity methods
 
@@ -46,6 +46,8 @@ namespace Characters
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
+
+            Time.timeScale = 1;
         }
 
         protected override void Update()
@@ -62,8 +64,6 @@ namespace Characters
             HandleMovement_OldInputSystem();
             RunIfAltKeyIsPressed();
             #endif
-            //velocity.y -= _gravity * Time.deltaTime;
-            //characterController.Move(velocity * Time.deltaTime);
 
             if (IsVictory())
             {
@@ -188,8 +188,14 @@ namespace Characters
 
         private bool CanShoot()
         {
-            //TODO
+            if (SceneManager.GetActiveScene().name == LevelNames.ThirdLevel && _selectedWeapon is BagThrower)
+            {
+                int ammo = inventoryOfBags.Container.FirstOrDefault()?.amount ?? 0;
+                return ammo > 0;
+            }
+
             return true;
+
         }
 
         private IEnumerator ShootAction()

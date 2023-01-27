@@ -633,6 +633,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.047058824
       objectReference: {fileID: 0}
+    - target: {fileID: 6950480784298544555, guid: cb5e1fb772113e74f93e3b0959a09866, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1840098811}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb5e1fb772113e74f93e3b0959a09866, type: 3}
 --- !u!114 &22475757 stripped
@@ -7847,7 +7851,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660560817}
-  m_LocalRotation: {x: 0.05326351, y: 0.75039047, z: -0.060925413, w: 0.65602237}
+  m_LocalRotation: {x: 0.053263515, y: 0.75039047, z: -0.060925413, w: 0.65602237}
   m_LocalPosition: {x: -21.478466, y: 10.30052, z: 10.493805}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14043,7 +14047,7 @@ MonoBehaviour:
   countdownText: {fileID: 6483736883519283389}
   gameManager: {fileID: 1840098810}
   inventoryOfBags: {fileID: 11400000, guid: ae0f598f8b472ee44ade32ef88b9e8a9, type: 2}
-  timeLeft: 300
+  timeLeft: 5
 --- !u!4 &837515593
 Transform:
   m_ObjectHideFlags: 0
@@ -55001,7 +55005,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280045353}
-  m_LocalRotation: {x: 0.14346273, y: 0.57287943, z: -0.10383453, w: 0.8002787}
+  m_LocalRotation: {x: 0.029208716, y: 0.3580118, z: -0.011894537, w: 0.9331844}
   m_LocalPosition: {x: -0.0000009536743, y: -0.01921821, z: -9.999983}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -68531,7 +68535,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804882827}
-  m_LocalRotation: {x: 0.05326351, y: 0.75039047, z: -0.060925413, w: 0.65602237}
+  m_LocalRotation: {x: 0.053263515, y: 0.75039047, z: -0.060925413, w: 0.65602237}
   m_LocalPosition: {x: -21.478466, y: 10.30052, z: 10.493805}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -73088,7 +73092,8 @@ PrefabInstance:
       propertyPath: nextButton
       value: 
       objectReference: {fileID: 694609414}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 886563923181379154, guid: 91ee1706c720a024192e2f48b1d9caf0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 91ee1706c720a024192e2f48b1d9caf0, type: 3}
 --- !u!114 &1128103673895226970 stripped
 MonoBehaviour:
