@@ -133,7 +133,7 @@ namespace Characters
 
         #region IPlayer methods
 
-        public IEnumerator TakeDamage(float damageAmount)
+        public IEnumerator TakeDamageRoutine(float damageAmount)
         {
             Debug.Log("TAKE DAMAGE");
             _currentHealth -= damageAmount;
@@ -158,6 +158,12 @@ namespace Characters
                 yield return new WaitForSecondsRealtime(0.2f);
                 scratchView.SetActive(false);
             }
+        }
+
+        public bool TakeDamage(float damageAmount)
+        {
+            StartCoroutine(TakeDamageRoutine(damageAmount));
+            return _currentHealth <= 0;
         }
 
         public void Heal(int healAmount)

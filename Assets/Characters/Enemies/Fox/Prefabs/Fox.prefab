@@ -317,6 +317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4965958779694537047}
   - component: {fileID: 5936041138598338377}
+  - component: {fileID: 4421182782528834658}
   m_Layer: 0
   m_Name: fox
   m_TagString: Untagged
@@ -429,6 +430,20 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.007379949, y: -0.105580926, z: 0.0000005662441}
     m_Extent: {x: 1.4872236, y: 0.89014065, z: 0.5140997}
   m_DirtyAABB: 0
+--- !u!136 &4421182782528834658
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709350154809447132}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.89014107
+  m_Height: 2.9744482
+  m_Direction: 1
+  m_Center: {x: -0.00000055822414, y: 0.35525364, z: 0.84350556}
 --- !u!1 &1770780771342838402
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,8 +1006,8 @@ MonoBehaviour:
   lives: 3
   attackTarget: {fileID: 0}
   particleDieEffect: {fileID: 8520362116673959840, guid: 2e10334badf5ce4488b27aedb9a7a305, type: 3}
-  animator: {fileID: 0}
-  AttackAudioSource: {fileID: 4338447777060060616}
+  attackAudioSource: {fileID: 4338447777060060616}
+  attackAudioClip: {fileID: 8300000, guid: 80502e18f68bb734b9dded7bb8d2e750, type: 3}
   agent: {fileID: 4047127093686887612}
   player: {fileID: 0}
   groundLayer:
@@ -1002,7 +1017,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   walkPoint: {x: 10, y: 0, z: 0}
-  walkPointRange: 2
+  wayPoints: []
   timeBetweenAttacks: 2
   sightRange: 5
   attackRange: 1

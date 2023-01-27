@@ -129,7 +129,7 @@ namespace Characters
             {
                 Debug.Log("AttackTarget with 15 damage.");
                 attackAudioSource.PlayOneShot(attackAudioClip);
-                StartCoroutine(_iFpsPlayer.TakeDamage(enemyDamageAmount));
+                _iFpsPlayer.TakeDamage(enemyDamageAmount);
                 _animator.SetTrigger(AttackTriggerAnim);
                 ///End of attack
 

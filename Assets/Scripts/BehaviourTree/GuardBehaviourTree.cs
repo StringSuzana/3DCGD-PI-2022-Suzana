@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using BehaviorTree;
+using UnityEngine;
 
 namespace BehaviourTree
 {
     public class GuardBehaviourTree : Tree
     {
         public UnityEngine.Transform[] waypoints;
+        public UnityEngine.Transform attackPoint;
 
-        public static float speed = 2f;
-        public static float fovRange = 6f;
-        public static float attackRange = 1f;
+        public static float Speed = 2f;
+        public static float SightRange = 6f;
+        public static float AttackRange = 2f;
 
         protected override Node SetupTree()
         {
@@ -18,18 +20,26 @@ namespace BehaviourTree
             {
                 new Sequence(new List<Node>
                 {
-                    new CheckPlayerInSight(transform),
-                    new Attack(transform),
+                    new CheckPlayerInAttackRange(transform),
+                    new TaskAttack(transform, attackPoint),
                 }),
+
                 new Sequence(new List<Node>
                 {
                     new CheckPlayerInSight(transform),
                     new TaskGoToTarget(transform),
                 }),
-                new Patrol(transform, waypoints),
+                new TaskPatrol(transform, waypoints),
             });
 
             return root;
+        }
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, AttackRange);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, SightRange);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Characters
 {
     public interface IFpsPlayer : IPlayer
     {
-        IEnumerator TakeDamage(float damageAmount);
+        bool TakeDamage(float damageAmount);
         void Heal(int healAmount);
     }
 

@@ -27,8 +27,9 @@ namespace BehaviourTree
             }
 
             Transform target = (Transform)t;
-            if (Vector3.Distance(_transform.position, target.position) <= GuardBehaviourTree.attackRange)
+            if (Vector3.Distance(_transform.position, target.position) <= GuardBehaviourTree.AttackRange)
             {
+                Debug.Log("In attack range");
                 _animator.SetBool(Attacking, true);
                 _animator.SetBool(Walking,   false);
 

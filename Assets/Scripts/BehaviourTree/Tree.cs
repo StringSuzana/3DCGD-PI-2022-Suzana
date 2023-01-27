@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BehaviourTree;
 using UnityEngine;
 
-namespace BehaviorTree
+namespace BehaviourTree
 {
     public abstract class Tree : MonoBehaviour
     {
