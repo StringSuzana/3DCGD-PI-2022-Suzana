@@ -1,4 +1,6 @@
+using MyGame;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Weapons
 {
@@ -6,10 +8,10 @@ namespace Weapons
     {
         public static BulletRepo BulletRepoShared { get; private set; }
 
-        [SerializeField] private GameObject smallBullet;
-        [SerializeField] private GameObject bigBullet;
-        [SerializeField] private GameObject heartBullet;
+        [SerializeField] private GameObject hand;
+        [SerializeField] private GameObject heart;
         [SerializeField] private GameObject vaccineBag;
+        
 
         private void Awake()
         {
@@ -26,27 +28,41 @@ namespace Weapons
 
         public static GameObject GetBullet(BulletPrefabs prefab)
         {
-            switch (prefab)
+            if (SceneManager.GetActiveScene().name == LevelNames.FirstLevel)
             {
-                case BulletPrefabs.SmallBullet:
-                    return BulletRepoShared.smallBullet;
-                case BulletPrefabs.BigBullet:
-                    return BulletRepoShared.bigBullet;
-                case BulletPrefabs.HeartBullet:
-                    return BulletRepoShared.heartBullet;
-                case BulletPrefabs.VaccineBag:
-                    return BulletRepoShared.vaccineBag;
-                default:
-                    return BulletRepoShared.smallBullet;
+                switch (prefab)
+                {
+                    case BulletPrefabs.Hand:
+                        return BulletRepoShared.hand;
+                    case BulletPrefabs.Heart:
+                        return BulletRepoShared.heart;
+                    default:
+                        return BulletRepoShared.hand;
+                }
             }
+            else
+            {
+                switch (prefab)
+                {
+                    case BulletPrefabs.Hand:
+                        return BulletRepoShared.hand;
+                    case BulletPrefabs.Heart:
+                        return BulletRepoShared.heart;
+                    case BulletPrefabs.VaccineBag:
+                        return BulletRepoShared.vaccineBag;
+                    default:
+                        return BulletRepoShared.hand;
+                }
+            }
+
+           
         }
     }
 
     public enum BulletPrefabs
     {
-        SmallBullet,
-        BigBullet,
-        HeartBullet,
+        Hand,
+        Heart,
         VaccineBag
     }
 }

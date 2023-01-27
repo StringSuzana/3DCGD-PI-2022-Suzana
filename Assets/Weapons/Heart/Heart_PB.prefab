@@ -2577,7 +2577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4197795bbb1fed45b5e891b84e732b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 5
+  lifeTime: 2
   bulletRigidBody: {fileID: -9037103570489607468}
   particleEffect: {fileID: 417543461715254319, guid: d47c2d1c84c076c47ad3315f227fb184, type: 3}
 --- !u!33 &2053556186964068274

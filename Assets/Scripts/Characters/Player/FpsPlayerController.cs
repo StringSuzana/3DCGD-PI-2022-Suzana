@@ -9,6 +9,7 @@ using UnityEditor.Recorder.Input;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Weapons;
 
 namespace Characters
@@ -35,7 +36,11 @@ namespace Characters
         protected override void Start()
         {
             _currentHealth = PlayerPrefs.GetFloat(PlayerPrefNames.Health);
-            _weaponService = ServiceProvider.WeaponService();
+
+            _weaponService = SceneManager.GetActiveScene().name == LevelNames.FirstLevel
+                                 ? ServiceProvider.FirstLevelWeaponService()
+                                 : ServiceProvider.ThridLevelWeaponService();
+
             _weapons = _weaponService.GetWeapons(shootFromPoint);
             SelectWeapon();
 
@@ -193,7 +198,10 @@ namespace Characters
 
             yield return new WaitForSeconds(1f);
 
-            _selectedWeapon.Shoot();
+            var weapon = _selectedWeapon.Shoot();
+
+            yield return new WaitForSeconds(3f);
+            Destroy(weapon);
         }
 
         private void Shoot(InputAction.CallbackContext ctx)

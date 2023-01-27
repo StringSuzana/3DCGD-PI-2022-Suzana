@@ -4,13 +4,13 @@ namespace Global
 {
     public class ServiceProvider
     {
-        public static IWeaponService WeaponService()
+        public static IWeaponService FirstLevelWeaponService()
         {
-            return new WeaponService();
+            return new FirstLevelWeaponService();
         }
-        public static IWeaponService MockWeaponService()
+        public static IWeaponService ThridLevelWeaponService()
         {
-            return new AnotherWeaponService();
+            return new ThridLevelWeaponService();
         }
     }
 }

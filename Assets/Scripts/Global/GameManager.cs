@@ -33,11 +33,15 @@ namespace Global
 
         public void ShowLevelCompletedCanvas()
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            Time.timeScale = 0;
             levelCompletedCanvas.SetActive(true);
         }
 
         public void GoToNextLevel()
         {
+            ResetCursorAndTime();
             string currentScene = SceneManager.GetActiveScene().name;
             Debug.Log("The current scene is: " + currentScene);
             switch (currentScene)
@@ -55,7 +59,6 @@ namespace Global
             }
         }
 
-        
 
         public void StartTransitionToLevel(string nextLevelName)
         {
@@ -92,6 +95,12 @@ namespace Global
                 mainBag = 0
             };
             SaveSystem.SavePlayerInfoToJson(playerInfo);
+        }
+
+        private void ResetCursorAndTime()
+        {
+            Cursor.visible = true;
+            Time.timeScale = 1;
         }
     }
 }

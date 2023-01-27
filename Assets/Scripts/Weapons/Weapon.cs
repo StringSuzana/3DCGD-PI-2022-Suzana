@@ -13,7 +13,7 @@ namespace Weapons
             this.Name = name;
         }
 
-        public abstract void Shoot();
+        public abstract GameObject Shoot();
     }
 
     public class BagThrower : Weapon
@@ -25,9 +25,8 @@ namespace Weapons
             _bag = BulletRepo.GetBullet(BulletPrefabs.VaccineBag);
         }
 
-        public override void Shoot()
+        public override GameObject Shoot()
         {
-            if (!Physics.Raycast(Origin.position, Origin.forward, out RaycastHit hit, 100f)) return;
 
             var createdObject = GameObject.Instantiate(_bag);
             createdObject.transform.position = Origin.position;
@@ -35,6 +34,7 @@ namespace Weapons
 
             var rb = createdObject.GetComponent<Rigidbody>();
             rb.AddForce(Origin.forward * 30f, ForceMode.Impulse);
+            return createdObject;
         }
     }
 
@@ -44,10 +44,10 @@ namespace Weapons
 
         public HeartGun(Transform transform) : base(transform, "Heart gun")
         {
-            _projectile = BulletRepo.GetBullet(BulletPrefabs.HeartBullet);
+            _projectile = BulletRepo.GetBullet(BulletPrefabs.Heart);
         }
 
-        public override void Shoot()
+        public override GameObject Shoot()
         {
             var createdObject = GameObject.Instantiate(_projectile);
             createdObject.transform.position = Origin.position;
@@ -55,6 +55,8 @@ namespace Weapons
 
             var rb = createdObject.GetComponent<Rigidbody>();
             rb.AddForce(Origin.forward * 30f, ForceMode.Impulse);
+            return createdObject;
+
         }
     }
 
@@ -67,7 +69,7 @@ namespace Weapons
             this._projectile = projectile;
         }
 
-        public override void Shoot()
+        public override GameObject Shoot()
         {
             var createdObject = GameObject.Instantiate(_projectile);
             createdObject.transform.position = Origin.position;
@@ -75,6 +77,8 @@ namespace Weapons
 
             var rb = createdObject.GetComponent<Rigidbody>();
             rb.AddForce(Origin.forward * 20f, ForceMode.Impulse);
+            return createdObject;
+
         }
     }
 }
