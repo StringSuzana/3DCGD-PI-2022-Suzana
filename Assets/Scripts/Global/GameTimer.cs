@@ -1,6 +1,7 @@
 using System.Linq;
 using Data;
 using Global;
+using MyGame;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +27,7 @@ public class GameTimer : MonoBehaviour
         {
             if (IsMainBagCollected())
             {
+                SaveBagInfo();
                 gameManager.GetComponent<GameManager>().PlayLevelCompletedTimeline();
             }
             else
@@ -37,9 +39,19 @@ public class GameTimer : MonoBehaviour
 
         else if (IsVictory())
         {
+            SaveBagInfo();
             Debug.Log("Make a button for next level");
             gameManager.GetComponent<GameManager>().PlayLevelCompletedTimeline();
         }
+    }
+
+    private void SaveBagInfo()
+    {
+        PlayerPrefs.SetInt(PlayerPrefNames.MainBag,
+            inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.MainVaccineBag)!.amount);
+        
+        PlayerPrefs.SetInt(PlayerPrefNames.VaccineBags,
+            inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.VaccineBag)!.amount);
     }
 
     public void StartTimerTrigger()
@@ -63,5 +75,4 @@ public class GameTimer : MonoBehaviour
             inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.MainVaccineBag)!.amount;
         return mainBagCount == GameData.MaxMainBag;
     }
-
 }

@@ -1723,7 +1723,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: df2e20b0d1dd9a844b3c911ccf4843ee, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1791,7 +1791,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  walkPointRange: 1
   timeBetweenAttacks: 3
   sightRange: 4
   attackRange: 1.86
@@ -1903,7 +1902,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.1
-  m_Speed: 3
+  m_Speed: 1.2
   m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 30

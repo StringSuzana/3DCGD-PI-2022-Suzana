@@ -5846,6 +5846,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3319329106875727429, guid: ec704232300d11648a6e38b664a11a66, type: 3}
   m_PrefabInstance: {fileID: 426614651}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &426614653 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3319329106875727428, guid: ec704232300d11648a6e38b664a11a66, type: 3}
+  m_PrefabInstance: {fileID: 426614651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &427813026
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7844,7 +7849,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660560817}
-  m_LocalRotation: {x: 0.053263515, y: 0.75039047, z: -0.060925413, w: 0.65602237}
+  m_LocalRotation: {x: 0.05326351, y: 0.75039047, z: -0.060925413, w: 0.65602237}
   m_LocalPosition: {x: -21.478466, y: 10.30052, z: 10.493805}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -17991,7 +17996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1218594462
 Transform:
   m_ObjectHideFlags: 0
@@ -68528,7 +68533,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804882827}
-  m_LocalRotation: {x: 0.053263515, y: 0.75039047, z: -0.060925413, w: 0.65602237}
+  m_LocalRotation: {x: 0.05326351, y: 0.75039047, z: -0.060925413, w: 0.65602237}
   m_LocalPosition: {x: -21.478466, y: 10.30052, z: 10.493805}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -69349,7 +69354,7 @@ MonoBehaviour:
   gameOverTimeline: {fileID: 830663374}
   levelCompletedTimeline: {fileID: 1631869842}
   gameOverCanvas: {fileID: 328839164}
-  levelCompletedCanvas: {fileID: 0}
+  levelCompletedCanvas: {fileID: 426614653}
 --- !u!114 &1840098812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74784,6 +74789,10 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1840098810}
+    - target: {fileID: 8051291444125001611, guid: 31a7c3cbd9423ef4db903c0d8aa1d7f5, type: 3}
+      propertyPath: sensitivity
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8051291444125001611, guid: 31a7c3cbd9423ef4db903c0d8aa1d7f5, type: 3}
       propertyPath: virtualCamera
       value: 

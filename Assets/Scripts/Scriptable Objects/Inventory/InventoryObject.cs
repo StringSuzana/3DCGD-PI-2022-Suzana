@@ -43,6 +43,19 @@ public class InventoryObject : ScriptableObject
         {
             Container.Add(new InventorySlot(item, amount));
         }
+
+    }
+
+    public void AddVaccineBagsAmmo(int amount)
+    {
+        Container.Add(new InventorySlot(ScriptableObject.CreateInstance<BagObject>(), amount));
+    }
+    public void RemoveVaccineBagAmmo()
+    {
+        if (Container.Count > 0)
+        {
+            Container.First().RemoveOne();
+        }
     }
 }
 
@@ -61,5 +74,13 @@ public class InventorySlot
     public void AddAmount(int value)
     {
         amount += value;
+    }
+
+    public void RemoveOne()
+    {
+        if (amount > 0)
+        {
+            amount -= 1;
+        }
     }
 }

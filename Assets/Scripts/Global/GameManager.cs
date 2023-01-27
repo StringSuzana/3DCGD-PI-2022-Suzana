@@ -44,10 +44,10 @@ namespace Global
             {
                 case "FirstLevel":
                     Debug.Log("Go to second level");
-                    StartTransitionToLevel("ForestScene");
+                    StartTransitionToLevel(LevelNames.SecondLevel);
                     break;
                 case "ForestScene":
-                    StartTransitionToLevel("ThirdLevel");
+                    StartTransitionToLevel(LevelNames.ThirdLevel);
                     break;
                 case "ThirdLevel":
                     Debug.Log("Victory. GG");
@@ -55,9 +55,11 @@ namespace Global
             }
         }
 
+        
+
         public void StartTransitionToLevel(string nextLevelName)
         {
-            Debug.Log("Going to second level");
+            Debug.Log("Going to next level");
             SceneManager.LoadScene(nextLevelName);
         }
 
