@@ -7,6 +7,7 @@ using MyGame;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -33,7 +34,11 @@ public class InventoryManager : MonoBehaviour
             inventoryOfBags = ScriptableObject.CreateInstance<InventoryObject>();
         }
 
-
+        if (SceneManager.GetActiveScene().name == LevelNames.ThirdLevel)
+        {
+            int bagsCount = PlayerPrefs.GetInt(PlayerPrefNames.VaccineBags);
+            inventoryOfBags.AddVaccineBagsAmmo(bagsCount);
+        }
         inventoryCanvas.gameObject.SetActive(false);
     }
 
