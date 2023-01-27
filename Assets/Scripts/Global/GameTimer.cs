@@ -61,10 +61,13 @@ public class GameTimer : MonoBehaviour
 
     public bool IsVictory()
     {
-        int mainBagCount =
-            inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.MainVaccineBag)!.amount;
-        int vaccineBagCount =
-            inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.VaccineBag)!.amount;
+        InventorySlot mainContainer =
+            inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.MainVaccineBag);
+        int mainBagCount = mainContainer?.amount ?? 0;
+
+        InventorySlot vaccineContainer =
+            inventoryOfBags.Container.FirstOrDefault(slot => slot.item.itemType == ItemType.VaccineBag);
+        int vaccineBagCount = mainContainer?.amount ?? 0;
 
         return mainBagCount == GameData.MaxMainBag && vaccineBagCount == GameData.MaxVaccineBags;
     }

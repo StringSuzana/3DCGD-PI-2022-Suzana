@@ -2,6 +2,7 @@
 using System.Collections;
 using MyGame;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Global
 {
@@ -54,13 +55,13 @@ namespace Global
                 s.source.pitch = s.pitch;
             }
 
-            DontDestroyOnLoad(gameObject);
+           // DontDestroyOnLoad(gameObject);
         }
 
         private void Start()
         {
             Cursor.visible = true;
-            PlayMusic(SoundNames.MainMenu);
+            PlayMusic(SceneManager.GetActiveScene().name);
         }
 
         public void PlaySoundOneTime(string name)

@@ -5217,7 +5217,6 @@ Transform:
   m_Children:
   - {fileID: 1978814142}
   - {fileID: 345968769}
-  - {fileID: 504751198}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5839,6 +5838,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4792710561165905651, guid: ec704232300d11648a6e38b664a11a66, type: 3}
+      propertyPath: m_text
+      value: LV.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec704232300d11648a6e38b664a11a66, type: 3}
 --- !u!224 &426614652 stripped
@@ -6162,11 +6165,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2b0dfca5f6191542b7f738930142fd6, type: 3}
---- !u!4 &504751198 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-  m_PrefabInstance: {fileID: 9171793349195262595}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &522142103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -71530,9 +71528,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16284ce9efcd72040801ddca0a31aefe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smallBullet: {fileID: 1027163011687890801, guid: d6cc34df3686daa4aba8c5417d07ca0d, type: 3}
-  bigBullet: {fileID: 1027163011687890801, guid: d6cc34df3686daa4aba8c5417d07ca0d, type: 3}
-  heartBullet: {fileID: 7732822901899014347, guid: 10027ae05974105428a273b93dfe8b7b, type: 3}
+  hand: {fileID: 0}
+  heart: {fileID: 0}
   vaccineBag: {fileID: 0}
 --- !u!4 &2023818489 stripped
 Transform:
@@ -72821,17 +72818,17 @@ MonoBehaviour:
     pitch: 1
     name: FirstLevel
     source: {fileID: 0}
-  - audioClip: {fileID: 8300000, guid: 5a1944aa7c9b294499f993b3c5b484f5, type: 3}
+  - audioClip: {fileID: 8300000, guid: 826bb8ea4939f9340ba3d55e1120eb1f, type: 3}
     volume: 1
     pitch: 1
-    name: SecondLevel
+    name: ForestScene
     source: {fileID: 0}
-  - audioClip: {fileID: 8300000, guid: 826bb8ea4939f9340ba3d55e1120eb1f, type: 3}
+  - audioClip: {fileID: 8300000, guid: 5a1944aa7c9b294499f993b3c5b484f5, type: 3}
     volume: 1
     pitch: 1
     name: MainMenu
     source: {fileID: 0}
-  - audioClip: {fileID: 8300000, guid: c6c5cd0ee2d7db447be3ac0e13978c23, type: 3}
+  - audioClip: {fileID: 8300000, guid: 5a1944aa7c9b294499f993b3c5b484f5, type: 3}
     volume: 1
     pitch: 1
     name: ThirdLevel
@@ -75065,68 +75062,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 334456072696648355, guid: 2910a43574a771b4fb15c423813c491e, type: 3}
   m_PrefabInstance: {fileID: 8011277220426223461}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &9171793349195262595
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 350133170}
-    m_Modifications:
-    - target: {fileID: 9171793349026713308, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: interactText
-      value: 
-      objectReference: {fileID: 7156878639257295709}
-    - target: {fileID: 9171793349026713308, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: dialogueCanvas
-      value: 
-      objectReference: {fileID: 5184290340552143395}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -216.02077
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 66.59295
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -95.27544
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713309, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9171793349026713310, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}
-      propertyPath: m_Name
-      value: Doctor NPC
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2f290f35a965a5444a2e80a490fe4a46, type: 3}

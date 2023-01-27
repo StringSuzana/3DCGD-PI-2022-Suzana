@@ -21,10 +21,6 @@ public class InventoryObject : ScriptableObject
                 Debug.Log("AddMainBag");
                 AddMainBag(item);
                 break;
-            case ItemType.HealthBag:
-                break;
-            case ItemType.FoodBag:
-                break;
         }
     }
 
