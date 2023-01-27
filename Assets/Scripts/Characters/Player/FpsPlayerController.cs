@@ -93,7 +93,6 @@ namespace Characters
 
         #endregion
 
-
         public override bool IsVictory()
         {
             /**Victory is when there are no more enemies in character container*/
@@ -217,7 +216,7 @@ namespace Characters
                 StartCoroutine(ShootAction());
             }
         }
-
+        
         private void ChangeWeapon(InputAction.CallbackContext ctx)
         {
             _currentWeaponIndex = (_currentWeaponIndex + 1) % _weapons.Count;
