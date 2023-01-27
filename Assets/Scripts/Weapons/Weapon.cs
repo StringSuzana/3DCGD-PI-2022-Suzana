@@ -34,7 +34,7 @@ namespace Weapons
             createdObject.layer = 8;
 
             var rb = createdObject.GetComponent<Rigidbody>();
-            rb.AddForce(Origin.forward * 5f, ForceMode.Impulse);
+            rb.AddForce(Origin.forward * 30f, ForceMode.Impulse);
         }
     }
 

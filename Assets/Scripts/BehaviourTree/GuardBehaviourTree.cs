@@ -23,7 +23,6 @@ namespace BehaviourTree
                     new CheckPlayerInAttackRange(transform),
                     new TaskAttack(transform, attackPoint),
                 }),
-
                 new Sequence(new List<Node>
                 {
                     new CheckPlayerInSight(transform),
