@@ -190,11 +190,12 @@ namespace Characters
             if (SceneManager.GetActiveScene().name == LevelNames.ThirdLevel && _selectedWeapon is BagThrower)
             {
                 int ammo = inventoryOfBags.Container.FirstOrDefault()?.amount ?? 0;
-                return ammo > 0;
+                bool canShoot = ammo > 0;
+                inventoryOfBags.RemoveVaccineBagAmmo();
+                return canShoot;
             }
 
             return true;
-
         }
 
         private IEnumerator ShootAction()
@@ -216,7 +217,7 @@ namespace Characters
                 StartCoroutine(ShootAction());
             }
         }
-        
+
         private void ChangeWeapon(InputAction.CallbackContext ctx)
         {
             _currentWeaponIndex = (_currentWeaponIndex + 1) % _weapons.Count;

@@ -173,7 +173,7 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 5147573dff423a443bdd454bfcdc60de, type: 3}
     volume: 1
     pitch: 1
-    name: MainMenu
+    name: MainMenuScene
     source: {fileID: 0}
   soundFxs:
   - audioClip: {fileID: 8300000, guid: 2ff50118b66fecf44bbd5a0749b4deac, type: 3}

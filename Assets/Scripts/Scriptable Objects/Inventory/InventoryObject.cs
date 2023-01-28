@@ -44,7 +44,8 @@ public class InventoryObject : ScriptableObject
 
     public void AddVaccineBagsAmmo(int amount)
     {
-        Container.Add(new InventorySlot(ScriptableObject.CreateInstance<BagObject>(), amount));
+        var bag = ScriptableObject.CreateInstance<BagObject>();
+        Container.Add(new InventorySlot(bag, amount));
     }
     public void RemoveVaccineBagAmmo()
     {

@@ -4219,7 +4219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.4117647}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13992,9 +13992,11 @@ PlayableDirector:
   m_ExposedReferences:
     m_References:
     - 0b0615b5732c7c94592b11cfa98e476a: {fileID: 1128103675301470951}
+    - 7db4acbb6cb7d594b84e4808c9c0adfe: {fileID: 660560822}
     - 2a04e52bd53bcee428906e92aec02c25: {fileID: 1128103673895226970}
     - 7ab67626d7fb8164c8c1af905773e182: {fileID: 1128103673895226970}
     - b987d16e14bef6d47bdb945928bc7fc3: {fileID: 1128103675301470951}
+    - 0c8f74b2b7cfafc4891c11f80267c161: {fileID: 1128103675301470951}
 --- !u!4 &830663375
 Transform:
   m_ObjectHideFlags: 0
@@ -14047,7 +14049,7 @@ MonoBehaviour:
   countdownText: {fileID: 6483736883519283389}
   gameManager: {fileID: 1840098810}
   inventoryOfBags: {fileID: 11400000, guid: ae0f598f8b472ee44ade32ef88b9e8a9, type: 2}
-  timeLeft: 5
+  timeLeft: 300
 --- !u!4 &837515593
 Transform:
   m_ObjectHideFlags: 0
@@ -62309,11 +62311,13 @@ PlayableDirector:
   m_ExposedReferences:
     m_References:
     - 0b0615b5732c7c94592b11cfa98e476a: {fileID: 1128103675301470951}
+    - 9d37655359a43014ea111dcaf04d81b6: {fileID: 1128103675301470951}
     - 8aef4c9e329f1d54db2d43084b5d44c5: {fileID: 1128103673895226970}
     - 2a04e52bd53bcee428906e92aec02c25: {fileID: 1128103673895226970}
     - 7ab67626d7fb8164c8c1af905773e182: {fileID: 1128103673895226970}
     - b987d16e14bef6d47bdb945928bc7fc3: {fileID: 1128103675301470951}
     - 8b4d960c08c57824d83aa1039aa954d0: {fileID: 1128103675301470951}
+    - be472f9fd444afb46a0f12844ef3b042: {fileID: 660560822}
 --- !u!1 &1632174763
 GameObject:
   m_ObjectHideFlags: 0
@@ -72830,7 +72834,7 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 5a1944aa7c9b294499f993b3c5b484f5, type: 3}
     volume: 1
     pitch: 1
-    name: MainMenu
+    name: MainMenuScene
     source: {fileID: 0}
   - audioClip: {fileID: 8300000, guid: 5a1944aa7c9b294499f993b3c5b484f5, type: 3}
     volume: 1

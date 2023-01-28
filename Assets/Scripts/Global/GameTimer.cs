@@ -27,11 +27,13 @@ public class GameTimer : MonoBehaviour
         {
             if (IsMainBagCollected())
             {
+                Debug.Log("Main bag collected");
                 SaveBagInfo();
                 gameManager.GetComponent<GameManager>().PlayLevelCompletedTimeline();
             }
             else
             {
+                Debug.Log("Main bag not collected");
                 Debug.Log("Game over");
                 gameManager.GetComponent<GameManager>().GameOver();
             }
